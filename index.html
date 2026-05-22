@@ -711,7 +711,14 @@ footer {
 .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 60px; overflow: hidden; }
 
 @media (max-width: 700px) {
-  .team-grid { grid-template-columns: 1fr !important; }
+  .team-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .team-card { padding: 20px 12px; gap: 8px; }
+  .avatar-hex { width: 52px; height: 52px; font-size: 16px; }
+  .team-name { font-size: 13px; }
+  .team-role { font-size: 9px; letter-spacing: 0.5px; }
+  .team-desc { font-size: 11px; line-height: 1.5; }
+  .tlink { font-size: 9px; padding: 3px 7px; }
+  .team-links { gap: 5px; flex-wrap: wrap; justify-content: center; }
 }
 .team-card { background: var(--bg); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; transition: background 0.3s; }
 .team-card:hover { background: rgba(0,255,136,0.02); }
