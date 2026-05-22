@@ -182,7 +182,7 @@ nav {
 .hero-title {
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: clamp(42px, 6vw, 80px);
+  font-size: clamp(28px, 7vw, 80px);
   line-height: 1.0;
   letter-spacing: -2px;
   animation: fadeUp 0.8s 0.1s ease both;
@@ -200,16 +200,22 @@ nav {
 
 .hero-sub {
   margin-top: 24px;
-  font-size: 17px; font-weight: 300;
+  font-size: clamp(14px, 3.5vw, 17px); font-weight: 300;
   color: rgba(232,244,240,0.6);
   line-height: 1.7;
-  max-width: 480px;
+  max-width: 100%;
   animation: fadeUp 0.8s 0.2s ease both;
 }
 
 .hero-btns {
   display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap;
   animation: fadeUp 0.8s 0.3s ease both;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .hero-btns { flex-direction: column; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
 }
 
 .btn-primary {
