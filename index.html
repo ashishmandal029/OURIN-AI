@@ -358,7 +358,7 @@ nav {
 .stat-item:hover::before { transform: scaleX(1); }
 .stat-num {
   font-family: 'Syne', sans-serif;
-  font-weight: 800; font-size: 42px;
+  font-weight: 800; font-size: clamp(24px, 7vw, 42px);
   background: linear-gradient(135deg, var(--green), var(--cyan));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -708,7 +708,11 @@ footer {
 /* ── TEAM ── */
 .team { padding: 100px 40px; background: var(--bg2); border-top: 1px solid var(--border); }
 .team-inner { max-width: 1100px; margin: 0 auto; }
-.team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 60px; }
+.team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 60px; overflow: hidden; }
+
+@media (max-width: 700px) {
+  .team-grid { grid-template-columns: 1fr !important; }
+}
 .team-card { background: var(--bg); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; transition: background 0.3s; }
 .team-card:hover { background: rgba(0,255,136,0.02); }
 .team-avatar { margin-bottom: 4px; }
