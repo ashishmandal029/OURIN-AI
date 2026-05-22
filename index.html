@@ -1,207 +1,1835 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OURIN AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OURIN — Next-Gen WhatsApp Bot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #030508;
+  --bg2: #060c12;
+  --green: #00ff88;
+  --green2: #00cc6a;
+  --cyan: #00e5ff;
+  --blue: #0066ff;
+  --purple: #7000ff;
+  --red: #ff2255;
+  --text: #e8f4f0;
+  --muted: #4a6860;
+  --card: rgba(0,255,136,0.04);
+  --border: rgba(0,255,136,0.12);
+}
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <link rel="stylesheet" href="style.css">
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  width: 12px; height: 12px;
+  background: var(--green);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s;
+  box-shadow: 0 0 20px var(--green), 0 0 40px var(--green);
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,255,136,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.15s ease;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1000; opacity: 0.4;
+}
+
+/* ── GRID BG ── */
+.grid-bg {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(3,5,8,0.95), transparent);
+  backdrop-filter: blur(10px);
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 22px;
+  color: var(--green);
+  letter-spacing: -0.5px;
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo span {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; color: var(--muted);
+  text-decoration: none; letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--green); }
+
+.nav-cta {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  color: var(--bg); background: var(--green);
+  border: none; padding: 10px 22px;
+  cursor: none; letter-spacing: 1px;
+  text-transform: uppercase;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: all 0.3s;
+}
+.nav-cta:hover {
+  background: var(--cyan);
+  box-shadow: 0 0 30px rgba(0,229,255,0.4);
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+.hero-glow2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(0,102,255,0.06) 0%, transparent 70%);
+  top: 20%; right: 10%;
+  pointer-events: none;
+  animation: glowPulse 6s ease-in-out infinite reverse;
+}
+
+.hero-content {
+  max-width: 1100px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  position: relative; z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.2);
+  padding: 6px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--green);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 24px;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--green); border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(42px, 6vw, 80px);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero-title .line1 { color: var(--text); display: block; }
+.hero-title .line2 {
+  display: block;
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-title .line3 { color: rgba(255,255,255,0.2); display: block; }
+
+.hero-sub {
+  margin-top: 24px;
+  font-size: 17px; font-weight: 300;
+  color: rgba(232,244,240,0.6);
+  line-height: 1.7;
+  max-width: 480px;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-btns {
+  display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.btn-primary {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--bg); background: var(--green);
+  border: none; padding: 14px 28px;
+  cursor: none; letter-spacing: 1px;
+  text-transform: uppercase; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+.btn-primary:hover::after { transform: translateX(100%); }
+.btn-primary:hover { box-shadow: 0 0 40px rgba(0,255,136,0.5); }
+
+.btn-secondary {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--green);
+  background: transparent;
+  border: 1px solid rgba(0,255,136,0.3);
+  padding: 14px 28px;
+  cursor: none; letter-spacing: 1px;
+  text-transform: uppercase; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  transition: all 0.3s;
+}
+.btn-secondary:hover {
+  background: rgba(0,255,136,0.08);
+  border-color: var(--green);
+}
+
+/* ── TERMINAL CARD ── */
+.hero-visual {
+  position: relative;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.terminal {
+  background: rgba(6,12,18,0.9);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,255,136,0.08), 0 40px 80px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.terminal-header {
+  background: rgba(0,255,136,0.06);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-dot.red { background: #ff5f57; }
+.t-dot.yellow { background: #febc2e; }
+.t-dot.green { background: #28c840; }
+.terminal-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  margin-left: 8px; letter-spacing: 1px;
+}
+
+.terminal-body {
+  padding: 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  line-height: 2;
+  min-height: 320px;
+}
+
+.t-line { display: flex; align-items: flex-start; gap: 10px; opacity: 0; }
+.t-line.show { animation: typeIn 0.3s ease forwards; }
+
+.t-prompt { color: var(--green); flex-shrink: 0; }
+.t-cmd { color: var(--cyan); }
+.t-out { color: rgba(232,244,240,0.5); padding-left: 20px; font-size: 12px; }
+.t-success { color: var(--green); padding-left: 20px; font-size: 12px; }
+.t-err { color: var(--red); padding-left: 20px; font-size: 12px; }
+
+.t-cursor {
+  display: inline-block; width: 8px; height: 14px;
+  background: var(--green); margin-left: 4px;
+  animation: blink 1s infinite;
+  vertical-align: middle;
+}
+
+.terminal-glow {
+  position: absolute;
+  top: -1px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  animation: scanLine 3s infinite;
+}
+
+/* ── STATS BAR ── */
+.stats-bar {
+  padding: 40px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.stats-bar::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,0.03), transparent);
+}
+.stats-inner {
+  max-width: 1100px; width: 100%;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.stat-item {
+  background: var(--bg);
+  padding: 32px 24px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.stat-item:hover { background: rgba(0,255,136,0.03); }
+.stat-item::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+}
+.stat-item:hover::before { transform: scaleX(1); }
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 42px;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* ── FEATURES ── */
+.features {
+  padding: 100px 40px;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--green);
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::before {
+  content: '';
+  width: 30px; height: 1px;
+  background: var(--green);
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 52px);
+  letter-spacing: -1px;
+  margin-bottom: 60px;
+  line-height: 1.1;
+}
+.section-title span {
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.feat-card {
+  background: var(--bg);
+  padding: 36px 28px;
+  position: relative; overflow: hidden;
+  transition: all 0.4s;
+  cursor: none;
+}
+.feat-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,255,136,0.06), transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feat-card:hover::after { opacity: 1; }
+.feat-card:hover { background: rgba(0,255,136,0.02); }
+
+.feat-icon {
+  width: 48px; height: 48px;
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+.feat-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 18px;
+  margin-bottom: 10px; color: var(--text);
+}
+.feat-desc {
+  font-size: 14px; color: var(--muted);
+  line-height: 1.7; font-weight: 300;
+}
+.feat-tag {
+  display: inline-block; margin-top: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--green);
+  background: rgba(0,255,136,0.08);
+  padding: 4px 10px; letter-spacing: 1px;
+}
+
+/* ── COMMANDS SECTION ── */
+.commands {
+  padding: 100px 40px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.commands::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,102,255,0.05) 0%, transparent 70%);
+  bottom: -200px; right: -100px;
+  pointer-events: none;
+}
+
+.commands-inner { max-width: 1100px; margin: 0 auto; }
+
+.cmd-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  margin-top: 40px;
+}
+
+.cmd-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 16px;
+  transition: all 0.3s; cursor: none;
+}
+.cmd-item:hover {
+  border-color: rgba(0,255,136,0.3);
+  background: rgba(0,255,136,0.02);
+  transform: translateX(4px);
+}
+.cmd-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; color: var(--green);
+  font-weight: 700; min-width: 160px;
+}
+.cmd-desc { font-size: 13px; color: var(--muted); }
+.cmd-cat {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  flex-shrink: 0;
+}
+
+/* ── CAROUSEL FEATURES ── */
+.how {
+  padding: 100px 40px;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 40px; margin-top: 60px; position: relative;
+}
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 40px; left: calc(16% + 40px); right: calc(16% + 40px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--green), transparent, var(--green));
+}
+
+.step {
+  text-align: center; position: relative;
+}
+.step-num {
+  width: 80px; height: 80px; margin: 0 auto 24px;
+  background: rgba(0,255,136,0.05);
+  border: 1px solid rgba(0,255,136,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 28px;
+  color: var(--green);
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  position: relative;
+}
+.step-num::after {
+  content: '';
+  position: absolute; inset: -1px;
+  background: linear-gradient(135deg, var(--green), transparent);
+  clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  z-index: -1; opacity: 0.3;
+}
+.step-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 18px; margin-bottom: 10px;
+}
+.step-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  padding: 100px 40px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(0,255,136,0.08), transparent 60%);
+}
+.cta-inner { position: relative; z-index: 2; }
+.cta-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: -2px; line-height: 1.1;
+  margin-bottom: 20px;
+}
+.cta-title span {
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-sub {
+  font-size: 16px; color: var(--muted);
+  max-width: 480px; margin: 0 auto 40px; line-height: 1.7;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 100%; background: var(--bg2);
+}
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 18px;
+  color: var(--green); letter-spacing: -0.5px;
+}
+.footer-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--muted); letter-spacing: 1px;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  text-decoration: none; letter-spacing: 1px;
+  text-transform: uppercase; transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--green); }
+
+/* ── VIDEO SECTION ── */
+.video-section { padding: 100px 40px; background: var(--bg2); border-top: 1px solid var(--border); }
+.video-inner { max-width: 1100px; margin: 0 auto; }
+.video-sub { font-size: 16px; color: var(--muted); margin-bottom: 40px; max-width: 500px; line-height: 1.7; }
+.video-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.video-frame { width: 100%; max-width: 800px; aspect-ratio: 16/9; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; box-shadow: 0 0 80px rgba(0,255,136,0.06); }
+.video-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #060c12, #030508); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: none; position: relative; overflow: hidden; }
+.video-scanlines { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,0.01) 2px, rgba(0,255,136,0.01) 4px); pointer-events: none; }
+.play-ring { width: 90px; height: 90px; border: 2px solid rgba(0,255,136,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: float 3s ease-in-out infinite; }
+.play-btn { width: 64px; height: 64px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--bg); transition: all 0.3s; box-shadow: 0 0 40px rgba(0,255,136,0.4); }
+.play-btn:hover { transform: scale(1.1); box-shadow: 0 0 60px rgba(0,255,136,0.6); }
+.video-label { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 20px; letter-spacing: 1px; }
+.video-duration { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--green); margin-top: 6px; }
+.video-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.vtag { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); background: rgba(0,255,136,0.04); border: 1px solid var(--border); padding: 6px 14px; letter-spacing: 1px; }
+
+/* ── PLUGIN SHOWCASE ── */
+.showcase { padding: 100px 40px; border-top: 1px solid var(--border); }
+.showcase-inner { max-width: 1100px; margin: 0 auto; }
+.showcase-tabs { display: flex; gap: 4px; margin: 40px 0 0; flex-wrap: wrap; }
+.stab { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 10px 18px; cursor: none; letter-spacing: 1px; transition: all 0.3s; }
+.stab.active, .stab:hover { color: var(--green); border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.05); }
+.showcase-panels { margin-top: -1px; border: 1px solid var(--border); }
+.spanel { display: none; grid-template-columns: 1fr 1fr; gap: 0; }
+.spanel.active { display: grid; }
+.spanel-code { padding: 28px; border-right: 1px solid var(--border); background: #060c12; }
+.code-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.code-lang { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--green); background: rgba(0,255,136,0.08); padding: 4px 10px; letter-spacing: 1px; }
+.code-file { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+.code-block { font-family: 'Space Mono', monospace; font-size: 12px; line-height: 1.9; white-space: pre; overflow-x: auto; }
+.c-prompt { color: var(--green); }
+.c-cmd { color: var(--cyan); font-weight: 700; }
+.c-str { color: #f0c080; }
+.c-out { color: var(--muted); }
+.c-success { color: var(--green); }
+.spanel-preview { padding: 28px; display: flex; align-items: center; justify-content: center; }
+.wa-bubble { background: #128C7E; border-radius: 4px 16px 16px 16px; padding: 14px 16px; max-width: 320px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+.wa-header { font-weight: 700; font-size: 13px; color: #fff; margin-bottom: 10px; }
+.wa-table { font-family: 'Space Mono', monospace; font-size: 10px; color: #ecfdf5; background: #0b5a50; padding: 10px; border-radius: 4px; overflow-x: auto; line-height: 1.6; }
+.wa-footer { font-size: 11px; color: #a7f3d0; font-style: italic; margin-top: 10px; }
+.wa-carousel { width: 100%; }
+.wac-card { background: #0b5a50; border-radius: 8px; overflow: hidden; }
+.wac-img { background: rgba(0,0,0,0.3); height: 100px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.wac-title { font-weight: 700; font-size: 14px; color: #fff; padding: 12px 12px 4px; }
+.wac-desc { font-size: 12px; color: #a7f3d0; padding: 0 12px 12px; }
+.wac-btns { display: flex; gap: 6px; padding: 0 12px 12px; }
+.wac-btn { flex: 1; padding: 8px; font-size: 11px; font-family: 'Space Mono', monospace; text-align: center; border-radius: 4px; }
+.wac-btn.url { background: rgba(0,229,255,0.2); color: var(--cyan); }
+.wac-btn.copy { background: rgba(0,255,136,0.2); color: var(--green); }
+.wac-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: var(--green); }
+.wa-ai-badge { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--cyan); background: rgba(0,229,255,0.1); padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+.wa-ai-text { font-size: 13px; color: #ecfdf5; line-height: 1.7; }
+.wa-ai-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(167,243,208,0.5); margin-top: 10px; }
+.wa-sheet-info { display: flex; flex-direction: column; gap: 6px; }
+.sheet-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sheet-row span:first-child { color: rgba(167,243,208,0.7); }
+.sheet-row span:last-child { color: #fff; font-weight: 600; }
+.wa-dl-card { display: flex; align-items: center; gap: 12px; }
+.dl-icon { font-size: 32px; }
+.dl-info { flex: 1; }
+.dl-title { font-weight: 700; font-size: 13px; color: #fff; }
+.dl-meta { font-size: 11px; color: #a7f3d0; margin: 4px 0; }
+.dl-bar { background: rgba(0,0,0,0.3); border-radius: 4px; height: 4px; overflow: hidden; }
+.dl-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--green), var(--cyan)); border-radius: 4px; animation: dlFill 2s ease infinite; }
+@keyframes dlFill { 0% { width: 0%; } 70% { width: 100%; } 100% { width: 100%; } }
+
+/* ── PRICING ── */
+.pricing { padding: 100px 40px; background: var(--bg2); border-top: 1px solid var(--border); }
+.pricing-inner { max-width: 1100px; margin: 0 auto; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 60px; }
+.price-card { background: var(--bg); padding: 40px 32px; display: flex; flex-direction: column; gap: 16px; position: relative; transition: background 0.3s; }
+.price-card:hover { background: rgba(0,255,136,0.02); }
+.price-card.featured { background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.25); margin: -1px; z-index: 2; }
+.price-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: var(--bg); background: var(--green); padding: 4px 16px; letter-spacing: 2px; clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); }
+.price-tier { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 3px; color: var(--muted); margin-top: 12px; }
+.price-amount { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 52px; line-height: 1; color: var(--text); }
+.price-currency { font-size: 24px; vertical-align: top; margin-top: 8px; display: inline-block; color: var(--muted); }
+.price-period { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); margin-left: 4px; }
+.price-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.price-features li { font-size: 14px; color: var(--text); line-height: 1.4; }
+.price-features li.muted { color: var(--muted); opacity: 0.5; }
+
+/* ── TESTIMONIALS ── */
+.testimonials { padding: 100px 40px; border-top: 1px solid var(--border); }
+.testi-inner { max-width: 1100px; margin: 0 auto; }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 60px; }
+.testi-card { background: var(--bg); padding: 32px 28px; display: flex; flex-direction: column; gap: 16px; transition: background 0.3s; }
+.testi-card:hover { background: rgba(0,255,136,0.02); }
+.testi-stars { color: #ffd700; font-size: 14px; letter-spacing: 2px; }
+.testi-text { font-size: 14px; color: rgba(232,244,240,0.75); line-height: 1.8; flex: 1; font-style: italic; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar { width: 44px; height: 44px; background: linear-gradient(135deg, var(--green), var(--cyan)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; color: var(--bg); clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); flex-shrink: 0; }
+.testi-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; }
+.testi-role { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-top: 2px; }
+
+/* ── TEAM ── */
+.team { padding: 100px 40px; background: var(--bg2); border-top: 1px solid var(--border); }
+.team-inner { max-width: 1100px; margin: 0 auto; }
+.team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 60px; }
+.team-card { background: var(--bg); padding: 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; transition: background 0.3s; }
+.team-card:hover { background: rgba(0,255,136,0.02); }
+.team-avatar { margin-bottom: 4px; }
+.avatar-hex { width: 72px; height: 72px; background: linear-gradient(135deg, var(--green), var(--cyan)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--bg); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+.team-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px; }
+.team-role { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; }
+.team-desc { font-size: 13px; color: var(--muted); line-height: 1.7; flex: 1; }
+.team-links { display: flex; gap: 8px; }
+.tlink { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 4px 10px; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; }
+.tlink:hover { color: var(--green); border-color: rgba(0,255,136,0.3); }
+
+/* ── CHANGELOG ── */
+.changelog { padding: 100px 40px; border-top: 1px solid var(--border); }
+.changelog-inner { max-width: 800px; margin: 0 auto; }
+.timeline { position: relative; margin-top: 60px; padding-left: 32px; }
+.timeline::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+.tl-item { position: relative; margin-bottom: 48px; }
+.tl-dot { position: absolute; left: -30px; top: 8px; width: 14px; height: 14px; background: var(--bg); border: 2px solid var(--green); border-radius: 50%; box-shadow: 0 0 12px rgba(0,255,136,0.4); }
+.tl-content { background: var(--bg2); border: 1px solid var(--border); padding: 24px 28px; transition: border-color 0.3s; }
+.tl-content:hover { border-color: rgba(0,255,136,0.3); }
+.tl-version { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.tl-badge { font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 10px; letter-spacing: 1px; }
+.tl-badge.new { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+.tl-badge.genesis { background: rgba(112,0,255,0.15); color: #b388ff; border: 1px solid rgba(112,0,255,0.3); }
+.tl-badge { background: rgba(0,229,255,0.1); color: var(--cyan); border: 1px solid rgba(0,229,255,0.2); }
+.tl-date { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 14px; }
+.tl-changes { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.tl-changes li { font-size: 14px; color: rgba(232,244,240,0.7); line-height: 1.5; }
+
+/* ── FAQ ── */
+.faq { padding: 100px 40px; background: var(--bg2); border-top: 1px solid var(--border); }
+.faq-inner { max-width: 800px; margin: 0 auto; }
+.faq-list { margin-top: 60px; display: flex; flex-direction: column; gap: 2px; }
+.faq-item { border: 1px solid var(--border); overflow: hidden; }
+.faq-q { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; cursor: none; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 16px; transition: background 0.3s; gap: 16px; }
+.faq-q:hover { background: rgba(0,255,136,0.03); }
+.faq-q.open { color: var(--green); }
+.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: var(--green); flex-shrink: 0; transition: transform 0.3s; }
+.faq-q.open .faq-icon { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 14px; color: var(--muted); line-height: 1.8; padding: 0 24px; }
+.faq-a.open { max-height: 300px; padding: 0 24px 20px; }
+
+/* ── CONTACT ── */
+.contact { padding: 100px 40px; border-top: 1px solid var(--border); }
+.contact-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.contact-sub { font-size: 15px; color: var(--muted); line-height: 1.7; margin: 16px 0 32px; max-width: 440px; }
+.contact-form { display: flex; flex-direction: column; gap: 12px; }
+.cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cf-input { background: rgba(0,255,136,0.03); border: 1px solid var(--border); color: var(--text); padding: 13px 16px; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.3s; border-radius: 0; width: 100%; }
+.cf-input::placeholder { color: var(--muted); }
+.cf-input:focus { border-color: rgba(0,255,136,0.4); }
+.cf-textarea { resize: vertical; min-height: 90px; }
+.cf-success { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--green); text-align: center; display: none; padding: 10px; background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.2); }
+.contact-links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 24px; }
+.clink-card { background: rgba(0,255,136,0.03); border: 1px solid var(--border); padding: 16px 18px; display: flex; align-items: center; gap: 12px; text-decoration: none; transition: all 0.3s; }
+.clink-card:hover { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.06); transform: translateX(4px); }
+.clink-icon { font-size: 20px; }
+.clink-label { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--text); letter-spacing: 1px; flex: 1; }
+.clink-arrow { color: var(--green); font-family: 'Space Mono', monospace; transition: transform 0.3s; }
+.clink-card:hover .clink-arrow { transform: translateX(4px); }
+.contact-info { display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border); padding: 20px; }
+.ci-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,255,136,0.05); }
+.ci-item:last-child { border-bottom: none; }
+.ci-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+.ci-val { font-size: 13px; color: var(--text); font-weight: 500; }
+
+/* ── MOBILE ADDITIONS ── */
+@media (max-width: 900px) {
+  .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .spanel.active { grid-template-columns: 1fr; }
+  .spanel-code { border-right: none; border-bottom: 1px solid var(--border); }
+  .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+  .cf-row { grid-template-columns: 1fr; }
+  .contact-links-grid { grid-template-columns: 1fr; }
+  .showcase, .testimonials, .team, .changelog, .faq, .contact, .video-section, .pricing { padding: 60px 20px; }
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes glowPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes typeIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes scanLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes countUp {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: 1fr; }
+  .cmd-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .steps::before { display: none; }
+  footer { flex-direction: column; gap: 20px; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .features, .how, .cta-section { padding: 60px 20px; }
+  .commands { padding: 60px 20px; }
+}
+</style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="logo">OURIN AI</div>
+<div class="grid-bg"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#download">Download</a>
-      <a href="#developer">Developer</a>
-    </nav>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span></span>
+    OURIN
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#showcase">Plugins</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact-form">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+    Get Started
+  </button>
+</nav>
 
-    <button class="primary-btn">Try Bot</button>
-  </header>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-
+  <div class="hero-content">
     <div class="hero-left">
-
-      <div class="badge">
-        <span class="dot"></span>
-        AI WHATSAPP BOT
-      </div>
-
-      <h1>
-        OURIN AI —
-        <span>Smart WhatsApp Automation</span>
+      <div class="hero-badge">v2.0 Now Live — 500+ Commands</div>
+      <h1 class="hero-title">
+        <span class="line1">THE MOST</span>
+        <span class="line2">POWERFUL</span>
+        <span class="line3">WHATSAPP BOT</span>
       </h1>
-
-      <p>
-        Chat smarter, automate tasks, summarize PDFs,
-        analyze images, and control everything directly from WhatsApp.
+      <p class="hero-sub">
+        OURIN delivers next-gen automation — AI, media tools, games, carousels, tables and 500+ commands. Built on Baileys. Built to dominate.
       </p>
-
-      <div class="buttons">
-        <button class="primary-btn">Start Chatting</button>
-        <button class="secondary-btn">Download APK</button>
+      <div class="hero-btns">
+        <a href="https://wa.me/916000570671" class="btn-primary">
+          ⚡ Add to WhatsApp
+        </a>
+        <a href="#features" class="btn-secondary">
+          📖 View Features
+        </a>
       </div>
-
-      <div class="stats">
-        <div class="card">
-          <h2>50K+</h2>
-          <p>Users</p>
-        </div>
-
-        <div class="card">
-          <h2>24/7</h2>
-          <p>Online</p>
-        </div>
-
-        <div class="card">
-          <h2>99.9%</h2>
-          <p>Uptime</p>
-        </div>
-
-        <div class="card">
-          <h2>2M+</h2>
-          <p>Messages</p>
-        </div>
-      </div>
-
     </div>
 
-    <!-- PHONE -->
-    <div class="phone">
+    <div class="hero-visual">
+      <div class="terminal">
+        <div class="terminal-glow"></div>
+        <div class="terminal-header">
+          <div class="t-dot red"></div>
+          <div class="t-dot yellow"></div>
+          <div class="t-dot green"></div>
+          <span class="terminal-title">ourin@bot ~ zsh</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <!-- lines injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <div class="phone-inner">
+<!-- STATS -->
+<section class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="500">0</div>
+      <div class="stat-label">Commands</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="50000">0</div>
+      <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="99">0</div>
+      <div class="stat-label">% Uptime</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num" data-target="30">0</div>
+      <div class="stat-label">Categories</div>
+    </div>
+  </div>
+</section>
 
-        <div class="phone-top">
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">Core Features</div>
+  <h2 class="section-title">Everything Your Bot<br>Should <span>Actually</span> Do</h2>
+
+  <div class="features-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-name">AI Integration</div>
+      <div class="feat-desc">ChatGPT, Gemini, and custom AI models built-in. Ask anything, generate anything.</div>
+      <span class="feat-tag">GPT-4 • GEMINI</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">📊</div>
+      <div class="feat-name">Smart Tables</div>
+      <div class="feat-desc">Generate formatted Unicode tables from any data source — manual or Google Sheets.</div>
+      <span class="feat-tag">SENDTABLE • SHEETS</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🎠</div>
+      <div class="feat-name">Carousel Messages</div>
+      <div class="feat-desc">Send rich interactive carousel cards with images, buttons, and links to any chat.</div>
+      <span class="feat-tag">CAROUSEL • BUTTONS</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">📥</div>
+      <div class="feat-name">Media Downloader</div>
+      <div class="feat-desc">Download from YouTube, TikTok, Instagram, Facebook, Twitter in one command.</div>
+      <span class="feat-tag">YT • IG • TT • FB</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🎮</div>
+      <div class="feat-name">Games & RPG</div>
+      <div class="feat-desc">Full RPG system, mini-games, leaderboards, economy, and battle system built in.</div>
+      <span class="feat-tag">RPG • ECONOMY</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">👥</div>
+      <div class="feat-name">Group Manager</div>
+      <div class="feat-desc">Complete group automation — anti-spam, welcome, rules, polls, and admin tools.</div>
+      <span class="feat-tag">ANTI-SPAM • AUTO</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🎨</div>
+      <div class="feat-name">Sticker Maker</div>
+      <div class="feat-desc">Create animated stickers, add text, effects, and convert images instantly.</div>
+      <span class="feat-tag">WEBP • ANIMATED</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🔍</div>
+      <div class="feat-name">Search Engine</div>
+      <div class="feat-desc">Google, Wikipedia, Anime info, News, Weather — all searchable from WhatsApp.</div>
+      <span class="feat-tag">GOOGLE • WIKI</span>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">💎</div>
+      <div class="feat-name">Premium System</div>
+      <div class="feat-desc">Full premium tier with exclusive commands, higher limits, and energy system.</div>
+      <span class="feat-tag">PREMIUM • ENERGY</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMMANDS -->
+<section class="commands" id="commands">
+  <div class="commands-inner">
+    <div class="section-label">Command List</div>
+    <h2 class="section-title">Popular <span>Commands</span></h2>
+
+    <div class="cmd-grid" id="cmd-grid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Up & Running in<br><span>3 Simple Steps</span></h2>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Add OURIN Bot</div>
+      <div class="step-desc">Save our number and send a message to get started. No signup, no email needed.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-title">Type a Command</div>
+      <div class="step-desc">Use the prefix and any command from 500+ options. Type .menu to see everything.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-title">Get Results Instantly</div>
+      <div class="step-desc">OURIN responds in milliseconds. AI, downloads, tables, games — all at your command.</div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO DEMO -->
+<section class="video-section" id="demo">
+  <div class="video-inner">
+    <div class="section-label">Live Demo</div>
+    <h2 class="section-title">See OURIN in <span>Action</span></h2>
+    <p class="video-sub">Watch how OURIN handles commands in real-time — tables, carousels, AI, downloads and more.</p>
+    <div class="video-wrap reveal">
+      <div class="video-frame">
+        <div class="video-placeholder">
+          <div class="play-ring">
+            <div class="play-btn" id="playBtn">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="video-label">OURIN Bot — Full Feature Demo 2026</div>
+          <div class="video-duration">12:34</div>
+          <div class="video-scanlines"></div>
+          <!-- Replace src with your actual YouTube embed -->
+          <iframe id="demoIframe" width="100%" height="100%" src="" frameborder="0" allowfullscreen style="position:absolute;inset:0;display:none;border-radius:2px;"></iframe>
+        </div>
+      </div>
+      <div class="video-tags">
+        <span class="vtag">⚡ Real Commands</span>
+        <span class="vtag">📊 Table Demo</span>
+        <span class="vtag">🎠 Carousel</span>
+        <span class="vtag">🤖 AI Chat</span>
+        <span class="vtag">📥 Downloader</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLUGIN SHOWCASE -->
+<section class="showcase" id="showcase">
+  <div class="showcase-inner">
+    <div class="section-label">Plugin Showcase</div>
+    <h2 class="section-title">Built-in <span>Plugins</span> That Slap</h2>
+    <div class="showcase-tabs">
+      <button class="stab active" data-tab="table">📊 Table</button>
+      <button class="stab" data-tab="carousel">🎠 Carousel</button>
+      <button class="stab" data-tab="ai">🤖 AI</button>
+      <button class="stab" data-tab="sheet">📄 Sheets</button>
+      <button class="stab" data-tab="download">📥 Download</button>
+    </div>
+    <div class="showcase-panels">
+      <div class="spanel active" data-panel="table">
+        <div class="spanel-code">
+          <div class="code-header"><span class="code-lang">WhatsApp</span><span class="code-file">sendtable.js</span></div>
+          <pre class="code-block"><span class="c-prompt">❯</span> <span class="c-cmd">.sendtable @me</span>
+<span class="c-str">|📋 Student Report</span>
+<span class="c-str">|Class 12 Results 2026</span>
+<span class="c-str">|Official Data</span>
+<span class="c-str">|Name,Subject,Marks,Grade</span>
+<span class="c-str">|Ashish,Math,95,A+</span>
+<span class="c-str">|Riya,Science,88,A</span>
+<span class="c-str">|Arjun,English,76,B+</span>
+
+<span class="c-success">✅ Table sent to your chat!</span></pre>
+        </div>
+        <div class="spanel-preview">
+          <div class="wa-bubble">
+            <div class="wa-header">📋 Student Report</div>
+            <pre class="wa-table">┌────────┬─────────┬───────┬───────┐
+│ Name   │ Subject │ Marks │ Grade │
+├────────┼─────────┼───────┼───────┤
+│ Ashish │ Math    │ 95    │ A+    │
+├────────┼─────────┼───────┼───────┤
+│ Riya   │ Science │ 88    │ A     │
+├────────┼─────────┼───────┼───────┤
+│ Arjun  │ English │ 76    │ B+    │
+└────────┴─────────┴───────┴───────┘</pre>
+            <div class="wa-footer">Class 12 Results 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="spanel" data-panel="carousel">
+        <div class="spanel-code">
+          <div class="code-header"><span class="code-lang">WhatsApp</span><span class="code-file">sendcarousel.js</span></div>
+          <pre class="code-block"><span class="c-prompt">❯</span> <span class="c-cmd">.sendcarousel 91xxxxxxxxxx</span>
+<span class="c-str">|Hello Bro 👋|OURIN BOT|Quoted Text</span>
+<span class="c-str">|Netflix Premium</span>
+<span class="c-str">|Watch Unlimited Movies</span>
+<span class="c-str">|Footer|https://img.url/img.jpg</span>
+<span class="c-str">|url,🌐 Visit,https://netflix.com</span>
+<span class="c-str">|copy,📋 Copy Code,NET2026</span>
+
+<span class="c-success">✅ Carousel sent!</span></pre>
+        </div>
+        <div class="spanel-preview">
+          <div class="wa-bubble">
+            <div class="wa-carousel">
+              <div class="wac-card">
+                <div class="wac-img">🎬</div>
+                <div class="wac-title">Netflix Premium</div>
+                <div class="wac-desc">Watch Unlimited Movies & Shows</div>
+                <div class="wac-btns">
+                  <div class="wac-btn url">🌐 Visit</div>
+                  <div class="wac-btn copy">📋 Copy Code</div>
+                </div>
+              </div>
+              <div class="wac-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spanel" data-panel="ai">
+        <div class="spanel-code">
+          <div class="code-header"><span class="code-lang">WhatsApp</span><span class="code-file">ai.js</span></div>
+          <pre class="code-block"><span class="c-prompt">❯</span> <span class="c-cmd">.ai Explain quantum computing</span>
+
+<span class="c-out">🤖 Quantum computing uses quantum</span>
+<span class="c-out">mechanical phenomena like superposition</span>
+<span class="c-out">and entanglement to process information</span>
+<span class="c-out">exponentially faster than classical...</span>
+
+<span class="c-prompt">❯</span> <span class="c-cmd">.imagine A futuristic city at night</span>
+
+<span class="c-success">🖼️ Image generated! [1024x1024]</span></pre>
+        </div>
+        <div class="spanel-preview">
+          <div class="wa-bubble">
+            <div class="wa-ai-badge">🤖 GPT-4 • GEMINI</div>
+            <div class="wa-ai-text">Quantum computing uses quantum mechanical phenomena like superposition and entanglement to process information exponentially faster than classical computers...</div>
+            <div class="wa-ai-meta">Model: GPT-4 • 0.3s response</div>
+          </div>
+        </div>
+      </div>
+      <div class="spanel" data-panel="sheet">
+        <div class="spanel-code">
+          <div class="code-header"><span class="code-lang">WhatsApp</span><span class="code-file">sendgtable.js</span></div>
+          <pre class="code-block"><span class="c-prompt">❯</span> <span class="c-cmd">.sendgtable @me</span>
+<span class="c-str">|https://docs.google.com/</span>
+<span class="c-str">  spreadsheets/d/18H3OWu.../edit</span>
+<span class="c-str">|📊 Student List</span>
+<span class="c-str">|Powered by OURIN</span>
+
+<span class="c-out">⏳ Fetching from Google Sheet...</span>
+<span class="c-out">📊 Found 7 rows, 10 columns</span>
+<span class="c-success">✅ Table sent! 7 rows displayed</span></pre>
+        </div>
+        <div class="spanel-preview">
+          <div class="wa-bubble">
+            <div class="wa-header">📊 Student List</div>
+            <div class="wa-sheet-info">
+              <div class="sheet-row"><span>📄 Source</span><span>Google Sheet</span></div>
+              <div class="sheet-row"><span>📊 Rows</span><span>7 students</span></div>
+              <div class="sheet-row"><span>📋 Cols</span><span>10 fields</span></div>
+              <div class="sheet-row"><span>⚡ Speed</span><span>1.2s</span></div>
+            </div>
+            <div class="wa-footer">Powered by OURIN</div>
+          </div>
+        </div>
+      </div>
+      <div class="spanel" data-panel="download">
+        <div class="spanel-code">
+          <div class="code-header"><span class="code-lang">WhatsApp</span><span class="code-file">downloader.js</span></div>
+          <pre class="code-block"><span class="c-prompt">❯</span> <span class="c-cmd">.ytdl https://youtube.com/watch?v=xxx</span>
+<span class="c-out">📥 Fetching video info...</span>
+<span class="c-out">🎬 Title: Lofi Hip Hop Mix 2026</span>
+<span class="c-out">📦 Size: 48.2 MB | Quality: 720p</span>
+<span class="c-success">✅ Sent! [video.mp4]</span>
+
+<span class="c-prompt">❯</span> <span class="c-cmd">.tiktok https://tiktok.com/@user/video</span>
+<span class="c-out">📱 Removing watermark...</span>
+<span class="c-success">✅ Sent! [tiktok_clean.mp4]</span></pre>
+        </div>
+        <div class="spanel-preview">
+          <div class="wa-bubble">
+            <div class="wa-dl-card">
+              <div class="dl-icon">🎬</div>
+              <div class="dl-info">
+                <div class="dl-title">Lofi Hip Hop Mix 2026</div>
+                <div class="dl-meta">720p • 48.2MB • YouTube</div>
+                <div class="dl-bar"><div class="dl-fill"></div></div>
+              </div>
+            </div>
+            <div class="wa-footer">Downloaded via OURIN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-label">Pricing Plans</div>
+    <h2 class="section-title">Simple. Transparent. <span>No BS.</span></h2>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-tier">FREE</div>
+        <div class="price-amount"><span class="price-currency">₹</span>0<span class="price-period">/forever</span></div>
+        <div class="price-desc">For personal use and trying out OURIN</div>
+        <ul class="price-features">
+          <li>✅ 200+ Basic Commands</li>
+          <li>✅ AI Chat (10/day)</li>
+          <li>✅ Media Downloader</li>
+          <li>✅ Sticker Maker</li>
+          <li>✅ Group Tools (basic)</li>
+          <li class="muted">❌ Premium Commands</li>
+          <li class="muted">❌ Unlimited AI</li>
+          <li class="muted">❌ Priority Support</li>
+        </ul>
+        <a href="https://wa.me/916000570671" class="btn-secondary" style="width:100%;justify-content:center;margin-top:auto">Get Started Free</a>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-badge">MOST POPULAR</div>
+        <div class="price-tier" style="color:var(--green)">PREMIUM</div>
+        <div class="price-amount"><span class="price-currency">₹</span>99<span class="price-period">/month</span></div>
+        <div class="price-desc">For power users who need everything</div>
+        <ul class="price-features">
+          <li>✅ 500+ All Commands</li>
+          <li>✅ Unlimited AI Chat</li>
+          <li>✅ Google Sheets Integration</li>
+          <li>✅ Carousel Messages</li>
+          <li>✅ Priority Processing</li>
+          <li>✅ Group VIP Tools</li>
+          <li>✅ Custom Prefix</li>
+          <li>✅ 24/7 Priority Support</li>
+        </ul>
+        <a href="https://wa.me/916000570671" class="btn-primary" style="width:100%;justify-content:center;margin-top:auto;clip-path:none;border-radius:2px">⚡ Go Premium</a>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-tier" style="color:var(--cyan)">LIFETIME</div>
+        <div class="price-amount"><span class="price-currency">₹</span>499<span class="price-period">/once</span></div>
+        <div class="price-desc">Pay once, use forever. Best value.</div>
+        <ul class="price-features">
+          <li>✅ Everything in Premium</li>
+          <li>✅ Lifetime Access</li>
+          <li>✅ Future Updates Free</li>
+          <li>✅ Source Code Access</li>
+          <li>✅ Custom Bot Name</li>
+          <li>✅ VPS Deployment Help</li>
+          <li>✅ 1-on-1 Setup Call</li>
+          <li>✅ Developer Discord Access</li>
+        </ul>
+        <a href="https://wa.me/916000570671" class="btn-secondary" style="width:100%;justify-content:center;margin-top:auto;border-color:rgba(0,229,255,0.3);color:var(--cyan)">🔥 Get Lifetime</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="testi-inner">
+    <div class="section-label">Reviews</div>
+    <h2 class="section-title">What Users <span>Say</span></h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"OURIN completely changed how I manage my school WhatsApp group. The sendgtable command pulls data directly from Google Sheet — my students love it!"</div>
+        <div class="testi-author">
+          <div class="testi-avatar">SR</div>
           <div>
-            <h3>OURIN AI</h3>
-            <p>WhatsApp AI Bot</p>
-          </div>
-
-          <div class="online">
-            <span></span>
-            Online
+            <div class="testi-name">Suresh R.</div>
+            <div class="testi-role">School Teacher, Tamil Nadu</div>
           </div>
         </div>
-
-        <div class="chat user">
-          Summarize this PDF in 3 points.
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"The carousel feature is insane. I'm sending product listings to my business group with images, buttons, copy codes — all from one WhatsApp command. Game changer."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">AK</div>
+          <div>
+            <div class="testi-name">Arjun K.</div>
+            <div class="testi-role">Business Owner, Mumbai</div>
+          </div>
         </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"500+ commands and everything works. AI is fast, downloads are clean, and the bot never goes down. Worth every rupee of the premium plan."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">PD</div>
+          <div>
+            <div class="testi-name">Priya D.</div>
+            <div class="testi-role">Content Creator, Delhi</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"I bought the lifetime plan and got my entire bot setup within 2 hours. The support team helped with VPS deployment personally. Unmatched service."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">MH</div>
+          <div>
+            <div class="testi-name">Mohammed H.</div>
+            <div class="testi-role">Developer, Hyderabad</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★☆</div>
+        <div class="testi-text">"RPG and economy system is addictive — my entire group is now competing on the leaderboard. Honestly the best group entertainment bot available."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">RA</div>
+          <div>
+            <div class="testi-name">Rahul A.</div>
+            <div class="testi-role">Student, Kolkata</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"As a developer I appreciated how clean the plugin system is. Built my own custom plugin in under an hour. The Ourin framework is extremely well designed."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">VK</div>
+          <div>
+            <div class="testi-name">Vikram K.</div>
+            <div class="testi-role">Full-Stack Dev, Bangalore</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="chat bot">
-          <b>OURIN AI</b>
-          <ul>
-            <li>Main concept explained</li>
-            <li>Important formulas extracted</li>
-            <li>Quick revision summary generated</li>
+<!-- TEAM -->
+<section class="team" id="team">
+  <div class="team-inner">
+    <div class="section-label">The People</div>
+    <h2 class="section-title">Built by <span>Developers</span><br>For Developers</h2>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <div class="avatar-hex">STK</div>
+        </div>
+        <div class="team-name">Ashish</div>
+        <div class="team-role">Lead Developer</div>
+        <div class="team-desc">Core bot architecture, plugin system, Baileys integration. Building OURIN since 2023.</div>
+        <div class="team-links">
+          <a href="https://github.com/ashishmandal029/" class="tlink">GitHub</a>
+          <a href="t.me/stkrootedcyber" class="tlink">Telegram</a>
+        </div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <div class="avatar-hex" style="background:linear-gradient(135deg,#7000ff,#00e5ff)">AZ</div>
+        </div>
+        <div class="team-name">Azhar Dev</div>
+        <div class="team-role">AI & Tools Engineer</div>
+        <div class="team-desc">AI integrations, carousel engine, Google Sheets API, sendtable system design.</div>
+        <div class="team-links">
+          <a href="#" class="tlink">GitHub</a>
+          <a href="#" class="tlink">WhatsApp</a>
+        </div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <div class="avatar-hex" style="background:linear-gradient(135deg,#ff2255,#ff8800)">RK</div>
+        </div>
+        <div class="team-name">Rohan K.</div>
+        <div class="team-role">Plugin & Community</div>
+        <div class="team-desc">500+ plugins, downloader system, game engine, community management and support.</div>
+        <div class="team-links">
+          <a href="https://github.com/ashishmandal029/" class="tlink">GitHub</a>
+          <a href="" class="tlink">Discord</a>
+        </div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <div class="avatar-hex" style="background:linear-gradient(135deg,#00cc6a,#0066ff)">SK</div>
+        </div>
+        <div class="team-name">Sneha K.</div>
+        <div class="team-role">UI & Documentation</div>
+        <div class="team-desc">Bot UI/UX, website design, documentation, onboarding flow and user experience.</div>
+        <div class="team-links">
+          <a href="#" class="tlink">GitHub</a>
+          <a href="#" class="tlink">Twitter</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANGELOG -->
+<section class="changelog" id="changelog">
+  <div class="changelog-inner">
+    <div class="section-label">Updates</div>
+    <h2 class="section-title">What's <span>New</span></h2>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-version">v2.5.0 <span class="tl-badge new">LATEST</span></div>
+          <div class="tl-date">May 2026</div>
+          <ul class="tl-changes">
+            <li>🎠 sendgcarousel — Google Sheet → Carousel</li>
+            <li>📊 sendTableV2 with ;; multi-row grouping</li>
+            <li>🤖 Gemini 1.5 Pro integration</li>
+            <li>⚡ 40% faster response time</li>
+            <li>🔧 Plugin hot-reload support</li>
           </ul>
         </div>
-
-        <div class="tools">
-          <div>⚡ AI Chat</div>
-          <div>🖼️ Image AI</div>
-          <div>⬇️ Downloader</div>
-          <div>🌐 Web Search</div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-version">v2.0.0 <span class="tl-badge">MAJOR</span></div>
+          <div class="tl-date">March 2026</div>
+          <ul class="tl-changes">
+            <li>🏗️ Complete rewrite with Ourin framework</li>
+            <li>📊 sendtable & sendgtable commands</li>
+            <li>🎠 Carousel message system</li>
+            <li>💎 Premium tier system</li>
+            <li>🔌 Plugin marketplace launch</li>
+          </ul>
         </div>
-
-        <div class="developer">
-          DEVELOPED BY ASHISH
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-version">v1.5.0</div>
+          <div class="tl-date">January 2026</div>
+          <ul class="tl-changes">
+            <li>🤖 GPT-4 + DALL-E integration</li>
+            <li>🎮 RPG & Economy system</li>
+            <li>📥 Multi-platform downloader</li>
+            <li>👥 Advanced group manager</li>
+          </ul>
         </div>
-
       </div>
-
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-version">v1.0.0 <span class="tl-badge genesis">GENESIS</span></div>
+          <div class="tl-date">September 2023</div>
+          <ul class="tl-changes">
+            <li>🚀 OURIN Bot launched</li>
+            <li>⚡ 100 core commands</li>
+            <li>🔧 Baileys foundation</li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-  </section>
-
-  <!-- FEATURES -->
-  <section id="features" class="features">
-
-    <div class="section-title">
-      <p>FEATURES</p>
-      <h2>Everything you need.</h2>
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Got <span>Questions?</span></h2>
+    <div class="faq-list" id="faqList">
+      <!-- injected by JS -->
     </div>
+  </div>
+</section>
 
-    <div class="feature-grid">
-
-      <div class="feature-card">
-        <div class="icon">🤖</div>
-        <h3>AI Chat Assistant</h3>
-        <p>Smart natural AI conversations directly inside WhatsApp.</p>
+<!-- NEWSLETTER / CONTACT -->
+<section class="contact" id="contact-form">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <div class="section-label">Stay Updated</div>
+      <h2 class="section-title" style="font-size:clamp(28px,3vw,44px)">Get Notified on<br><span>New Features</span></h2>
+      <p class="contact-sub">Join 5,000+ developers getting OURIN updates. No spam, just new features and plugin drops.</p>
+      <div class="contact-form" id="contactForm">
+        <div class="cf-row">
+          <input type="text" class="cf-input" placeholder="Your Name" id="cfName">
+          <input type="tel" class="cf-input" placeholder="WhatsApp Number" id="cfPhone">
+        </div>
+        <input type="email" class="cf-input" placeholder="Email Address" id="cfEmail">
+        <textarea class="cf-input cf-textarea" placeholder="Message (optional)" id="cfMsg" rows="3"></textarea>
+        <button class="btn-primary" id="cfSubmit" style="width:100%;justify-content:center;clip-path:none;border-radius:2px;border:none;cursor:none">
+          🚀 Subscribe & Get Started
+        </button>
+        <div class="cf-success" id="cfSuccess">✅ Done! We'll reach out on WhatsApp soon.</div>
       </div>
-
-      <div class="feature-card">
-        <div class="icon">📄</div>
-        <h3>PDF & DOC AI</h3>
-        <p>Upload files and instantly get summaries and answers.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon">🖼️</div>
-        <h3>Image AI</h3>
-        <p>Analyze screenshots, photos, and visual content.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon">⬇️</div>
-        <h3>Downloader</h3>
-        <p>Download videos and social media content instantly.</p>
-      </div>
-
     </div>
-
-  </section>
-
-  <!-- DOWNLOAD -->
-  <section id="download" class="download">
-
-    <h2>Install OURIN AI Today</h2>
-
-    <p>
-      Access premium AI features and WhatsApp automation tools.
-    </p>
-
-    <button class="primary-btn">
-      Download APK
-    </button>
-
-  </section>
-
-  <!-- DEVELOPER -->
-  <section id="developer" class="developer-section">
-
-    <div class="dev-card">
-
-      <div class="avatar">👨‍💻</div>
-
-      <h2>Ashish</h2>
-
-      <p>
-        Building futuristic AI products and automation systems.
-      </p>
-
-      <div class="skills">
-        <span>React</span>
-        <span>AI APIs</span>
-        <span>Node.js</span>
-        <span>Automation</span>
+    <div class="contact-right reveal">
+      <div class="contact-links-grid">
+        <a href="https://wa.me/916000570671" class="clink-card">
+          <span class="clink-icon">💬</span>
+          <span class="clink-label">WhatsApp</span>
+          <span class="clink-arrow">→</span>
+        </a>
+        <a href="#" class="clink-card">
+          <span class="clink-icon">✈️</span>
+          <span class="clink-label">Telegram</span>
+          <span class="clink-arrow">→</span>
+        </a>
+        <a href="#" class="clink-card">
+          <span class="clink-icon">💻</span>
+          <span class="clink-label">GitHub</span>
+          <span class="clink-arrow">→</span>
+        </a>
+        <a href="#" class="clink-card">
+          <span class="clink-icon">🎮</span>
+          <span class="clink-label">Discord</span>
+          <span class="clink-arrow">→</span>
+        </a>
+        <a href="#" class="clink-card">
+          <span class="clink-icon">🐦</span>
+          <span class="clink-label">Twitter/X</span>
+          <span class="clink-arrow">→</span>
+        </a>
+        <a href="#" class="clink-card">
+          <span class="clink-icon">📖</span>
+          <span class="clink-label">Docs</span>
+          <span class="clink-arrow">→</span>
+        </a>
       </div>
-
+      <div class="contact-info">
+        <div class="ci-item">
+          <span class="ci-label">Response Time</span>
+          <span class="ci-val" style="color:var(--green)">Under 2 hours</span>
+        </div>
+        <div class="ci-item">
+          <span class="ci-label">Support Hours</span>
+          <span class="ci-val">24/7 on WhatsApp</span>
+        </div>
+        <div class="ci-item">
+          <span class="ci-label">Community Size</span>
+          <span class="ci-val">50,000+ members</span>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-  </section>
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <h2 class="cta-title">Ready to <span>Dominate</span><br>WhatsApp?</h2>
+    <p class="cta-sub">Join 50,000+ users already using OURIN. The most powerful WhatsApp bot ever built.</p>
+    <div class="hero-btns" style="justify-content:center">
+      <a href="https://wa.me/916000570671" class="btn-primary">⚡ Add OURIN Now</a>
+      <a href="#features" class="btn-secondary">🔍 Explore Features</a>
+    </div>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    © 2026 OURIN AI — Developed by Ashish
-  </footer>
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-logo">OURIN</div>
+  <div class="footer-links">
+    <a href="https://github.com/ashishmandal029/">GitHub</a>
+    <a href="wa.me/916000570671">WhatsApp</a>
+    <a href="t.me/stkrootedcyber">Telegram</a>
+    <a href="#">Docs</a>
+  </div>
+  <div class="footer-copy">© 2026 OURIN BOT. ALL RIGHTS RESERVED.</div>
+</footer>
 
-  <script src="script.js"></script>
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor')
+const ring = document.getElementById('cursor-ring')
+let mx = 0, my = 0, rx = 0, ry = 0
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY
+  cursor.style.left = mx - 6 + 'px'
+  cursor.style.top = my - 6 + 'px'
+})
+
+function animRing() {
+  rx += (mx - rx - 18) * 0.12
+  ry += (my - ry - 18) * 0.12
+  ring.style.left = rx + 'px'
+  ring.style.top = ry + 'px'
+  requestAnimationFrame(animRing)
+}
+animRing()
+
+// Scale cursor on hover
+document.querySelectorAll('a, button, .feat-card, .cmd-item, .stat-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'scale(2)'
+    ring.style.transform = 'scale(1.5)'
+    ring.style.borderColor = 'rgba(0,255,136,0.8)'
+  })
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'scale(1)'
+    ring.style.transform = 'scale(1)'
+    ring.style.borderColor = 'rgba(0,255,136,0.4)'
+  })
+})
+
+// Radial card glow
+document.querySelectorAll('.feat-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width) * 100
+    const y = ((e.clientY - r.top) / r.height) * 100
+    card.style.setProperty('--mx', x + '%')
+    card.style.setProperty('--my', y + '%')
+  })
+})
+
+// ── TERMINAL ANIMATION ──
+const lines = [
+  { type: 'cmd', prompt: '❯', text: '.menu' },
+  { type: 'out', text: '📱 OURIN Bot v2.0 — 500+ Commands' },
+  { type: 'cmd', prompt: '❯', text: '.sendtable @me' },
+  { type: 'out', text: '|📊 Student Data|Class Info||Name,Class' },
+  { type: 'out', text: '|Ashish,12|Riya,11' },
+  { type: 'success', text: '✅ Table sent successfully!' },
+  { type: 'cmd', prompt: '❯', text: '.ai Tell me about OURIN' },
+  { type: 'out', text: '🤖 OURIN is the most powerful WA bot...' },
+  { type: 'cmd', prompt: '❯', text: '.ytdl https://youtube.com/watch?v=...' },
+  { type: 'success', text: '📥 Downloaded: video.mp4 (128MB)' },
+  { type: 'cmd', prompt: '❯', text: '_' },
+]
+
+const tb = document.getElementById('terminal-body')
+let li = 0
+
+function addLine() {
+  if (li >= lines.length - 1) {
+    const last = document.createElement('div')
+    last.className = 't-line show'
+    last.innerHTML = `<span class="t-prompt">❯</span><span class="t-cursor"></span>`
+    tb.appendChild(last)
+    tb.scrollTop = tb.scrollHeight
+    return
+  }
+
+  const l = lines[li]
+  const div = document.createElement('div')
+  div.className = 't-line show'
+
+  if (l.type === 'cmd') {
+    div.innerHTML = `<span class="t-prompt">${l.prompt}</span><span class="t-cmd">${l.text}</span>`
+  } else if (l.type === 'success') {
+    div.innerHTML = `<span class="t-success">${l.text}</span>`
+  } else if (l.type === 'err') {
+    div.innerHTML = `<span class="t-err">${l.text}</span>`
+  } else {
+    div.innerHTML = `<span class="t-out">${l.text}</span>`
+  }
+
+  tb.appendChild(div)
+  tb.scrollTop = tb.scrollHeight
+  li++
+
+  const delay = l.type === 'cmd' ? 1200 : 400
+  setTimeout(addLine, delay)
+}
+
+setTimeout(addLine, 800)
+
+// ── COMMANDS DATA ──
+const commands = [
+  { name: '.sendtable', desc: 'Send formatted table message', cat: 'tools' },
+  { name: '.sendgtable', desc: 'Table from Google Sheet', cat: 'tools' },
+  { name: '.sendcarousel', desc: 'Send interactive carousel', cat: 'tools' },
+  { name: '.ai', desc: 'Ask AI anything', cat: 'ai' },
+  { name: '.ytdl', desc: 'Download YouTube video', cat: 'downloader' },
+  { name: '.tiktok', desc: 'Download TikTok video', cat: 'downloader' },
+  { name: '.sticker', desc: 'Create WhatsApp sticker', cat: 'sticker' },
+  { name: '.menu', desc: 'Show all commands', cat: 'main' },
+  { name: '.stats', desc: 'Bot statistics table', cat: 'main' },
+  { name: '.weather', desc: 'Get weather info', cat: 'search' },
+  { name: '.google', desc: 'Search Google', cat: 'search' },
+  { name: '.anime', desc: 'Search anime info', cat: 'anime' },
+  { name: '.kick', desc: 'Remove group member', cat: 'group' },
+  { name: '.antilink', desc: 'Enable anti-link filter', cat: 'group' },
+  { name: '.rpg', desc: 'Start RPG adventure', cat: 'game' },
+  { name: '.economy', desc: 'Check balance & shop', cat: 'economy' },
+]
+
+const catColors = {
+  tools: '#00ff88', ai: '#00e5ff', downloader: '#7000ff',
+  sticker: '#ff2255', main: '#00cc6a', search: '#0066ff',
+  anime: '#ff88cc', group: '#ffaa00', game: '#ff6600', economy: '#ffd700'
+}
+
+const grid = document.getElementById('cmd-grid')
+commands.forEach((c, i) => {
+  const div = document.createElement('div')
+  div.className = 'cmd-item reveal'
+  div.innerHTML = `
+    <span class="cmd-name">${c.name}</span>
+    <span class="cmd-desc">${c.desc}</span>
+    <span class="cmd-cat" style="color:${catColors[c.cat] || '#4a6860'}">${c.cat}</span>
+  `
+  grid.appendChild(div)
+})
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80)
+    }
+  })
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+
+// ── COUNT UP ──
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target.querySelector('[data-target]')
+      if (!el || el.dataset.done) return
+      el.dataset.done = true
+      const target = +el.dataset.target
+      const suffix = target === 99 ? '%' : target >= 1000 ? 'K+' : '+'
+      const displayTarget = target >= 1000 ? target / 1000 : target
+      let current = 0
+      const step = displayTarget / 60
+      const timer = setInterval(() => {
+        current = Math.min(current + step, displayTarget)
+        el.textContent = (target >= 1000 ? current.toFixed(0) : Math.floor(current)) + suffix
+        if (current >= displayTarget) clearInterval(timer)
+      }, 16)
+    }
+  })
+}, { threshold: 0.5 })
+
+document.querySelectorAll('.stat-item').forEach(el => countObserver.observe(el))
+
+// ── SHOWCASE TABS ──
+document.querySelectorAll('.stab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.stab').forEach(t => t.classList.remove('active'))
+    document.querySelectorAll('.spanel').forEach(p => p.classList.remove('active'))
+    tab.classList.add('active')
+    document.querySelector(`.spanel[data-panel="${tab.dataset.tab}"]`)?.classList.add('active')
+  })
+})
+
+// ── FAQ ──
+const faqs = [
+  { q: 'Is OURIN free to use?', a: 'Yes! OURIN has a free tier with 200+ commands available to everyone. Premium and Lifetime plans unlock the full 500+ command suite, unlimited AI, and priority features.' },
+  { q: 'How do I add OURIN to my WhatsApp?', a: 'Simply save our WhatsApp number, open a chat, and send any message. Type .menu to see all available commands. No registration or signup needed.' },
+  { q: 'Does sendtable work with Google Sheets?', a: 'Yes! Use .sendgtable with your Google Sheet URL (must be public) to automatically fetch data and send it as a formatted table to any WhatsApp number or group.' },
+  { q: 'Can I use OURIN in group chats?', a: 'Absolutely. OURIN works in both personal and group chats. Group features include anti-spam, welcome messages, auto-moderation, polls, and complete admin controls.' },
+  { q: 'What AI models does OURIN use?', a: 'OURIN integrates GPT-4, GPT-4o, Gemini 1.5 Pro, and DALL-E for image generation. Premium users get higher rate limits and access to all models simultaneously.' },
+  { q: 'How does the carousel message work?', a: 'Use .sendcarousel to send interactive WhatsApp carousel cards with images, titles, descriptions, and clickable buttons (URL, copy, call, reply). Works on personal numbers and groups.' },
+  { q: 'Can I host OURIN myself?', a: 'Yes! Lifetime plan includes source code access, VPS deployment help, and a 1-on-1 setup call with our developers. You can host on any Node.js server.' },
+  { q: 'What platforms are supported for downloads?', a: 'OURIN supports YouTube, TikTok (without watermark), Instagram Reels, Facebook, Twitter/X, Spotify, SoundCloud, and 30+ other platforms.' },
+]
+
+const faqList = document.getElementById('faqList')
+faqs.forEach((f, i) => {
+  const item = document.createElement('div')
+  item.className = 'faq-item reveal'
+  item.innerHTML = `
+    <div class="faq-q" data-idx="${i}">
+      <span>${f.q}</span>
+      <span class="faq-icon">+</span>
+    </div>
+    <div class="faq-a">${f.a}</div>
+  `
+  faqList.appendChild(item)
+})
+
+faqList.addEventListener('click', e => {
+  const q = e.target.closest('.faq-q')
+  if (!q) return
+  const a = q.nextElementSibling
+  const isOpen = q.classList.contains('open')
+  document.querySelectorAll('.faq-q.open').forEach(el => {
+    el.classList.remove('open')
+    el.nextElementSibling.classList.remove('open')
+  })
+  if (!isOpen) { q.classList.add('open'); a.classList.add('open') }
+})
+
+// ── VIDEO PLAY ──
+document.getElementById('playBtn')?.addEventListener('click', () => {
+  // Replace VIDEO_ID with your actual YouTube video ID
+  const VIDEO_ID = 'dQw4w9WgXcQ'
+  const iframe = document.getElementById('demoIframe')
+  iframe.src = `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1`
+  iframe.style.display = 'block'
+  document.querySelector('.play-ring').style.display = 'none'
+  document.querySelector('.video-label').style.display = 'none'
+  document.querySelector('.video-duration').style.display = 'none'
+})
+
+// ── CONTACT FORM ──
+document.getElementById('cfSubmit')?.addEventListener('click', () => {
+  const name = document.getElementById('cfName').value.trim()
+  const phone = document.getElementById('cfPhone').value.trim()
+  const email = document.getElementById('cfEmail').value.trim()
+  if (!name || !email) return
+  document.getElementById('cfSubmit').style.display = 'none'
+  document.getElementById('cfSuccess').style.display = 'block'
+})
+
+// ── RE-OBSERVE NEW ELEMENTS ──
+setTimeout(() => {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el))
+}, 100)
+
+// ── SMOOTH REVEAL on load ──
+window.addEventListener('load', () => {
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight) {
+      setTimeout(() => el.classList.add('visible'), i * 60)
+    }
+  })
+})
+</script>
 </body>
 </html>
