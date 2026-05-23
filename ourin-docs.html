@@ -1,1 +1,1534 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OURIN — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #030508;
+  --bg2:     #070d14;
+  --bg3:     #0a1520;
+  --green:   #00ff88;
+  --green2:  #00cc6a;
+  --cyan:    #00e5ff;
+  --blue:    #0066ff;
+  --purple:  #7000ff;
+  --red:     #ff2255;
+  --amber:   #ffaa00;
+  --text:    #ddeee8;
+  --muted:   #4a7060;
+  --border:  rgba(0,255,136,0.10);
+  --border2: rgba(0,255,136,0.20);
+  --card:    rgba(0,255,136,0.03);
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── GRID BG ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ── GLOW ORBS ── */
+.orb {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(80px); opacity: 0.12;
+}
+.orb1 { width: 500px; height: 500px; background: var(--green); top: -100px; left: 200px; animation: drift 12s ease-in-out infinite; }
+.orb2 { width: 350px; height: 350px; background: var(--blue); bottom: 100px; right: 50px; animation: drift 16s ease-in-out infinite reverse; }
+
+@keyframes drift {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(40px, 30px); }
+}
+
+/* ─────────────────────── SIDEBAR ─────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: rgba(7,13,20,0.96);
+  border-right: 1px solid var(--border);
+  position: fixed; top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 50;
+  display: flex; flex-direction: column;
+  backdrop-filter: blur(20px);
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.logo-mark {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--green), var(--cyan));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 11px; color: var(--bg);
+  flex-shrink: 0;
+}
+.logo-text {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--green);
+  letter-spacing: -0.5px;
+}
+.logo-sub {
+  font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted);
+  letter-spacing: 2px; text-transform: uppercase; margin-top: 1px;
+}
+
+.sidebar-version {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.ver-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2);
+  padding: 4px 10px;
+  font-family: 'Space Mono', monospace; font-size: 10px; color: var(--green);
+  letter-spacing: 1px;
+}
+.ver-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.sidebar-nav { padding: 16px 0; flex: 1; }
+
+.nav-group { margin-bottom: 4px; }
+
+.nav-group-label {
+  padding: 8px 20px 4px;
+  font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px;
+  font-size: 13px; color: rgba(221,238,232,0.55);
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+  position: relative;
+}
+.nav-link:hover { color: var(--text); background: rgba(0,255,136,0.04); }
+.nav-link.active {
+  color: var(--green);
+  border-left-color: var(--green);
+  background: rgba(0,255,136,0.06);
+}
+.nav-link .nl-icon { font-size: 14px; flex-shrink: 0; width: 18px; text-align: center; }
+.nav-link .nl-badge {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  padding: 2px 6px;
+  background: rgba(0,255,136,0.1); color: var(--green);
+  letter-spacing: 1px;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.sf-link {
+  font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted);
+  text-decoration: none; letter-spacing: 1px;
+  transition: color 0.2s;
+}
+.sf-link:hover { color: var(--green); }
+
+/* ─────────────────────── MAIN ─────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  position: relative; z-index: 1;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(3,5,8,0.9); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted);
+  letter-spacing: 1px;
+}
+.breadcrumb span { color: var(--text); }
+
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+.wa-btn {
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  color: var(--bg); background: var(--green);
+  border: none; padding: 8px 18px;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.25s;
+}
+.wa-btn:hover { background: var(--cyan); box-shadow: 0 0 24px rgba(0,229,255,0.35); }
+
+/* ─────────────────────── CONTENT ─────────────────────── */
+.content {
+  max-width: 860px;
+  padding: 56px 48px 120px;
+}
+
+/* ── SECTION ANCHORS ── */
+.doc-section { margin-bottom: 80px; scroll-margin-top: 80px; }
+
+/* ── PAGE HERO ── */
+.page-hero {
+  padding: 60px 48px 48px;
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0,255,136,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ph-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2);
+  padding: 5px 12px; margin-bottom: 20px;
+  font-family: 'Space Mono', monospace; font-size: 10px; color: var(--green);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.ph-title {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(32px, 5vw, 52px); letter-spacing: -2px; line-height: 1.05;
+  margin-bottom: 16px;
+}
+.ph-title span {
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.ph-desc {
+  font-size: 16px; font-weight: 300; color: rgba(221,238,232,0.65); line-height: 1.8;
+  max-width: 600px; margin-bottom: 28px;
+}
+.ph-meta {
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.ph-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px;
+}
+.ph-meta-item strong { color: var(--green); }
+
+/* ── HEADINGS ── */
+.doc-h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 30px; letter-spacing: -1px; margin-bottom: 12px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.doc-h1::before { content: ''; display: block; width: 4px; height: 28px; background: linear-gradient(to bottom, var(--green), var(--cyan)); flex-shrink: 0; }
+
+.doc-h2 {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 20px; letter-spacing: -0.5px; margin: 36px 0 12px;
+  color: var(--text);
+}
+.doc-h2 .anchor { color: var(--muted); font-size: 16px; margin-left: 6px; text-decoration: none; opacity: 0; transition: opacity 0.2s; }
+.doc-h2:hover .anchor { opacity: 1; }
+
+.doc-p { font-size: 14.5px; line-height: 1.85; color: rgba(221,238,232,0.72); margin-bottom: 16px; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border: 1px solid; padding: 14px 18px; margin: 20px 0;
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 13.5px; line-height: 1.7;
+}
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout.tip { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.05); color: rgba(221,238,232,0.75); }
+.callout.info { border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.05); color: rgba(221,238,232,0.75); }
+.callout.warn { border-color: rgba(255,170,0,0.3); background: rgba(255,170,0,0.05); color: rgba(221,238,232,0.75); }
+
+/* ── CODE ── */
+.code-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 16px 0;
+  position: relative;
+}
+.code-header {
+  background: rgba(0,255,136,0.05);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.code-lang { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--green); letter-spacing: 2px; text-transform: uppercase; }
+.code-copy {
+  font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted);
+  background: none; border: 1px solid var(--border); padding: 3px 8px;
+  cursor: pointer; letter-spacing: 1px; text-transform: uppercase; transition: all 0.2s;
+}
+.code-copy:hover { color: var(--green); border-color: rgba(0,255,136,0.3); }
+pre.code-body {
+  padding: 18px 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12.5px; line-height: 1.8;
+  overflow-x: auto;
+  color: rgba(221,238,232,0.8);
+}
+.c-prompt { color: var(--green); }
+.c-cmd    { color: var(--cyan); }
+.c-str    { color: rgba(221,238,232,0.55); }
+.c-ok     { color: var(--green); }
+.c-cmt    { color: var(--muted); font-style: italic; }
+.c-key    { color: var(--amber); }
+.c-val    { color: #ff88aa; }
+.c-num    { color: var(--cyan); }
+
+/* ── INLINE CODE ── */
+code {
+  font-family: 'Space Mono', monospace; font-size: 12px;
+  background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.15);
+  padding: 2px 7px; color: var(--green);
+}
+
+/* ── COMMAND TABLE ── */
+.cmd-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+.cmd-table th {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--border2); background: var(--bg2);
+}
+.cmd-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cmd-table tr:hover td { background: rgba(0,255,136,0.03); }
+.cmd-name-cell { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--cyan); white-space: nowrap; }
+.cmd-desc-cell { color: rgba(221,238,232,0.65); line-height: 1.6; }
+.cmd-plan {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px;
+  padding: 2px 7px; text-transform: uppercase; white-space: nowrap;
+}
+.plan-free  { background: rgba(0,255,136,0.1);  color: var(--green);  border: 1px solid rgba(0,255,136,0.25); }
+.plan-prem  { background: rgba(0,229,255,0.1);  color: var(--cyan);   border: 1px solid rgba(0,229,255,0.25); }
+.plan-life  { background: rgba(112,0,255,0.12); color: #b388ff;       border: 1px solid rgba(112,0,255,0.3); }
+
+/* ── CAT BADGES ── */
+.cat-badge {
+  display: inline-block; font-family: 'Space Mono', monospace; font-size: 9px;
+  padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase; margin: 2px;
+}
+.cat-ai       { background: rgba(0,229,255,0.1);  color: var(--cyan);  border: 1px solid rgba(0,229,255,0.2); }
+.cat-tools    { background: rgba(0,255,136,0.1);  color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+.cat-download { background: rgba(112,0,255,0.12); color: #b388ff;      border: 1px solid rgba(112,0,255,0.3); }
+.cat-group    { background: rgba(255,170,0,0.1);  color: var(--amber); border: 1px solid rgba(255,170,0,0.2); }
+.cat-game     { background: rgba(255,102,0,0.1);  color: #ff6600;      border: 1px solid rgba(255,102,0,0.2); }
+.cat-sticker  { background: rgba(255,34,85,0.1);  color: var(--red);   border: 1px solid rgba(255,34,85,0.2); }
+.cat-search   { background: rgba(0,102,255,0.12); color: #4d88ff;      border: 1px solid rgba(0,102,255,0.25); }
+
+/* ── STEP LIST ── */
+.steps-list { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+.step {
+  display: flex; gap: 20px; padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.step:last-child { border-bottom: none; }
+.step-num {
+  flex-shrink: 0; width: 36px; height: 36px;
+  background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--green);
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+}
+.step-content { flex: 1; }
+.step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+.step-desc { font-size: 13.5px; color: rgba(221,238,232,0.65); line-height: 1.7; }
+
+/* ── FEATURE GRID ── */
+.feat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 20px 0; }
+.feat-cell {
+  background: var(--bg); padding: 22px 20px;
+  display: flex; gap: 14px; align-items: flex-start;
+  transition: background 0.25s;
+}
+.feat-cell:hover { background: rgba(0,255,136,0.04); }
+.feat-icon { font-size: 22px; flex-shrink: 0; }
+.feat-info .fi-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.feat-info .fi-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+.feat-info .fi-tag  { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--green); letter-spacing: 1px; margin-top: 6px; }
+
+/* ── PRICING CARDS ── */
+.price-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 20px 0; }
+.price-cell {
+  background: var(--bg); padding: 28px 22px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.price-cell.featured { background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.25); }
+.pc-tier { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+.pc-price { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 32px; color: var(--text); line-height: 1; }
+.pc-price small { font-size: 13px; color: var(--muted); font-weight: 400; }
+.pc-features { list-style: none; display: flex; flex-direction: column; gap: 7px; font-size: 13px; color: rgba(221,238,232,0.7); margin-top: 4px; flex: 1; }
+.pc-features li::before { content: '✓ '; color: var(--green); font-family: 'Space Mono', monospace; }
+.pc-features li.no { color: var(--muted); }
+.pc-features li.no::before { content: '✗ '; color: var(--muted); }
+
+/* ── CHANGELOG ── */
+.cl-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.cl-item:last-child { border-bottom: none; }
+.cl-ver-col { flex-shrink: 0; width: 80px; }
+.cl-ver {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: var(--text);
+}
+.cl-date { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
+.cl-badge-wrap { margin-top: 6px; }
+.cl-badge { font-family: 'Space Mono', monospace; font-size: 9px; padding: 2px 6px; letter-spacing: 1px; text-transform: uppercase; }
+.cl-badge.latest { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+.cl-badge.major  { background: rgba(0,229,255,0.1);  color: var(--cyan);  border: 1px solid rgba(0,229,255,0.25); }
+.cl-badge.gen    { background: rgba(112,0,255,0.12); color: #b388ff;      border: 1px solid rgba(112,0,255,0.3); }
+.cl-changes { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: rgba(221,238,232,0.68); line-height: 1.6; }
+
+/* ── TEAM CARDS ── */
+.team-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 20px 0; }
+.team-cell {
+  background: var(--bg); padding: 22px 20px;
+  display: flex; gap: 16px; align-items: flex-start;
+  transition: background 0.25s;
+}
+.team-cell:hover { background: rgba(0,255,136,0.03); }
+.team-hex {
+  flex-shrink: 0; width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: var(--bg);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.team-info .ti-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+.team-info .ti-role { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.team-info .ti-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+.ti-links { display: flex; gap: 6px; margin-top: 8px; }
+.ti-link { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); padding: 3px 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); text-decoration: none; letter-spacing: 1px; transition: all 0.2s; }
+.ti-link:hover { color: var(--green); border-color: rgba(0,255,136,0.3); }
+
+/* ── FAQ ── */
+.faq-item { border: 1px solid var(--border); margin-bottom: 4px; overflow: hidden; }
+.faq-q {
+  padding: 16px 20px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px;
+  transition: background 0.25s;
+}
+.faq-q:hover { background: rgba(0,255,136,0.04); }
+.faq-q.open { color: var(--green); }
+.faq-arrow { color: var(--green); font-size: 20px; transition: transform 0.3s; line-height: 1; }
+.faq-q.open .faq-arrow { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  font-size: 13.5px; color: var(--muted); line-height: 1.8;
+  padding: 0 20px; transition: max-height 0.4s ease, padding 0.3s;
+}
+.faq-a.open { max-height: 200px; padding: 0 20px 16px; }
+
+/* ── ON-PAGE NAVIGATION ── */
+.on-this-page {
+  position: sticky; top: 68px; float: right;
+  width: 200px; margin-left: 40px; margin-top: -40px;
+  padding: 16px 0;
+}
+@media (max-width: 1200px) { .on-this-page { display: none; } }
+.otp-label { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.otp-link { display: block; font-size: 12px; color: var(--muted); text-decoration: none; padding: 4px 0 4px 12px; border-left: 1px solid var(--border); transition: all 0.2s; }
+.otp-link:hover, .otp-link.active { color: var(--green); border-left-color: var(--green); }
+
+/* ── DIVIDER ── */
+.doc-divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+/* ── CONTACT LINKS ── */
+.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 20px 0; }
+.con-card {
+  background: var(--bg); padding: 18px 16px;
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none; transition: all 0.25s;
+}
+.con-card:hover { background: rgba(0,255,136,0.05); }
+.con-icon { font-size: 20px; }
+.con-info .cl-name { font-size: 13px; color: var(--text); font-weight: 500; }
+.con-info .cl-handle { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+.con-arr { margin-left: auto; color: var(--green); font-family: 'Space Mono', monospace; font-size: 14px; transition: transform 0.2s; }
+.con-card:hover .con-arr { transform: translateX(3px); }
+
+/* ── MOBILE SIDEBAR TOGGLE ── */
+.sidebar-toggle {
+  display: none; position: fixed; bottom: 20px; right: 20px; z-index: 200;
+  width: 48px; height: 48px;
+  background: var(--green); border: none; cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  font-size: 20px; color: var(--bg);
+  align-items: center; justify-content: center;
+  box-shadow: 0 0 30px rgba(0,255,136,0.4);
+}
+
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .topbar { padding: 12px 20px; }
+  .content { padding: 32px 20px 80px; }
+  .page-hero { padding: 40px 20px 32px; }
+  .feat-grid, .team-row { grid-template-columns: 1fr; }
+  .price-row { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr 1fr; }
+  .sidebar-toggle { display: flex; }
+}
+@media (max-width: 480px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .cmd-table { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a href="#" class="sidebar-logo">
+    <div class="logo-mark">OUR</div>
+    <div>
+      <div class="logo-text">OURIN</div>
+      <div class="logo-sub">Docs</div>
+    </div>
+  </a>
+
+  <div class="sidebar-version">
+    <div class="ver-tag"><span class="ver-dot"></span> v2.5.0 — Latest</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-label">Getting Started</div>
+      <a href="#intro" class="nav-link active"><span class="nl-icon">📖</span> Introduction</a>
+      <a href="#quickstart" class="nav-link"><span class="nl-icon">⚡</span> Quickstart</a>
+      <a href="#installation" class="nav-link"><span class="nl-icon">🔧</span> Self-Hosting</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Core Features</div>
+      <a href="#features" class="nav-link"><span class="nl-icon">✨</span> Features Overview</a>
+      <a href="#ai" class="nav-link"><span class="nl-icon">🤖</span> AI Integration</a>
+      <a href="#tables" class="nav-link"><span class="nl-icon">📊</span> Smart Tables</a>
+      <a href="#carousel" class="nav-link"><span class="nl-icon">🎠</span> Carousel Messages</a>
+      <a href="#downloader" class="nav-link"><span class="nl-icon">📥</span> Media Downloader</a>
+      <a href="#group" class="nav-link"><span class="nl-icon">👥</span> Group Tools</a>
+      <a href="#games" class="nav-link"><span class="nl-icon">🎮</span> Games & Economy</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Reference</div>
+      <a href="#commands" class="nav-link"><span class="nl-icon">⌨️</span> Command Index <span class="nl-badge">500+</span></a>
+      <a href="#pricing" class="nav-link"><span class="nl-icon">💎</span> Plans & Pricing</a>
+      <a href="#changelog" class="nav-link"><span class="nl-icon">📝</span> Changelog</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">About</div>
+      <a href="#team" class="nav-link"><span class="nl-icon">👨‍💻</span> Team</a>
+      <a href="#faq" class="nav-link"><span class="nl-icon">❓</span> FAQ</a>
+      <a href="#contact" class="nav-link"><span class="nl-icon">📡</span> Community</a>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="https://github.com/ashishmandal029/" class="sf-link">GitHub</a>
+    <a href="https://wa.me/916000570671" class="sf-link">WhatsApp</a>
+    <a href="https://t.me/stk_official_com" class="sf-link">Telegram</a>
+    <a href="https://discord.gg/PyPnwuBAK" class="sf-link">Discord</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="breadcrumb">OURIN <span>/</span> <span>Documentation</span></div>
+    <div class="topbar-actions">
+      <a href="https://wa.me/916000570671" class="wa-btn">⚡ Add to WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="ph-badge"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;animation:pulse 2s infinite"></span> Live — v2.5.0</div>
+    <h1 class="ph-title">OURIN Bot <span>Documentation</span></h1>
+    <p class="ph-desc">Complete reference for the most powerful WhatsApp bot ever built. 500+ commands, AI integration, smart tables, interactive carousels, and much more — all from a single WhatsApp chat.</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item">🤖 <strong>500+</strong> Commands</div>
+      <div class="ph-meta-item">👥 <strong>50,000+</strong> Active Users</div>
+      <div class="ph-meta-item">🔥 <strong>99%</strong> Uptime</div>
+      <div class="ph-meta-item">📦 Built on <strong>Baileys</strong></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── INTRODUCTION ── -->
+    <section class="doc-section" id="intro">
+      <h2 class="doc-h1">Introduction</h2>
+      <p class="doc-p">OURIN is a next-generation WhatsApp automation bot built on the <strong>Baileys</strong> framework. It was created in 2023 and has evolved into a comprehensive platform offering over 500 commands spanning AI, media tools, group management, interactive message formats, games, and more.</p>
+      <p class="doc-p">Unlike basic bots, OURIN treats WhatsApp as a full application platform — enabling formatted table messages, Google Sheets integration, multi-card carousels with interactive buttons, and real-time AI responses, all natively inside any WhatsApp conversation.</p>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div>No signup or registration needed. Just save the OURIN number and send any message to begin. Type <code>.menu</code> to see all available commands.</div>
+      </div>
+
+      <div class="feat-grid">
+        <div class="feat-cell">
+          <div class="feat-icon">🤖</div>
+          <div class="feat-info">
+            <div class="fi-name">AI Integration</div>
+            <div class="fi-desc">GPT-4, GPT-4o, Gemini 1.5 Pro, and DALL-E image generation built right in.</div>
+            <div class="fi-tag">GPT-4 • GEMINI • DALL-E</div>
+          </div>
+        </div>
+        <div class="feat-cell">
+          <div class="feat-icon">📊</div>
+          <div class="feat-info">
+            <div class="fi-name">Smart Tables</div>
+            <div class="fi-desc">Generate Unicode table messages from raw data or live Google Sheets.</div>
+            <div class="fi-tag">SENDTABLE • SHEETS</div>
+          </div>
+        </div>
+        <div class="feat-cell">
+          <div class="feat-icon">🎠</div>
+          <div class="feat-info">
+            <div class="fi-name">Carousel Messages</div>
+            <div class="fi-desc">Rich interactive carousel cards with images, copy buttons, URLs, and call-to-actions.</div>
+            <div class="fi-tag">CAROUSEL • BUTTONS</div>
+          </div>
+        </div>
+        <div class="feat-cell">
+          <div class="feat-icon">📥</div>
+          <div class="feat-info">
+            <div class="fi-name">Media Downloader</div>
+            <div class="fi-desc">One-command downloads from YouTube, TikTok (no watermark), Instagram, Facebook, Twitter, and 30+ platforms.</div>
+            <div class="fi-tag">YT • IG • TT • FB</div>
+          </div>
+        </div>
+        <div class="feat-cell">
+          <div class="feat-icon">🎮</div>
+          <div class="feat-info">
+            <div class="fi-name">Games & RPG</div>
+            <div class="fi-desc">Full RPG adventure system, economy, leaderboards, and group mini-games.</div>
+            <div class="fi-tag">RPG • ECONOMY</div>
+          </div>
+        </div>
+        <div class="feat-cell">
+          <div class="feat-icon">👥</div>
+          <div class="feat-info">
+            <div class="fi-name">Group Management</div>
+            <div class="fi-desc">Anti-spam, anti-link, welcome messages, polls, auto-moderation, and complete admin tools.</div>
+            <div class="fi-tag">ADMIN • ANTILINK • POLLS</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── QUICKSTART ── -->
+    <section class="doc-section" id="quickstart">
+      <h2 class="doc-h1">Quickstart</h2>
+      <p class="doc-p">Getting started with OURIN takes less than 60 seconds. No apps to install, no accounts to create.</p>
+
+      <div class="steps-list">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <div class="step-title">Save the OURIN Number</div>
+            <div class="step-desc">Add <code>+91 6000 570 671</code> to your contacts, or tap the link below to open a chat directly in WhatsApp.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <div class="step-title">Send Any Message</div>
+            <div class="step-desc">Open the chat and send any message. OURIN will respond instantly to confirm it's active and ready.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <div class="step-title">Type <code>.menu</code></div>
+            <div class="step-desc">This command lists all available commands organized by category. Use it anytime as a reference.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <div class="step-title">Add to a Group (Optional)</div>
+            <div class="step-desc">Add OURIN to any WhatsApp group to unlock group management, polls, welcome messages, and community features.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">💬</span>
+        <div>OURIN works in both personal chats and group chats. All commands use the <code>.</code> prefix by default. Premium users can set a custom prefix.</div>
+      </div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── SELF HOSTING ── -->
+    <section class="doc-section" id="installation">
+      <h2 class="doc-h1">Self-Hosting</h2>
+      <p class="doc-p">Lifetime plan subscribers get full source code access and can self-host OURIN on any Node.js server, including a VPS. The team provides 1-on-1 deployment assistance.</p>
+
+      <h3 class="doc-h2">Requirements</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">system</span></div>
+        <pre class="code-body"><span class="c-cmt"># Node.js 18+</span>
+<span class="c-key">node</span> <span class="c-val">--version</span>  <span class="c-cmt"># >= 18.0.0</span>
+<span class="c-key">npm</span>  <span class="c-val">--version</span>  <span class="c-cmt"># >= 9.0.0</span>
+<span class="c-cmt"># Recommended: Ubuntu 20.04+ or Debian 11+ VPS</span></pre>
+      </div>
+
+      <h3 class="doc-h2">Setup</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span></div>
+        <pre class="code-body"><span class="c-cmt"># Clone the repository (Lifetime plan only)</span>
+<span class="c-prompt">$</span> <span class="c-cmd">git clone https://github.com/ashishmandal029/ourin-bot</span>
+<span class="c-prompt">$</span> <span class="c-cmd">cd ourin-bot</span>
+<span class="c-prompt">$</span> <span class="c-cmd">npm install</span>
+
+<span class="c-cmt"># Scan QR code with WhatsApp to link your number</span>
+<span class="c-prompt">$</span> <span class="c-cmd">npm start</span>
+<span class="c-ok">✅ OURIN Bot v2.5.0 — Connected!</span></pre>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div>Source code access is exclusively available to <strong>Lifetime plan</strong> subscribers. Contact the team on WhatsApp or Telegram to get started.</div>
+      </div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── AI ── -->
+    <section class="doc-section" id="ai">
+      <h2 class="doc-h1">AI Integration</h2>
+      <p class="doc-p">OURIN integrates multiple best-in-class AI models directly into WhatsApp. Ask questions, generate images, summarize documents, write code — all without leaving your chat.</p>
+
+      <h3 class="doc-h2">Chat with AI</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">whatsapp</span></div>
+        <pre class="code-body"><span class="c-prompt">❯</span> <span class="c-cmd">.ai Explain quantum computing simply</span>
+
+<span class="c-str">🤖 Quantum computing uses quantum mechanical phenomena</span>
+<span class="c-str">   like superposition and entanglement to process</span>
+<span class="c-str">   information exponentially faster than classical</span>
+<span class="c-str">   computers for specific problem types...</span>
+
+<span class="c-cmt">   Model: GPT-4 • Response time: 0.3s</span></pre>
+      </div>
+
+      <h3 class="doc-h2">Image Generation</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">whatsapp</span></div>
+        <pre class="code-body"><span class="c-prompt">❯</span> <span class="c-cmd">.imagine A futuristic city at night, cyberpunk style</span>
+
+<span class="c-ok">🖼️ Image generated! [1024×1024]</span>
+<span class="c-cmt">   Powered by DALL-E 3</span></pre>
+      </div>
+
+      <table class="cmd-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Description</th>
+            <th>Plan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">.ai [query]</td>
+            <td class="cmd-desc-cell">Ask GPT-4 anything. General knowledge, writing, code, analysis.</td>
+            <td><span class="cmd-plan plan-free">Free (10/day)</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.gemini [query]</td>
+            <td class="cmd-desc-cell">Use Gemini 1.5 Pro for long-form reasoning and analysis.</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.imagine [prompt]</td>
+            <td class="cmd-desc-cell">Generate images with DALL-E 3. 1024×1024 output.</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.gpt4o [query]</td>
+            <td class="cmd-desc-cell">GPT-4o access for multimodal tasks including image understanding.</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── TABLES ── -->
+    <section class="doc-section" id="tables">
+      <h2 class="doc-h1">Smart Tables</h2>
+      <p class="doc-p">OURIN's table feature renders beautiful Unicode table messages in WhatsApp — perfect for sharing student data, product lists, schedules, reports, or any structured information.</p>
+
+      <h3 class="doc-h2">Manual Table — <code>.sendtable</code></h3>
+      <p class="doc-p">Format: pipe-separated rows. First 3 lines are header (title, subtitle, footer). Fourth line is column names. Subsequent lines are data rows.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">whatsapp</span></div>
+        <pre class="code-body"><span class="c-prompt">❯</span> <span class="c-cmd">.sendtable @me</span>
+<span class="c-key">|📋 Student Report</span>
+<span class="c-key">|Class 12 Results 2026</span>
+<span class="c-key">|Official Data</span>
+<span class="c-key">|Name,Subject,Marks,Grade</span>
+<span class="c-str">|Ashish,Math,95,A+</span>
+<span class="c-str">|Riya,Science,88,A</span>
+<span class="c-str">|Arjun,English,76,B+</span>
+
+<span class="c-ok">✅ Table sent to your chat!</span></pre>
+      </div>
+
+      <h3 class="doc-h2">Google Sheets Table — <code>.sendgtable</code></h3>
+      <p class="doc-p">Pull data live from any public Google Sheet and send it as a formatted table. Great for teachers, team leads, and anyone managing data collaboratively.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">whatsapp</span></div>
+        <pre class="code-body"><span class="c-prompt">❯</span> <span class="c-cmd">.sendgtable @me</span>
+<span class="c-key">|https://docs.google.com/spreadsheets/d/18H3OWu.../edit</span>
+<span class="c-key">|📊 Student List</span>
+<span class="c-key">|Powered by OURIN</span>
+
+<span class="c-str">⏳ Fetching from Google Sheet...</span>
+<span class="c-str">📊 Found 7 rows, 10 columns</span>
+<span class="c-ok">✅ Table sent! 7 rows displayed</span></pre>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">📄</span>
+        <div>Your Google Sheet must be set to <strong>Anyone with the link can view</strong>. The bot fetches the first sheet by default.</div>
+      </div>
+
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>Description</th><th>Plan</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">.sendtable @target</td>
+            <td class="cmd-desc-cell">Send a formatted table to a phone number or group from manually entered data.</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.sendgtable @target</td>
+            <td class="cmd-desc-cell">Fetch a public Google Sheet and send it as a formatted table.</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.stats</td>
+            <td class="cmd-desc-cell">Display bot statistics in a formatted table.</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── CAROUSEL ── -->
+    <section class="doc-section" id="carousel">
+      <h2 class="doc-h1">Carousel Messages</h2>
+      <p class="doc-p">Send interactive WhatsApp carousel cards with images, titles, descriptions, and clickable action buttons — URL links, copy-to-clipboard codes, phone calls, or quick replies. Perfect for product listings, promotions, and rich content sharing.</p>
+
+      <h3 class="doc-h2">Basic Carousel — <code>.sendcarousel</code></h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">whatsapp</span></div>
+        <pre class="code-body"><span class="c-prompt">❯</span> <span class="c-cmd">.sendcarousel 91xxxxxxxxxx</span>
+<span class="c-key">|Hello Bro 👋|OURIN BOT|Quoted Text</span>
+<span class="c-key">|Netflix Premium</span>
+<span class="c-key">|Watch Unlimited Movies & Shows</span>
+<span class="c-key">|Footer Text|https://image-url.com/img.jpg</span>
+<span class="c-str">|url,🌐 Visit,https://netflix.com</span>
+<span class="c-str">|copy,📋 Copy Code,NET2026</span>
+<span class="c-str">|reply,🚀 Reply,Order Now</span>
+
+<span class="c-ok">✅ Carousel sent!</span></pre>
+      </div>
+
+      <h3 class="doc-h2">Button Types</h3>
+      <table class="cmd-table">
+        <thead><tr><th>Type</th><th>Syntax</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">url</td>
+            <td class="cmd-desc-cell"><code>|url,Label,https://...</code></td>
+            <td class="cmd-desc-cell">Opens a URL in the browser.</td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">copy</td>
+            <td class="cmd-desc-cell"><code>|copy,Label,TEXT</code></td>
+            <td class="cmd-desc-cell">Copies TEXT to clipboard on tap.</td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">call</td>
+            <td class="cmd-desc-cell"><code>|call,Label,+91xxxxxxxxxx</code></td>
+            <td class="cmd-desc-cell">Initiates a phone call.</td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">reply</td>
+            <td class="cmd-desc-cell"><code>|reply,Label,Response text</code></td>
+            <td class="cmd-desc-cell">Sends a quick reply message.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="doc-h2">Google Sheets Carousel — <code>.sendgcarousel</code></h3>
+      <p class="doc-p">Available in v2.5.0+. Generates a carousel automatically from a public Google Sheet — one card per row. Ideal for product catalogs and dynamic listings. (Premium feature)</p>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── DOWNLOADER ── -->
+    <section class="doc-section" id="downloader">
+      <h2 class="doc-h1">Media Downloader</h2>
+      <p class="doc-p">Download videos and audio from 30+ platforms with a single command. OURIN sends the file directly to your WhatsApp chat.</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">whatsapp</span></div>
+        <pre class="code-body"><span class="c-cmt"># YouTube</span>
+<span class="c-prompt">❯</span> <span class="c-cmd">.ytdl https://youtube.com/watch?v=xxx</span>
+<span class="c-str">📥 Fetching video info...</span>
+<span class="c-str">🎬 Lofi Hip Hop Mix 2026 | 720p | 48.2 MB</span>
+<span class="c-ok">✅ Sent! [video.mp4]</span>
+
+<span class="c-cmt"># TikTok (no watermark)</span>
+<span class="c-prompt">❯</span> <span class="c-cmd">.tiktok https://tiktok.com/@user/video/xxx</span>
+<span class="c-str">📱 Removing watermark...</span>
+<span class="c-ok">✅ Sent! [tiktok_clean.mp4]</span></pre>
+      </div>
+
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>Platform</th><th>Plan</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">.ytdl [url]</td>
+            <td class="cmd-desc-cell">YouTube — video download (up to 128MB)</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.ytmp3 [url]</td>
+            <td class="cmd-desc-cell">YouTube — audio only (MP3)</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.tiktok [url]</td>
+            <td class="cmd-desc-cell">TikTok — no watermark video</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.ig [url]</td>
+            <td class="cmd-desc-cell">Instagram — Reels, posts, stories</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.fb [url]</td>
+            <td class="cmd-desc-cell">Facebook — video download</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.twitter [url]</td>
+            <td class="cmd-desc-cell">Twitter/X — video download</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.spotify [url]</td>
+            <td class="cmd-desc-cell">Spotify — track audio download</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.soundcloud [url]</td>
+            <td class="cmd-desc-cell">SoundCloud — audio download</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── GROUP TOOLS ── -->
+    <section class="doc-section" id="group">
+      <h2 class="doc-h1">Group Tools</h2>
+      <p class="doc-p">OURIN includes a full-featured group management suite — from moderation automation to polls and welcome messages.</p>
+
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>Description</th><th>Plan</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">.kick @user</td>
+            <td class="cmd-desc-cell">Remove a member from the group. Requires admin.</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.antilink</td>
+            <td class="cmd-desc-cell">Enable automatic link removal with optional warn/kick.</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.welcome on/off</td>
+            <td class="cmd-desc-cell">Toggle custom welcome messages for new members.</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.poll [question]</td>
+            <td class="cmd-desc-cell">Create a poll with up to 6 options. Tracks votes in real-time.</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.promote @user</td>
+            <td class="cmd-desc-cell">Promote a member to group admin.</td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.tagall</td>
+            <td class="cmd-desc-cell">Mention all group members in one message.</td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── GAMES ── -->
+    <section class="doc-section" id="games">
+      <h2 class="doc-h1">Games & Economy</h2>
+      <p class="doc-p">OURIN features a full RPG adventure system, virtual economy, leaderboards, and battle mechanics — turning any group chat into an active gaming community.</p>
+
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>Description</th><th>Category</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">.rpg</td>
+            <td class="cmd-desc-cell">Start your RPG adventure. Create a character and begin quests.</td>
+            <td><span class="cat-badge cat-game">Game</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.economy</td>
+            <td class="cmd-desc-cell">Check your coin balance, shop, and manage economy stats.</td>
+            <td><span class="cat-badge cat-game">Economy</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.battle @user</td>
+            <td class="cmd-desc-cell">Challenge another player to a battle. Winner earns coins.</td>
+            <td><span class="cat-badge cat-game">Game</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.leaderboard</td>
+            <td class="cmd-desc-cell">Show group leaderboard by coins, XP, or wins.</td>
+            <td><span class="cat-badge cat-game">Game</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.daily</td>
+            <td class="cmd-desc-cell">Claim your daily coin bonus. Streaks multiply the reward.</td>
+            <td><span class="cat-badge cat-game">Economy</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── COMMAND INDEX ── -->
+    <section class="doc-section" id="commands">
+      <h2 class="doc-h1">Command Index</h2>
+      <p class="doc-p">A curated selection of key commands across all categories. Type <code>.menu</code> in WhatsApp for the full interactive list of 500+ commands.</p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+        <span class="cat-badge cat-ai">AI</span>
+        <span class="cat-badge cat-tools">Tools</span>
+        <span class="cat-badge cat-download">Downloader</span>
+        <span class="cat-badge cat-group">Group</span>
+        <span class="cat-badge cat-game">Games</span>
+        <span class="cat-badge cat-sticker">Sticker</span>
+        <span class="cat-badge cat-search">Search</span>
+      </div>
+
+      <table class="cmd-table">
+        <thead><tr><th>Command</th><th>Description</th><th>Category</th><th>Plan</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmd-name-cell">.menu</td>
+            <td class="cmd-desc-cell">Show all available commands grouped by category.</td>
+            <td><span class="cat-badge cat-tools">Main</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.stats</td>
+            <td class="cmd-desc-cell">Display bot statistics in a formatted table.</td>
+            <td><span class="cat-badge cat-tools">Main</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.ai [query]</td>
+            <td class="cmd-desc-cell">Ask GPT-4 anything. Writing, code, analysis, Q&A.</td>
+            <td><span class="cat-badge cat-ai">AI</span></td>
+            <td><span class="cmd-plan plan-free">Free (10/d)</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.imagine [prompt]</td>
+            <td class="cmd-desc-cell">Generate an image with DALL-E 3.</td>
+            <td><span class="cat-badge cat-ai">AI</span></td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.sendtable @me</td>
+            <td class="cmd-desc-cell">Send a formatted Unicode table from manual data.</td>
+            <td><span class="cat-badge cat-tools">Tools</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.sendgtable @me</td>
+            <td class="cmd-desc-cell">Send a table pulled from a public Google Sheet.</td>
+            <td><span class="cat-badge cat-tools">Tools</span></td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.sendcarousel [num]</td>
+            <td class="cmd-desc-cell">Send an interactive carousel card with buttons.</td>
+            <td><span class="cat-badge cat-tools">Tools</span></td>
+            <td><span class="cmd-plan plan-prem">Premium</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.ytdl [url]</td>
+            <td class="cmd-desc-cell">Download YouTube video and send to chat.</td>
+            <td><span class="cat-badge cat-download">Download</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.tiktok [url]</td>
+            <td class="cmd-desc-cell">Download TikTok video without watermark.</td>
+            <td><span class="cat-badge cat-download">Download</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.sticker</td>
+            <td class="cmd-desc-cell">Convert image or GIF to a WhatsApp sticker.</td>
+            <td><span class="cat-badge cat-sticker">Sticker</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.weather [city]</td>
+            <td class="cmd-desc-cell">Get current weather and forecast for any city.</td>
+            <td><span class="cat-badge cat-search">Search</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.google [query]</td>
+            <td class="cmd-desc-cell">Search Google and return top results.</td>
+            <td><span class="cat-badge cat-search">Search</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.anime [title]</td>
+            <td class="cmd-desc-cell">Search anime info — synopsis, rating, episodes, trailer.</td>
+            <td><span class="cat-badge cat-search">Search</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.kick @user</td>
+            <td class="cmd-desc-cell">Remove a member from the group.</td>
+            <td><span class="cat-badge cat-group">Group</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.antilink</td>
+            <td class="cmd-desc-cell">Enable/disable automatic link filtering in groups.</td>
+            <td><span class="cat-badge cat-group">Group</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.rpg</td>
+            <td class="cmd-desc-cell">Start your RPG adventure quest.</td>
+            <td><span class="cat-badge cat-game">Game</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+          <tr>
+            <td class="cmd-name-cell">.economy</td>
+            <td class="cmd-desc-cell">View balance, shop, and economy stats.</td>
+            <td><span class="cat-badge cat-game">Economy</span></td>
+            <td><span class="cmd-plan plan-free">Free</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── PRICING ── -->
+    <section class="doc-section" id="pricing">
+      <h2 class="doc-h1">Plans & Pricing</h2>
+      <p class="doc-p">OURIN is free to start, with upgrade options for power users and developers who need the full suite.</p>
+
+      <div class="price-row">
+        <div class="price-cell">
+          <div class="pc-tier">Free</div>
+          <div class="pc-price">₹0 <small>/forever</small></div>
+          <ul class="pc-features">
+            <li>200+ Basic Commands</li>
+            <li>AI Chat (10/day)</li>
+            <li>Media Downloader</li>
+            <li>Sticker Maker</li>
+            <li>Group Tools (basic)</li>
+            <li class="no">Premium Commands</li>
+            <li class="no">Unlimited AI</li>
+            <li class="no">Priority Support</li>
+          </ul>
+        </div>
+        <div class="price-cell featured">
+          <div class="pc-tier" style="color:var(--green)">Premium ⭐ Most Popular</div>
+          <div class="pc-price" style="color:var(--green)">₹99 <small>/month</small></div>
+          <ul class="pc-features">
+            <li>500+ All Commands</li>
+            <li>Unlimited AI Chat</li>
+            <li>Google Sheets Integration</li>
+            <li>Carousel Messages</li>
+            <li>Priority Processing</li>
+            <li>Group VIP Tools</li>
+            <li>Custom Prefix</li>
+            <li>24/7 Priority Support</li>
+          </ul>
+        </div>
+        <div class="price-cell">
+          <div class="pc-tier" style="color:var(--cyan)">Lifetime</div>
+          <div class="pc-price" style="color:var(--cyan)">₹499 <small>/once</small></div>
+          <ul class="pc-features">
+            <li>Everything in Premium</li>
+            <li>Lifetime Access</li>
+            <li>Future Updates Free</li>
+            <li>Source Code Access</li>
+            <li>Custom Bot Name</li>
+            <li>VPS Deployment Help</li>
+            <li>1-on-1 Setup Call</li>
+            <li>Developer Discord Access</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">💬</span>
+        <div>To upgrade, message <strong>+91 6000 570 671</strong> on WhatsApp or reach out on Telegram at <strong>@stk_official_com</strong>.</div>
+      </div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── CHANGELOG ── -->
+    <section class="doc-section" id="changelog">
+      <h2 class="doc-h1">Changelog</h2>
+      <p class="doc-p">Release history and what's changed in each version of OURIN.</p>
+
+      <div>
+        <div class="cl-item">
+          <div class="cl-ver-col">
+            <div class="cl-ver">v2.5.0</div>
+            <div class="cl-date">MAY 2026</div>
+            <div class="cl-badge-wrap"><span class="cl-badge latest">LATEST</span></div>
+          </div>
+          <ul class="cl-changes">
+            <li>🎠 <code>.sendgcarousel</code> — Google Sheet → auto Carousel generation</li>
+            <li>📊 sendTableV2 with <code>;;</code> multi-row grouping support</li>
+            <li>🤖 Gemini 1.5 Pro integration added</li>
+            <li>⚡ 40% faster response time across all commands</li>
+            <li>🔧 Plugin hot-reload support (no restart required)</li>
+          </ul>
+        </div>
+        <div class="cl-item">
+          <div class="cl-ver-col">
+            <div class="cl-ver">v2.0.0</div>
+            <div class="cl-date">MAR 2026</div>
+            <div class="cl-badge-wrap"><span class="cl-badge major">MAJOR</span></div>
+          </div>
+          <ul class="cl-changes">
+            <li>🏗️ Complete rewrite with the Ourin plugin framework</li>
+            <li>📊 <code>.sendtable</code> and <code>.sendgtable</code> commands launched</li>
+            <li>🎠 Carousel message system introduced</li>
+            <li>💎 Premium tier system with user management</li>
+            <li>🔌 Plugin marketplace launch</li>
+          </ul>
+        </div>
+        <div class="cl-item">
+          <div class="cl-ver-col">
+            <div class="cl-ver">v1.5.0</div>
+            <div class="cl-date">JAN 2026</div>
+          </div>
+          <ul class="cl-changes">
+            <li>🤖 GPT-4 + DALL-E 3 integration</li>
+            <li>🎮 Full RPG & Economy system</li>
+            <li>📥 Multi-platform media downloader (30+ sites)</li>
+            <li>👥 Advanced group manager overhaul</li>
+          </ul>
+        </div>
+        <div class="cl-item">
+          <div class="cl-ver-col">
+            <div class="cl-ver">v1.0.0</div>
+            <div class="cl-date">SEP 2023</div>
+            <div class="cl-badge-wrap"><span class="cl-badge gen">GENESIS</span></div>
+          </div>
+          <ul class="cl-changes">
+            <li>🚀 OURIN Bot launched publicly</li>
+            <li>⚡ 100 core commands</li>
+            <li>🔧 Baileys framework foundation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── TEAM ── -->
+    <section class="doc-section" id="team">
+      <h2 class="doc-h1">Team</h2>
+      <p class="doc-p">OURIN is built and maintained by a small, focused team of developers passionate about WhatsApp automation.</p>
+
+      <div class="team-row">
+        <div class="team-cell">
+          <div class="team-hex" style="background:linear-gradient(135deg,var(--green),var(--cyan))">STK</div>
+          <div class="team-info">
+            <div class="ti-name">Ashish</div>
+            <div class="ti-role">Lead Developer</div>
+            <div class="ti-desc">Core bot architecture, plugin system, Baileys integration. Building OURIN since 2023.</div>
+            <div class="ti-links">
+              <a href="https://github.com/ashishmandal029/" class="ti-link">GitHub</a>
+              <a href="https://t.me/stkrootedcyber" class="ti-link">Telegram</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-cell">
+          <div class="team-hex" style="background:linear-gradient(135deg,#7000ff,#00e5ff)">AZ</div>
+          <div class="team-info">
+            <div class="ti-name">Azhar Dev</div>
+            <div class="ti-role">AI & Tools Engineer</div>
+            <div class="ti-desc">AI integrations, carousel engine, Google Sheets API, and sendtable system design.</div>
+            <div class="ti-links">
+              <a href="#" class="ti-link">GitHub</a>
+              <a href="#" class="ti-link">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-cell">
+          <div class="team-hex" style="background:linear-gradient(135deg,#ff2255,#ff8800)">RK</div>
+          <div class="team-info">
+            <div class="ti-name">Rohan K.</div>
+            <div class="ti-role">Plugin & Community</div>
+            <div class="ti-desc">500+ plugins, downloader system, game engine, and community management.</div>
+            <div class="ti-links">
+              <a href="https://github.com/ashishmandal029/" class="ti-link">GitHub</a>
+              <a href="#" class="ti-link">Discord</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-cell">
+          <div class="team-hex" style="background:linear-gradient(135deg,#00cc6a,#0066ff)">SK</div>
+          <div class="team-info">
+            <div class="ti-name">Sneha K.</div>
+            <div class="ti-role">UI & Documentation</div>
+            <div class="ti-desc">Bot UI/UX, website design, documentation, onboarding flow and user experience.</div>
+            <div class="ti-links">
+              <a href="#" class="ti-link">GitHub</a>
+              <a href="#" class="ti-link">Twitter</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── FAQ ── -->
+    <section class="doc-section" id="faq">
+      <h2 class="doc-h1">FAQ</h2>
+
+      <div id="faqList"></div>
+    </section>
+
+    <hr class="doc-divider">
+
+    <!-- ── COMMUNITY ── -->
+    <section class="doc-section" id="contact">
+      <h2 class="doc-h1">Community & Support</h2>
+      <p class="doc-p">Join 50,000+ users and developers across our community channels. Support response time is under 2 hours, 24/7.</p>
+
+      <div class="contact-grid">
+        <a href="https://whatsapp.com/channel/0029VbCdEhtChq6Mq8eNOV1h" class="con-card">
+          <span class="con-icon">💬</span>
+          <div class="con-info">
+            <div class="cl-name">WhatsApp Channel</div>
+            <div class="cl-handle">Updates & Drops</div>
+          </div>
+          <span class="con-arr">→</span>
+        </a>
+        <a href="https://t.me/stk_official_com" class="con-card">
+          <span class="con-icon">✈️</span>
+          <div class="con-info">
+            <div class="cl-name">Telegram</div>
+            <div class="cl-handle">@stk_official_com</div>
+          </div>
+          <span class="con-arr">→</span>
+        </a>
+        <a href="https://discord.gg/PyPnwuBAK" class="con-card">
+          <span class="con-icon">🎮</span>
+          <div class="con-info">
+            <div class="cl-name">Discord</div>
+            <div class="cl-handle">Developer server</div>
+          </div>
+          <span class="con-arr">→</span>
+        </a>
+        <a href="https://github.com/ashishmandal029/" class="con-card">
+          <span class="con-icon">💻</span>
+          <div class="con-info">
+            <div class="cl-name">GitHub</div>
+            <div class="cl-handle">ashishmandal029</div>
+          </div>
+          <span class="con-arr">→</span>
+        </a>
+        <a href="https://wa.me/916000570671" class="con-card">
+          <span class="con-icon">⚡</span>
+          <div class="con-info">
+            <div class="cl-name">Direct Support</div>
+            <div class="cl-handle">+91 6000 570 671</div>
+          </div>
+          <span class="con-arr">→</span>
+        </a>
+        <a href="https://x.com/Ashisham029" class="con-card">
+          <span class="con-icon">🐦</span>
+          <div class="con-info">
+            <div class="cl-name">Twitter / X</div>
+            <div class="cl-handle">@Ashisham029</div>
+          </div>
+          <span class="con-arr">→</span>
+        </a>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MOBILE TOGGLE -->
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">☰</button>
+
+<script>
+// ── FAQ ──
+const faqs = [
+  { q: 'Is OURIN free to use?', a: 'Yes! OURIN has a free tier with 200+ commands available to everyone. Premium (₹99/month) and Lifetime (₹499 once) plans unlock the full 500+ command suite, unlimited AI, and priority features.' },
+  { q: 'How do I add OURIN to my WhatsApp?', a: 'Save the number +91 6000 570 671, open a chat, and send any message. Type .menu to see all available commands. No registration or signup needed.' },
+  { q: 'Does .sendtable work with Google Sheets?', a: 'Yes! Use .sendgtable with your Google Sheet URL (must be public) to automatically fetch data and send it as a formatted table to any WhatsApp number or group. This is a Premium feature.' },
+  { q: 'Can I use OURIN in group chats?', a: 'Absolutely. OURIN works in both personal and group chats. Group features include anti-spam, welcome messages, auto-moderation, polls, and complete admin controls.' },
+  { q: 'What AI models does OURIN use?', a: 'OURIN integrates GPT-4, GPT-4o, Gemini 1.5 Pro, and DALL-E 3 for image generation. Premium users get higher rate limits and access to all models simultaneously.' },
+  { q: 'How does the carousel message work?', a: 'Use .sendcarousel to send interactive WhatsApp carousel cards with images, titles, descriptions, and clickable buttons (URL, copy, call, reply). Works on personal numbers and groups.' },
+  { q: 'Can I host OURIN myself?', a: 'Yes! The Lifetime plan includes source code access, VPS deployment help, and a 1-on-1 setup call with our developers. You can host on any Node.js server.' },
+  { q: 'What platforms are supported for downloads?', a: 'OURIN supports YouTube, TikTok (without watermark), Instagram Reels, Facebook, Twitter/X, Spotify, SoundCloud, and 30+ other platforms.' },
+  { q: 'How do I get premium/lifetime access?', a: 'Message +91 6000 570 671 on WhatsApp directly, or reach out via Telegram at @stk_official_com. The team will guide you through payment and activation.' },
+]
+
+const faqList = document.getElementById('faqList')
+faqs.forEach(f => {
+  const item = document.createElement('div')
+  item.className = 'faq-item'
+  item.innerHTML = `
+    <div class="faq-q">
+      <span>${f.q}</span>
+      <span class="faq-arrow">+</span>
+    </div>
+    <div class="faq-a">${f.a}</div>
+  `
+  faqList.appendChild(item)
+})
+
+faqList.addEventListener('click', e => {
+  const q = e.target.closest('.faq-q')
+  if (!q) return
+  const a = q.nextElementSibling
+  const isOpen = q.classList.contains('open')
+  document.querySelectorAll('.faq-q.open').forEach(el => {
+    el.classList.remove('open')
+    el.nextElementSibling.classList.remove('open')
+  })
+  if (!isOpen) { q.classList.add('open'); a.classList.add('open') }
+})
+
+// ── SIDEBAR TOGGLE (mobile) ──
+const toggle = document.getElementById('sidebarToggle')
+const sidebar = document.getElementById('sidebar')
+toggle.addEventListener('click', () => sidebar.classList.toggle('open'))
+
+// ── ACTIVE NAV LINK ──
+const sections = document.querySelectorAll('.doc-section')
+const navLinks = document.querySelectorAll('.nav-link')
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'))
+      const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`)
+      if (active) active.classList.add('active')
+    }
+  })
+}, { rootMargin: '-20% 0px -70% 0px' })
+
+sections.forEach(s => obs.observe(s))
+
+// ── COPY BUTTONS ──
+document.querySelectorAll('.code-copy').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const pre = btn.closest('.code-block').querySelector('pre')
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      const orig = btn.textContent
+      btn.textContent = 'COPIED!'
+      btn.style.color = 'var(--green)'
+      setTimeout(() => { btn.textContent = orig; btn.style.color = '' }, 1500)
+    })
+  })
+})
+
+// Close sidebar on nav link click (mobile)
+navLinks.forEach(l => l.addEventListener('click', () => sidebar.classList.remove('open')))
+</script>
+
+</body>
+</html>
+
