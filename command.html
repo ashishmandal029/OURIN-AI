@@ -28,12 +28,12 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
 
 /* ── HEADER ── */
-.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
 .lhex{width:32px;height:32px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:9px;color:#030508}
 .lname{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--green)}
 .lsub{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.h-search{flex:1;min-width:180px;max-width:360px;position:relative}
+.h-search{flex:1;min-width:100px;max-width:360px;position:relative}
 .h-search input{width:100%;background:rgba(0,255,136,0.05);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:8px 36px 8px 14px;outline:none;transition:all .2s;letter-spacing:.5px}
 .h-search input::placeholder{color:var(--muted)}
 .h-search input:focus{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.08);box-shadow:0 0 0 2px rgba(0,255,136,.08)}
