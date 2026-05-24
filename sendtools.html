@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>OURIN — Send Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030508;--bg2:#060c12;--bg3:#0a141e;--green:#00ff88;--cyan:#00e5ff;--amber:#ffaa00;--red:#ff2255;--text:#e0f0ea;--muted:#3d6050;--border:rgba(0,255,136,0.10);--border2:rgba(0,255,136,0.20)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.lhex{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:8px;color:#030508}
+.lname{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--green)}
+.lsub{font-family:'Space Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.h-back{font-family:'Space Mono',monospace;font-size:8px;color:#030508;text-decoration:none;padding:6px 10px;border:1px solid var(--green);letter-spacing:1px;transition:all .2s;flex-shrink:0;background:var(--green);margin-left:auto}
+.h-back:hover{background:rgba(0,255,136,0.7)}
+.hero{padding:32px 24px 24px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,255,136,0.06) 0%,transparent 60%);pointer-events:none}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(22px,4vw,40px);letter-spacing:-1.5px;line-height:1.05;margin-bottom:8px}
+.hero-title span{background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:13.5px;color:rgba(224,240,234,0.6);line-height:1.7;max-width:600px}
+.layout{display:flex;min-height:calc(100vh - 200px);position:relative;z-index:1}
+.sidebar{width:220px;flex-shrink:0;border-right:1px solid var(--border);position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;padding:12px 0}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border)}
+.sb-title{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 14px 4px}
+.sb-link{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:12px;color:rgba(224,240,234,.5);cursor:pointer;border-left:2px solid transparent;transition:all .2s}
+.sb-link:hover{color:var(--text);background:rgba(0,255,136,.04)}
+.sb-link.active{color:var(--green);border-left-color:var(--green);background:rgba(0,255,136,.06)}
+.main{flex:1;min-width:0;padding:28px 28px 80px}
+/* TABS */
+.tool-tabs{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px;overflow-x:auto;flex-wrap:wrap}
+.tool-tab{flex:1;min-width:100px;padding:10px 12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.8px;text-transform:uppercase;background:var(--bg);color:var(--muted);cursor:pointer;border:none;transition:all .2s;white-space:nowrap;text-align:center}
+.tool-tab:hover{background:rgba(0,255,136,.04);color:var(--text)}
+.tool-tab.active{background:rgba(0,255,136,.08);color:var(--green)}
+.tool-tab .ti{display:block;font-size:14px;margin-bottom:3px}
+/* SECTION */
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sec-head::before{content:'';width:3px;height:20px;background:linear-gradient(to bottom,var(--green),var(--cyan));flex-shrink:0}
+.sec-icon{font-size:18px}
+.sec-name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.5px}
+.sec-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-left:4px}
+/* FORM SECTIONS */
+.form-section{display:none}
+.form-section.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* FIELDS */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.fg.full{grid-template-columns:1fr}
+.fg.tri{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.field label .req{color:var(--red);margin-left:2px}
+.field input,.field textarea,.field select{background:rgba(0,255,136,0.04);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:11px;padding:9px 12px;outline:none;transition:all .2s;letter-spacing:.4px;width:100%;resize:vertical}
+.field textarea{min-height:80px}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.07);box-shadow:0 0 0 2px rgba(0,255,136,.06)}
+.field-hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:2px}
+/* BUILDER */
+.builder{border:1px solid var(--border);background:var(--bg2);padding:14px;margin-bottom:16px}
+.bl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.bl-title{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase}
+.bl-add{font-family:'Space Mono',monospace;font-size:9px;color:#030508;background:var(--green);border:none;padding:5px 12px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.bl-add:hover{background:rgba(0,255,136,0.7)}
+.bl-add.sm{font-size:8px;padding:4px 9px}
+.item-row{display:flex;gap:6px;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:6px}
+.item-row select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:5px 8px;outline:none;flex-shrink:0;width:100px}
+.item-row input{flex:1;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:5px 8px;outline:none;min-width:0}
+.item-row input:focus,.item-row select:focus{border-color:rgba(0,255,136,.4)}
+.rm-btn{background:rgba(255,34,85,.1);border:1px solid rgba(255,34,85,.2);color:var(--red);font-family:'Space Mono',monospace;font-size:9px;padding:5px 8px;cursor:pointer;flex-shrink:0;transition:all .2s}
+.rm-btn:hover{background:rgba(255,34,85,.2)}
+/* SLIDE */
+.slide-item{border:1px solid var(--border);background:var(--bg3);padding:12px;margin-bottom:8px}
+.slide-num{font-family:'Space Mono',monospace;font-size:8px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.sg.full{grid-template-columns:1fr}
+.sfield{display:flex;flex-direction:column;gap:4px}
+.sfield label{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px}
+.sfield input{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:5px 8px;outline:none;width:100%}
+.sfield input:focus{border-color:rgba(0,255,136,.4)}
+.sbl-title{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;margin:8px 0 5px}
+.sbtn-row{display:flex;gap:5px;align-items:center;margin-bottom:4px}
+.sbtn-row select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:9px;padding:4px 6px;outline:none;flex-shrink:0;width:80px}
+.sbtn-row input{flex:1;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:9px;padding:4px 6px;outline:none;min-width:0}
+.sbtn-row .rm-btn{font-size:8px;padding:4px 7px}
+.slide-rm{background:rgba(255,34,85,.08);border:1px solid rgba(255,34,85,.15);color:var(--red);font-family:'Space Mono',monospace;font-size:9px;padding:4px 10px;cursor:pointer;margin-top:8px}
+/* ACTIONS */
+.action-bar{display:flex;gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center}
+.btn-gen{font-family:'Space Mono',monospace;font-size:10px;background:var(--green);border:1px solid var(--green);color:#030508;padding:10px 28px;cursor:pointer;letter-spacing:1px;font-weight:700;transition:all .2s}
+.btn-gen:hover{background:rgba(0,255,136,0.8)}
+.btn-prev{font-family:'Space Mono',monospace;font-size:10px;background:transparent;border:1px solid var(--border2);color:var(--text);padding:10px 20px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.btn-prev:hover{border-color:rgba(0,255,136,.4);color:var(--green)}
+.btn-cpy{font-family:'Space Mono',monospace;font-size:10px;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan);padding:10px 20px;cursor:pointer;letter-spacing:1px;transition:all .2s;display:none}
+/* OUTPUT */
+.output-wrap{margin-top:24px;display:none}
+.output-wrap.show{display:block;animation:fadeIn .3s ease}
+.out-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.out-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase}
+.out-copy-btn{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);background:none;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.out-copy-btn:hover{color:var(--green);border-color:var(--border2)}
+.out-copy-btn.copied{color:var(--green);border-color:rgba(0,255,136,.4)}
+.out-box{background:var(--bg2);border:1px solid var(--border);padding:16px 18px;font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(224,240,234,.85);line-height:1.8;word-break:break-all;white-space:pre-wrap;max-height:200px;overflow-y:auto}
+.out-box::-webkit-scrollbar{width:3px}
+.out-box::-webkit-scrollbar-thumb{background:var(--border)}
+.out-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+.out-note span{color:var(--green)}
+/* INFO BOX */
+.info-box{background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.15);padding:12px 14px;margin-bottom:20px;font-size:12px;color:rgba(224,240,234,.7);line-height:1.8}
+.info-box code{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);background:rgba(0,229,255,.08);padding:1px 5px}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(3,5,8,.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+.modal-title{font-family:'Syne',sans-serif;font-weight:800;font-size:15px}
+.modal-close{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;letter-spacing:1px}
+.modal-close:hover{color:var(--green)}
+.modal-body{padding:20px}
+.phone{background:var(--bg3);border:1px solid var(--border2);border-radius:4px;overflow:hidden;margin-top:8px}
+.phone-bar{background:rgba(0,255,136,.08);padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.phone-dot{width:6px;height:6px;border-radius:50%}
+.phone-status{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-left:auto}
+.chat-area{padding:14px;display:flex;flex-direction:column;gap:8px;min-height:120px}
+.msg{max-width:85%;padding:8px 12px;font-size:12.5px;line-height:1.6;position:relative;word-break:break-word}
+.msg.user{align-self:flex-end;background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.2)}
+.msg.bot{align-self:flex-start;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.15)}
+.msg.user::after{content:'You';position:absolute;top:-16px;right:0;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)}
+.msg.bot::after{content:'OURIN';position:absolute;top:-16px;left:0;font-family:'Space Mono',monospace;font-size:8px;color:var(--green)}
+.msg-time{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;text-align:right}
+.msg-wrap{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+.pv-sec{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:18px}
+.pv-box{background:var(--bg3);border:1px solid var(--border);padding:12px;font-family:'Space Mono',monospace;font-size:11px;color:rgba(224,240,234,.7);line-height:1.8;word-break:break-all}
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;z-index:999;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;padding:10px 18px;border:1px solid;transform:translateY(60px);opacity:0;transition:all .3s ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.3);color:var(--green)}
+.toast.error{background:rgba(255,34,85,.1);border-color:rgba(255,34,85,.3);color:var(--red)}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{padding:16px 14px 60px}
+  .fg{grid-template-columns:1fr}
+  .fg.tri{grid-template-columns:1fr}
+  .sg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <a href="ourin-commands.html" class="logo">
+    <div class="lhex">OR</div>
+    <div><div class="lname">OURIN</div><div class="lsub">Send Tools</div></div>
+  </a>
+  <a href="addcommand.html" style="font-family:'Space Mono',monospace;font-size:8px;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,229,255,.3);padding:6px 10px;margin-left:auto">+ AddCmd</a>
+  <a href="ourin-commands.html" class="h-back">← Commands</a>
+</header>
+
+<div class="hero">
+  <h1 class="hero-title"><span>Send Tools</span> Builder</h1>
+  <p class="hero-desc">Build ready-to-paste WhatsApp commands for sendtable, sendcarousel, sendbtn and more. Fill the form → copy → paste in WhatsApp.</p>
+</div>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="sb-title">Table Tools</div>
+  <div class="sb-link active" onclick="switchTool('sendtable',this)"><span>📊</span> sendtable</div>
+  <div class="sb-link" onclick="switchTool('sendtablev2',this)"><span>📊</span> sendtablev2</div>
+  <div class="sb-link" onclick="switchTool('sendgtable',this)"><span>📄</span> sendgtable</div>
+  <div class="sb-link" onclick="switchTool('sendgtablev2',this)"><span>📄</span> sendgtablev2</div>
+  <div class="sb-title" style="margin-top:12px">Carousel Tools</div>
+  <div class="sb-link" onclick="switchTool('sendcarousel',this)"><span>🎠</span> sendcarousel</div>
+  <div class="sb-link" onclick="switchTool('sendgcarouselv3',this)"><span>🎠</span> sendgcarouselv3</div>
+  <div class="sb-link" onclick="switchTool('createcarousel',this)"><span>🎠</span> createcarousel</div>
+  <div class="sb-title" style="margin-top:12px">Button Tools</div>
+  <div class="sb-link" onclick="switchTool('sendbtn',this)"><span>🔘</span> sendbtn</div>
+  <div class="sb-link" onclick="switchTool('btnmsg',this)"><span>🔘</span> btnmsg</div>
+</aside>
+
+<div class="main">
+<!-- TABS -->
+<div class="tool-tabs">
+  <button class="tool-tab active" onclick="switchTool('sendtable',this)"><span class="ti">📊</span>sendtable</button>
+  <button class="tool-tab" onclick="switchTool('sendtablev2',this)"><span class="ti">📊</span>tblv2</button>
+  <button class="tool-tab" onclick="switchTool('sendgtable',this)"><span class="ti">📄</span>sendgtable</button>
+  <button class="tool-tab" onclick="switchTool('sendgtablev2',this)"><span class="ti">📄</span>gtblv2</button>
+  <button class="tool-tab" onclick="switchTool('sendcarousel',this)"><span class="ti">🎠</span>carousel</button>
+  <button class="tool-tab" onclick="switchTool('sendgcarouselv3',this)"><span class="ti">🎠</span>gcarousel</button>
+  <button class="tool-tab" onclick="switchTool('createcarousel',this)"><span class="ti">🎠</span>createcar</button>
+  <button class="tool-tab" onclick="switchTool('sendbtn',this)"><span class="ti">🔘</span>sendbtn</button>
+  <button class="tool-tab" onclick="switchTool('btnmsg',this)"><span class="ti">🔘</span>btnmsg</button>
+</div>
+
+<!-- ══ SENDTABLE ══ -->
+<div class="form-section active" id="form-sendtable">
+  <div class="sec-head"><span class="sec-icon">📊</span><span class="sec-name">sendtable</span><span class="sec-sub">Manual table to any JID</span></div>
+  <div class="info-box">Format: <code>.sendtable TARGET|Header|Footer|FakeQuote|Col1,Col2|Row1,Row2</code></div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="st-target" placeholder="@me / 916000570671 / 120363xxx@g.us"><span class="field-hint">@me = send to yourself</span></div>
+    <div class="field"><label>Prefix</label><input id="st-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg">
+    <div class="field"><label>Header / Title <span class="req">*</span></label><input id="st-header" placeholder="📋 Daftar Siswa"></div>
+    <div class="field"><label>Footer</label><input id="st-footer" placeholder="Powered by OURIN"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Fake Quote</label><input id="st-fakequote" placeholder="Optional quoted text above reply"></div></div>
+  <div class="fg full"><div class="field"><label>Columns (comma separated) <span class="req">*</span></label><input id="st-columns" placeholder="Nama,Kelas,Sekolah,Nilai" oninput="refreshSTRows()"><span class="field-hint">e.g: Name,Class,Score,Grade</span></div></div>
+  <div class="builder">
+    <div class="bl-head"><span class="bl-title">📋 Rows</span><button class="bl-add" onclick="addSTRow()">+ Add Row</button></div>
+    <div id="st-rows"></div>
+  </div>
+</div>
+
+<!-- ══ SENDTABLEV2 ══ -->
+<div class="form-section" id="form-sendtablev2">
+  <div class="sec-head"><span class="sec-icon">📊</span><span class="sec-name">sendtablev2</span><span class="sec-sub">;; grouped rows table</span></div>
+  <div class="info-box">Use <code>;;</code> to pack multiple rows in one line. Format: <code>Key,Value;;Key2,Value2</code></div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="stv2-target" placeholder="@me / 916000570671 / 120363xxx@g.us"></div>
+    <div class="field"><label>Prefix</label><input id="stv2-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg">
+    <div class="field"><label>Title <span class="req">*</span></label><input id="stv2-title" placeholder="📊 Bot Stats"></div>
+    <div class="field"><label>Footer</label><input id="stv2-footer" placeholder="Powered by OURIN"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Fake Quote</label><input id="stv2-fakequote" placeholder="Optional quoted text"></div></div>
+  <div class="fg full"><div class="field"><label>Header Row (comma separated) <span class="req">*</span></label><input id="stv2-header-row" placeholder="Key,Value"><span class="field-hint">e.g: Key,Value or Name,Class,Score</span></div></div>
+  <div class="builder">
+    <div class="bl-head"><span class="bl-title">📋 Data Lines</span><button class="bl-add" onclick="addV2Row()">+ Add Line</button></div>
+    <div id="stv2-rows"></div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px">Each line can have multiple rows separated by <code style="color:var(--cyan)">;;`</code> e.g: <code style="color:var(--cyan)">Bot,OURIN;;Version,v2.5</code></div>
+  </div>
+</div>
+
+<!-- ══ SENDGTABLE ══ -->
+<div class="form-section" id="form-sendgtable">
+  <div class="sec-head"><span class="sec-icon">📄</span><span class="sec-name">sendgtable</span><span class="sec-sub">Table from Google Sheet</span></div>
+  <div class="info-box">Sheet must be <code>Public → Anyone with link → Viewer</code></div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="sgt-target" placeholder="@me / 916000570671 / 120363xxx@g.us"></div>
+    <div class="field"><label>Prefix</label><input id="sgt-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Google Sheet URL <span class="req">*</span></label><input id="sgt-url" placeholder="https://docs.google.com/spreadsheets/d/xxxxx/edit#gid=0"></div></div>
+  <div class="fg">
+    <div class="field"><label>Header / Title</label><input id="sgt-header" placeholder="📋 Data Siswa"></div>
+    <div class="field"><label>Footer</label><input id="sgt-footer" placeholder="Powered by OURIN"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Fake Quote</label><input id="sgt-fakequote" placeholder="Optional quoted text"></div></div>
+</div>
+
+<!-- ══ SENDGTABLEV2 ══ -->
+<div class="form-section" id="form-sendgtablev2">
+  <div class="sec-head"><span class="sec-icon">📄</span><span class="sec-name">sendgtablev2</span><span class="sec-sub">V2 table from Google Sheet</span></div>
+  <div class="info-box">Sheet must be <code>Public</code>. Data auto-grouped with <code>;;</code> per 2 rows.</div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="sgtv2-target" placeholder="@me / 916000570671 / 120363xxx@g.us"></div>
+    <div class="field"><label>Prefix</label><input id="sgtv2-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Google Sheet URL <span class="req">*</span></label><input id="sgtv2-url" placeholder="https://docs.google.com/spreadsheets/d/xxxxx/edit#gid=0"></div></div>
+  <div class="fg">
+    <div class="field"><label>Title</label><input id="sgtv2-title" placeholder="📊 Bot Statistics"></div>
+    <div class="field"><label>Footer</label><input id="sgtv2-footer" placeholder="Powered by OURIN"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Fake Quote</label><input id="sgtv2-fakequote" placeholder="Optional quoted text"></div></div>
+</div>
+
+<!-- ══ SENDCAROUSEL ══ -->
+<div class="form-section" id="form-sendcarousel">
+  <div class="sec-head"><span class="sec-icon">🎠</span><span class="sec-name">sendcarousel</span><span class="sec-sub">Interactive carousel to any JID</span></div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="sc-target" placeholder="@me / 916000570671 / 120363xxx@g.us"></div>
+    <div class="field"><label>Prefix</label><input id="sc-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg">
+    <div class="field"><label>Main Text <span class="req">*</span></label><input id="sc-maintext" placeholder="Hello! 👋"></div>
+    <div class="field"><label>Footer</label><input id="sc-footer" placeholder="Powered by OURIN"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Fake Quote</label><input id="sc-fakequote" placeholder="Optional quoted text"></div></div>
+  <div class="builder">
+    <div class="bl-head"><span class="bl-title">🎠 Slides</span><button class="bl-add" onclick="addCarSlide('sc')">+ Add Slide</button></div>
+    <div id="sc-slides"></div>
+  </div>
+</div>
+
+<!-- ══ SENDGCAROUSELV3 ══ -->
+<div class="form-section" id="form-sendgcarouselv3">
+  <div class="sec-head"><span class="sec-icon">🎠</span><span class="sec-name">sendgcarouselv3</span><span class="sec-sub">Dynamic carousel from Google Sheet</span></div>
+  <div class="info-box">Sheet must be <code>Public</code>. Columns: <code>name | id | class | imgurl | button1 | button2...</code><br>Button format: <code>url,Label,https://link.com</code> or <code>copy,Label,CODE</code></div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="sgcv3-target" placeholder="@me / 916000570671 / 120363xxx@g.us"></div>
+    <div class="field"><label>Prefix</label><input id="sgcv3-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Google Sheet URL <span class="req">*</span></label><input id="sgcv3-url" placeholder="https://docs.google.com/spreadsheets/d/xxxxx/edit#gid=0"></div></div>
+  <div class="fg">
+    <div class="field"><label>Title</label><input id="sgcv3-title" placeholder="🎓 Student Database"></div>
+    <div class="field"><label>Footer</label><input id="sgcv3-footer" placeholder="Powered by OURIN"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Fake Quote</label><input id="sgcv3-fakequote" placeholder="Optional quoted text"></div></div>
+</div>
+
+<!-- ══ CREATECAROUSEL ══ -->
+<div class="form-section" id="form-createcarousel">
+  <div class="sec-head"><span class="sec-icon">🎠</span><span class="sec-name">createcarousel</span><span class="sec-sub">Carousel to current chat</span></div>
+  <div class="fg">
+    <div class="field"><label>Prefix</label><input id="cc-prefix" value="." placeholder="."></div>
+    <div class="field"><label>Main Message <span class="req">*</span></label><input id="cc-main" placeholder="Hello Bro 👋"></div>
+  </div>
+  <div class="fg">
+    <div class="field"><label>Footer</label><input id="cc-footer" placeholder="PWJARVIS"></div>
+    <div class="field"><label>Fake Quote</label><input id="cc-fakequote" placeholder="Quoted Text or leave empty"></div>
+  </div>
+  <div class="builder">
+    <div class="bl-head"><span class="bl-title">🎠 Slides</span><button class="bl-add" onclick="addCarSlide('cc')">+ Add Slide</button></div>
+    <div id="cc-slides"></div>
+  </div>
+</div>
+
+<!-- ══ SENDBTN ══ -->
+<div class="form-section" id="form-sendbtn">
+  <div class="sec-head"><span class="sec-icon">🔘</span><span class="sec-name">sendbtn</span><span class="sec-sub">Interactive button message to any JID</span></div>
+  <div class="fg">
+    <div class="field"><label>Target <span class="req">*</span></label><input id="sb-target" placeholder="916000570671 / 120363xxx@g.us / 120363xxx@newsletter"></div>
+    <div class="field"><label>Prefix</label><input id="sb-prefix" value="." placeholder="."></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Message Text <span class="req">*</span></label><textarea id="sb-text" placeholder="Hello! Welcome to OURIN Bot 👋"></textarea></div></div>
+  <div class="fg">
+    <div class="field"><label>Footer</label><input id="sb-footer" placeholder="Ourin AI"></div>
+    <div class="field"><label>Fake Quote</label><input id="sb-fakequote" placeholder="Optional quoted text"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Image URL (optional)</label><input id="sb-image" placeholder="https://i.imgur.com/xxxx.jpg"></div></div>
+  <div class="builder">
+    <div class="bl-head"><span class="bl-title">⚡ Buttons</span><button class="bl-add" onclick="addBtn('sb')">+ Add Button</button></div>
+    <div id="sb-btns"></div>
+  </div>
+</div>
+
+<!-- ══ BTNMSG ══ -->
+<div class="form-section" id="form-btnmsg">
+  <div class="sec-head"><span class="sec-icon">🔘</span><span class="sec-name">btnmsg</span><span class="sec-sub">Button message to current chat</span></div>
+  <div class="fg full"><div class="field"><label>Message Text <span class="req">*</span></label><textarea id="bm-text" placeholder="Welcome User 👋"></textarea></div></div>
+  <div class="fg">
+    <div class="field"><label>Footer</label><input id="bm-footer" placeholder="Ourin AI"></div>
+    <div class="field"><label>Fake Quote</label><input id="bm-fakequote" placeholder="Optional quoted text"></div>
+  </div>
+  <div class="fg full"><div class="field"><label>Image URL (optional)</label><input id="bm-image" placeholder="https://i.imgur.com/xxxx.jpg"></div></div>
+  <div class="builder">
+    <div class="bl-head"><span class="bl-title">⚡ Buttons</span><button class="bl-add" onclick="addBtn('bm')">+ Add Button</button></div>
+    <div id="bm-btns"></div>
+  </div>
+</div>
+
+<!-- ACTION BAR -->
+<div class="action-bar">
+  <button class="btn-prev" onclick="showPreview()">👁 Preview</button>
+  <button class="btn-gen" onclick="generate()">⚡ Generate Command</button>
+  <button class="btn-cpy" id="copyBtn" onclick="copyOut()">📋 Copy</button>
+</div>
+
+<!-- OUTPUT -->
+<div class="output-wrap" id="outputWrap">
+  <div class="out-head">
+    <span class="out-label">📋 Generated Command</span>
+    <button class="out-copy-btn" id="outCopyBtn" onclick="copyOut()">Copy</button>
+  </div>
+  <div class="out-box" id="outBox"></div>
+  <div class="out-note">Paste this directly in WhatsApp and send. <span id="outNote"></span></div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="previewModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Command Preview</div>
+      <button class="modal-close" onclick="closeModal()">✕ CLOSE</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let activeTool = 'sendtable';
+let stRowCount=0, stv2RowCount=0, scSlideCount=0, ccSlideCount=0, sbBtnCount=0, bmBtnCount=0;
+
+// ── INIT ──
+addSTRow(); addV2Row(); addCarSlide('sc'); addCarSlide('cc'); addBtn('sb'); addBtn('bm');
+
+// ── SWITCH ──
+function switchTool(tool, el) {
+  activeTool = tool;
+  document.querySelectorAll('.form-section').forEach(f=>f.classList.remove('active'));
+  document.getElementById('form-'+tool).classList.add('active');
+  document.querySelectorAll('.sb-link,.tool-tab').forEach(e=>e.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('outputWrap').classList.remove('show');
+  document.getElementById('copyBtn').style.display='none';
+}
+
+// ── SENDTABLE ROWS ──
+function addSTRow(){
+  stRowCount++;
+  const id='str_'+stRowCount;
+  const cols=getSTCols();
+  const li=document.createElement('div'); li.className='item-row'; li.id=id;
+  li.innerHTML=cols.map(c=>`<input type="text" placeholder="${c}">`).join('')+
+    `<button class="rm-btn" onclick="document.getElementById('${id}').remove()">✕</button>`;
+  document.getElementById('st-rows').appendChild(li);
+}
+function getSTCols(){
+  const v=(document.getElementById('st-columns')?.value||'').split(',').map(c=>c.trim()).filter(Boolean);
+  return v.length?v:['Col1','Col2','Col3'];
+}
+function refreshSTRows(){
+  const cols=getSTCols();
+  document.querySelectorAll('#st-rows .item-row').forEach(li=>{
+    const rm=li.querySelector('.rm-btn');
+    const vals=[...li.querySelectorAll('input')].map(i=>i.value);
+    li.innerHTML=cols.map((c,i)=>`<input type="text" placeholder="${c}" value="${vals[i]||''}">`).join('')+rm.outerHTML;
+  });
+}
+
+// ── SENDTABLEV2 ROWS ──
+function addV2Row(){
+  stv2RowCount++;
+  const id='v2r_'+stv2RowCount;
+  const li=document.createElement('div'); li.className='item-row'; li.id=id;
+  li.innerHTML=`<input type="text" placeholder="Bot,OURIN;;Version,v2.5" style="flex:1">
+    <button class="rm-btn" onclick="document.getElementById('${id}').remove()">✕</button>`;
+  document.getElementById('stv2-rows').appendChild(li);
+}
+
+// ── CAROUSEL SLIDE BUILDER ──
+function addCarSlide(prefix){
+  const listId=prefix+'-slides';
+  if(prefix==='sc') scSlideCount++; else ccSlideCount++;
+  const num=prefix==='sc'?scSlideCount:ccSlideCount;
+  const sid=prefix+'_slide_'+num;
+  const div=document.createElement('div'); div.className='slide-item'; div.id=sid;
+  div.innerHTML=`
+    <div class="slide-num">SLIDE ${num}</div>
+    <div class="sg">
+      <div class="sfield"><label>Title *</label><input class="sl-title" placeholder="Product Name"></div>
+      <div class="sfield"><label>Description</label><input class="sl-desc" placeholder="Short description"></div>
+    </div>
+    <div class="sg">
+      <div class="sfield"><label>Slide Footer</label><input class="sl-footer" placeholder="Footer text"></div>
+      <div class="sfield"><label>Image URL *</label><input class="sl-image" placeholder="https://i.imgur.com/xxx.jpg"></div>
+    </div>
+    <div class="sbl-title">BUTTONS</div>
+    <div class="sbl-list" id="sbl_${sid}"></div>
+    <button class="bl-add sm" style="margin-top:6px" onclick="addSlideBtn('${sid}')">+ Button</button>
+    <br><button class="slide-rm" onclick="document.getElementById('${sid}').remove()">✕ Remove Slide</button>
+  `;
+  document.getElementById(listId).appendChild(div);
+  addSlideBtn(sid);
+}
+function addSlideBtn(sid){
+  const bid='sbtn_'+Date.now();
+  const li=document.createElement('div'); li.className='sbtn-row'; li.id=bid;
+  li.innerHTML=`<select>${btnOpts()}</select>
+    <input type="text" placeholder="Label">
+    <input type="text" placeholder="URL / value">
+    <button class="rm-btn" onclick="document.getElementById('${bid}').remove()">✕</button>`;
+  document.getElementById('sbl_'+sid).appendChild(li);
+}
+
+// ── BTN BUILDER ──
+function addBtn(prefix){
+  const listId=prefix+'-btns';
+  if(prefix==='sb') sbBtnCount++; else bmBtnCount++;
+  const bid=prefix+'_btn_'+(prefix==='sb'?sbBtnCount:bmBtnCount);
+  const li=document.createElement('div'); li.className='item-row'; li.id=bid;
+  li.innerHTML=`<select style="width:110px">${btnOpts()}</select>
+    <input type="text" placeholder="Button label" class="btn-label">
+    <input type="text" placeholder="URL / value / command" class="btn-value">
+    <button class="rm-btn" onclick="document.getElementById('${bid}').remove()">✕</button>`;
+  document.getElementById(listId).appendChild(li);
+}
+function btnOpts(){
+  return `<option value="url">🌐 URL</option><option value="copy">📋 Copy</option><option value="reply">💬 Reply</option><option value="call">📞 Call</option><option value="webview">🪟 Webview</option><option value="sendloc">📌 SendLoc</option><option value="reminder">⏰ Reminder</option>`;
+}
+
+// ── COLLECT BTNS ──
+function collectBtns(containerId){
+  return [...document.querySelectorAll('#'+containerId+' .item-row')].map(li=>{
+    const sel=li.querySelector('select')?.value;
+    const label=li.querySelector('.btn-label')?.value.trim();
+    const val=li.querySelector('.btn-value')?.value.trim();
+    return {type:sel,label,val};
+  }).filter(b=>b.label);
+}
+
+// ── COLLECT SLIDES ──
+function collectSlides(prefix){
+  return [...document.querySelectorAll('#'+prefix+'-slides .slide-item')].map(slide=>{
+    const title=slide.querySelector('.sl-title')?.value.trim()||'';
+    const desc=slide.querySelector('.sl-desc')?.value.trim()||'';
+    const footer=slide.querySelector('.sl-footer')?.value.trim()||'';
+    const image=slide.querySelector('.sl-image')?.value.trim()||'';
+    const btns=[...slide.querySelectorAll('.sbtn-row')].map(br=>{
+      const type=br.querySelector('select')?.value;
+      const inputs=br.querySelectorAll('input');
+      return {type,label:inputs[0]?.value.trim(),val:inputs[1]?.value.trim()};
+    }).filter(b=>b.label);
+    return {title,desc,footer,image,btns};
+  });
+}
+
+// ── BUILD BTN PARTS ──
+function btnsToStr(btns){
+  return btns.map(b=>{
+    if(b.type==='sendloc'||b.type==='reminder') return `${b.type},${b.label}`;
+    return `${b.type},${b.label},${b.val}`;
+  }).join('|');
+}
+
+// ── GENERATE ──
+function generate(){
+  const p=v=>v||'';
+  let cmd='';
+  const t=activeTool;
+
+  if(t==='sendtable'){
+    const target=g('st-target'); const prefix=g('st-prefix')||'.';
+    const header=g('st-header'); const footer=g('st-footer');
+    const fq=g('st-fakequote'); const cols=g('st-columns');
+    if(!target||!header||!cols){return toast('❌ Fill Target, Header and Columns!','error')}
+    const rows=[...document.querySelectorAll('#st-rows .item-row')].map(li=>
+      [...li.querySelectorAll('input')].map(i=>i.value.trim()).join(',')
+    ).filter(r=>r.replace(/,/g,'').trim());
+    if(!rows.length){return toast('❌ Add at least 1 row!','error')}
+    cmd=`${prefix}sendtable ${target}|${header}|${p(footer)}|${p(fq)}|${cols}|${rows.join('|')}`;
+  }
+  else if(t==='sendtablev2'){
+    const target=g('stv2-target'); const prefix=g('stv2-prefix')||'.';
+    const title=g('stv2-title'); const footer=g('stv2-footer');
+    const fq=g('stv2-fakequote'); const hrow=g('stv2-header-row');
+    if(!target||!title||!hrow){return toast('❌ Fill Target, Title and Header Row!','error')}
+    const lines=[...document.querySelectorAll('#stv2-rows .item-row')].map(li=>
+      li.querySelector('input')?.value.trim()
+    ).filter(Boolean);
+    if(!lines.length){return toast('❌ Add at least 1 data line!','error')}
+    cmd=`${prefix}sendtablev2 ${target}|${title}|${p(footer)}|${p(fq)}|${hrow}|${lines.join('|')}`;
+  }
+  else if(t==='sendgtable'){
+    const target=g('sgt-target'); const prefix=g('sgt-prefix')||'.';
+    const url=g('sgt-url'); const header=g('sgt-header');
+    const footer=g('sgt-footer'); const fq=g('sgt-fakequote');
+    if(!target||!url){return toast('❌ Fill Target and Sheet URL!','error')}
+    cmd=`${prefix}sendgtable ${target}|${url}|${p(header)}|${p(footer)}|${p(fq)}`;
+  }
+  else if(t==='sendgtablev2'){
+    const target=g('sgtv2-target'); const prefix=g('sgtv2-prefix')||'.';
+    const url=g('sgtv2-url'); const title=g('sgtv2-title');
+    const footer=g('sgtv2-footer'); const fq=g('sgtv2-fakequote');
+    if(!target||!url){return toast('❌ Fill Target and Sheet URL!','error')}
+    cmd=`${prefix}sendgtablev2 ${target}|${url}|${p(title)}|${p(footer)}|${p(fq)}`;
+  }
+  else if(t==='sendcarousel'){
+    const target=g('sc-target'); const prefix=g('sc-prefix')||'.';
+    const main=g('sc-maintext'); const footer=g('sc-footer'); const fq=g('sc-fakequote');
+    if(!target||!main){return toast('❌ Fill Target and Main Text!','error')}
+    const slides=collectSlides('sc');
+    if(!slides.length){return toast('❌ Add at least 1 slide!','error')}
+    const slideParts=slides.flatMap(s=>{
+      const base=[s.title,s.desc,s.footer,s.image];
+      const btnStr=s.btns.map(b=>`${b.type},${b.label},${b.val}`);
+      return [...base,...btnStr];
+    });
+    cmd=`${prefix}sendcarousel ${target}|${main}|${p(footer)}|${p(fq)}|${slideParts.join('|')}`;
+  }
+  else if(t==='sendgcarouselv3'){
+    const target=g('sgcv3-target'); const prefix=g('sgcv3-prefix')||'.';
+    const url=g('sgcv3-url'); const title=g('sgcv3-title');
+    const footer=g('sgcv3-footer'); const fq=g('sgcv3-fakequote');
+    if(!target||!url){return toast('❌ Fill Target and Sheet URL!','error')}
+    cmd=`${prefix}sendgcarouselv3 ${target}|${url}|${p(title)}|${p(footer)}|${p(fq)}`;
+  }
+  else if(t==='createcarousel'){
+    const prefix=g('cc-prefix')||'.';
+    const main=g('cc-main'); const footer=g('cc-footer'); const fq=g('cc-fakequote');
+    if(!main){return toast('❌ Fill Main Message!','error')}
+    const slides=collectSlides('cc');
+    if(!slides.length){return toast('❌ Add at least 1 slide!','error')}
+    const slideParts=slides.flatMap(s=>{
+      const base=[s.title,s.desc,s.footer,s.image];
+      const btnStr=s.btns.map(b=>`${b.type},${b.label},${b.val}`);
+      return [...base,...btnStr];
+    });
+    cmd=`${prefix}createcarousel ${main}|${p(footer)}|${p(fq)}|${slideParts.join('|')}`;
+  }
+  else if(t==='sendbtn'){
+    const target=g('sb-target'); const prefix=g('sb-prefix')||'.';
+    const text=g('sb-text'); const footer=g('sb-footer');
+    const fq=g('sb-fakequote'); const img=g('sb-image');
+    if(!target||!text){return toast('❌ Fill Target and Message!','error')}
+    const btns=collectBtns('sb-btns');
+    if(!btns.length){return toast('❌ Add at least 1 button!','error')}
+    const bStr=btnsToStr(btns);
+    const parts=[target,text,p(footer),p(fq)];
+    if(img) parts.push(`img,${img}`);
+    cmd=`${prefix}sendbtn ${parts.join('|')}|${bStr}`;
+  }
+  else if(t==='btnmsg'){
+    const text=g('bm-text'); const footer=g('bm-footer');
+    const fq=g('bm-fakequote'); const img=g('bm-image');
+    if(!text){return toast('❌ Fill Message Text!','error')}
+    const btns=collectBtns('bm-btns');
+    if(!btns.length){return toast('❌ Add at least 1 button!','error')}
+    const bStr=btnsToStr(btns);
+    const parts=[text,p(footer),p(fq)];
+    if(img) parts.push(`img,${img}`);
+    cmd=`.btnmsg ${parts.join('|')}|${bStr}`;
+  }
+
+  if(!cmd) return;
+  document.getElementById('outBox').textContent=cmd;
+  document.getElementById('outNote').textContent=`Command: .${t}`;
+  document.getElementById('outputWrap').classList.add('show');
+  document.getElementById('copyBtn').style.display='';
+  toast('✅ Command generated!','success');
+  document.getElementById('outputWrap').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function g(id){return (document.getElementById(id)?.value||'').trim()}
+
+// ── COPY ──
+function copyOut(){
+  const text=document.getElementById('outBox').textContent;
+  if(!text) return;
+  navigator.clipboard.writeText(text).then(()=>{
+    document.getElementById('outCopyBtn').textContent='✓ Copied!';
+    document.getElementById('outCopyBtn').classList.add('copied');
+    toast('✅ Copied!','success');
+    setTimeout(()=>{
+      document.getElementById('outCopyBtn').textContent='Copy';
+      document.getElementById('outCopyBtn').classList.remove('copied');
+    },2000);
+  });
+}
+
+// ── PREVIEW ──
+function showPreview(){
+  const cmd=document.getElementById('outBox').textContent;
+  const t=activeTool;
+  const names={sendtable:'📊 sendtable',sendtablev2:'📊 sendtablev2',sendgtable:'📄 sendgtable',sendgtablev2:'📄 sendgtablev2',sendcarousel:'🎠 sendcarousel',sendgcarouselv3:'🎠 sendgcarouselv3',createcarousel:'🎠 createcarousel',sendbtn:'🔘 sendbtn',btnmsg:'🔘 btnmsg'};
+  const previews={
+    sendtable:'📊 Table will be sent\n[Formatted Unicode table with headers and rows]',
+    sendtablev2:'📊 V2 Table sent\n[Grouped rows with ;; separator]',
+    sendgtable:'📊 Table sent from Google Sheet\n[Auto-fetched and formatted]',
+    sendgtablev2:'📊 V2 Table from Sheet\n[Grouped data rows]',
+    sendcarousel:'🎠 Carousel sent\n[Interactive slides with images & buttons]',
+    sendgcarouselv3:'🎠 Dynamic carousel from Sheet\n[Auto-generated cards]',
+    createcarousel:'🎠 Carousel created\n[Sent to current chat]',
+    sendbtn:'🔘 Button message sent\n[Interactive buttons delivered]',
+    btnmsg:'🔘 Button message\n[Sent to current chat]'
+  };
+  document.getElementById('modalBody').innerHTML=`
+    <div style="font-family:'Space Mono',monospace;font-size:16px;color:var(--green);font-weight:700;margin-bottom:12px">.${t}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;text-transform:uppercase;background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.15);display:inline-block;margin-bottom:14px">${names[t]||t}</div>
+    <div class="pv-sec">Chat Preview</div>
+    <div class="phone">
+      <div class="phone-bar">
+        <div class="phone-dot" style="background:#ff5f57"></div>
+        <div class="phone-dot" style="background:#febc2e"></div>
+        <div class="phone-dot" style="background:#28c840"></div>
+        <span class="phone-status">OURIN BOT ● ONLINE</span>
+      </div>
+      <div class="chat-area">
+        <div class="msg-wrap">
+          <div class="msg user">.${t} ...<div class="msg-time">Now</div></div>
+          <div class="msg bot">${(previews[t]||'Command sent!').replace(/\n/g,'<br>')}<div class="msg-time">Now ✓✓</div></div>
+        </div>
+      </div>
+    </div>
+    ${cmd?`<div class="pv-sec">Generated Command</div><div class="pv-box">${cmd}</div>`:'<div style="color:var(--red);margin-top:12px;font-size:12px">Generate command first to see it here.</div>'}
+  `;
+  document.getElementById('previewModal').classList.add('open');
+}
+function closeModal(){document.getElementById('previewModal').classList.remove('open')}
+
+// ── TOAST ──
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  clearTimeout(t._to); t._to=setTimeout(()=>t.classList.remove('show'),2800);
+}
+</script>
+</body>
+</html>
