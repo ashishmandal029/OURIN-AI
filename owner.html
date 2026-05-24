@@ -178,8 +178,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(3,5,8,.92);b
 /* ── CONTACT ── */
 .contact-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 32px;text-align:center;position:relative;z-index:1;overflow:hidden}
 .contact-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,255,136,.07) 0%,transparent 60%);pointer-events:none}
-.contact-links{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:36px;background:var(--border);border:1px solid var(--border);width:100%}
-.contact-link{background:var(--bg);padding:24px 20px;display:flex;align-items:center;gap:12px;text-decoration:none;transition:all .3s;width:100%}
+.contact-links{display:flex;gap:1px;flex-wrap:wrap;justify-content:center;margin-top:36px;background:var(--border)}
+.contact-link{background:var(--bg);padding:20px 32px;display:flex;align-items:center;gap:12px;text-decoration:none;transition:all .3s;min-width:180px;justify-content:center}
 .contact-link:hover{background:rgba(0,255,136,.06)}
 .cl-icon{font-size:20px;flex-shrink:0}
 .cl-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text)}
@@ -212,18 +212,55 @@ footer{padding:24px 32px;border-top:1px solid var(--border);display:flex;align-i
   .nav-links{display:none}
   .ph-stats{flex-wrap:wrap}
   .ph-stat{min-width:100px}
-  .contact-links{grid-template-columns:repeat(2,1fr)}
-  .contact-link{padding:16px 14px}
+  .contact-links{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+  .contact-link{min-width:0;padding:16px 14px;justify-content:flex-start}
 }
 @media(max-width:480px){
-  .hero{padding:90px 18px 50px}
-  .section{padding:60px 18px}
+  /* NAV */
+  nav{padding:10px 14px}
+  .status{display:none}
+  .nav-cta{padding:7px 12px;font-size:10px}
+
+  /* HERO */
+  .hero{padding:80px 14px 40px}
+  .hero-name{font-size:clamp(36px,13vw,56px);letter-spacing:-2px}
+  .hero-desc{font-size:13px}
+  .hero-btns{flex-direction:column;gap:8px}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center}
+
+  /* STATS — 2x2 grid */
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:20px;margin-top:24px}
+  .stat-num{font-size:22px}
+  .stat-label{font-size:8px}
+
+  /* SECTIONS */
+  .section{padding:48px 14px}
+  .sec-title{font-size:clamp(22px,7vw,32px);letter-spacing:-1px;margin-bottom:24px}
+
+  /* SKILLS */
   .skill-grid{grid-template-columns:1fr}
-  .project-hero{padding:28px 18px}
-  nav{padding:12px 18px}
-  .hero-stats{gap:18px}
-  .contact-section{padding:60px 18px}
-  footer{padding:18px}
+  .skill-card{padding:20px 16px}
+
+  /* PROJECT HERO */
+  .project-hero{padding:22px 14px}
+  .ph-title{font-size:clamp(28px,9vw,44px);letter-spacing:-1px}
+  .ph-stats{display:grid;grid-template-columns:1fr 1fr}
+  .ph-stat{padding:12px 10px}
+  .ph-stat-num{font-size:18px}
+  .ph-btns{flex-direction:column;gap:8px}
+  .ph-btns .btn-primary,.ph-btns .btn-secondary{width:100%;justify-content:center}
+
+  /* PROJ GRID */
+  .proj-grid{grid-template-columns:1fr}
+
+  /* CONTACT */
+  .contact-section{padding:48px 14px}
+  .contact-links{grid-template-columns:1fr}
+  .contact-link{padding:14px 16px}
+  .cl-name{font-size:13px}
+
+  /* FOOTER */
+  footer{padding:16px 14px;flex-direction:column;align-items:flex-start;gap:8px}
 }
 </style>
 </head>
