@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Ashish Mandal — Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #030508;
+  --bg2: #060c12;
+  --bg3: #0a141e;
+  --green: #00ff88;
+  --cyan: #00e5ff;
+  --amber: #ffaa00;
+  --red: #ff2255;
+  --text: #e0f0ea;
+  --muted: #3d6050;
+  --border: rgba(0,255,136,0.10);
+  --border2: rgba(0,255,136,0.20);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;overflow-x:hidden}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none}
+
+/* GLOW ORBS */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);opacity:.10}
+.orb1{width:500px;height:500px;background:var(--green);top:-120px;left:-100px;animation:drift 14s ease-in-out infinite}
+.orb2{width:350px;height:350px;background:#0044ff;bottom:100px;right:-80px;animation:drift 18s ease-in-out infinite reverse}
+.orb3{width:250px;height:250px;background:var(--cyan);top:50%;right:20%;animation:drift 10s ease-in-out infinite 3s}
+
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+@keyframes glitch{0%,100%{clip-path:inset(0 0 100% 0)}10%{clip-path:inset(10% 0 60% 0)}20%{clip-path:inset(50% 0 30% 0)}30%{clip-path:inset(20% 0 70% 0)}40%{clip-path:inset(80% 0 5% 0)}50%{clip-path:inset(40% 0 40% 0)}60%{clip-path:inset(0 0 80% 0)}70%{clip-path:inset(60% 0 20% 0)}80%{clip-path:inset(30% 0 50% 0)}90%{clip-path:inset(70% 0 10% 0)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* CURSOR */
+*{cursor:none}
+.cursor{position:fixed;width:12px;height:12px;background:var(--green);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(0,255,136,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .15s ease,width .3s,height .3s,border-color .3s}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(3,5,8,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-hex{width:32px;height:32px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;color:var(--bg);animation:float 3s ease-in-out infinite}
+.nav-name{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--green)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--green);transition:width .3s}
+.nav-links a:hover{color:var(--green)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--bg);background:var(--green);border:none;padding:8px 16px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .25s}
+.nav-cta:hover{background:var(--cyan);box-shadow:0 0 20px rgba(0,229,255,.3)}
+
+/* STATUS DOT */
+.status{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sdot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 32px 60px;position:relative;z-index:1;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center}
+
+.hero-left{animation:fadeUp .8s ease both}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.eyebrow-line{width:40px;height:1px;background:var(--green)}
+.eyebrow-text{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:3px;text-transform:uppercase}
+
+.hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(42px,7vw,80px);letter-spacing:-3px;line-height:.95;margin-bottom:8px;position:relative}
+.hero-name .n1{display:block;color:var(--text)}
+.hero-name .n2{display:block;background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* GLITCH EFFECT */
+.hero-name .n2::before{content:'MANDAL';position:absolute;left:0;background:linear-gradient(90deg,var(--red),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:glitch 4s infinite 2s;opacity:.4}
+
+.typewriter{font-family:'Space Mono',monospace;font-size:16px;color:var(--cyan);letter-spacing:2px;margin-bottom:24px;height:22px}
+.typewriter span{border-right:2px solid var(--green);padding-right:3px;animation:blink .8s infinite}
+
+.hero-desc{font-size:15px;color:rgba(224,240,234,.6);line-height:1.85;max-width:520px;margin-bottom:36px;font-weight:300}
+
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--bg);background:var(--green);border:none;padding:12px 24px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+.btn-primary:hover{background:var(--cyan);box-shadow:0 0 30px rgba(0,229,255,.4);transform:translateY(-2px)}
+.btn-secondary{font-family:'Space Mono',monospace;font-size:11px;color:var(--green);background:transparent;border:1px solid rgba(0,255,136,.3);padding:12px 24px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+.btn-secondary:hover{background:rgba(0,255,136,.08);border-color:rgba(0,255,136,.6);transform:translateY(-2px)}
+
+/* HERO STATS */
+.hero-stats{display:flex;gap:28px;margin-top:40px;padding-top:32px;border-top:1px solid var(--border)}
+.stat-item{display:flex;flex-direction:column;gap:4px}
+.stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--green);letter-spacing:-1px}
+.stat-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+
+/* HERO RIGHT — CODE CARD */
+.hero-right{animation:fadeUp .8s ease .2s both}
+.code-card{background:var(--bg2);border:1px solid var(--border2);position:relative;overflow:hidden}
+.code-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.cc-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.cc-dots{display:flex;gap:5px}
+.cc-dot{width:9px;height:9px;border-radius:50%}
+.cc-title{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-left:auto}
+.cc-body{padding:20px;font-family:'Space Mono',monospace;font-size:12px;line-height:2}
+.cc-body .kw{color:#ff79c6}
+.cc-body .fn{color:var(--green)}
+.cc-body .st{color:var(--amber)}
+.cc-body .cm{color:var(--muted);font-style:italic}
+.cc-body .nm{color:var(--cyan)}
+.cc-body .op{color:rgba(224,240,234,.4)}
+
+/* SCANLINE */
+.code-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,255,136,.15),transparent);animation:scanline 6s linear infinite;pointer-events:none}
+
+/* ── SKILLS ── */
+.section{padding:80px 32px;position:relative;z-index:1;max-width:1100px;margin:0 auto}
+.sec-label{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.sec-label::before{content:'';width:40px;height:1px;background:var(--green)}
+.sec-label span{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:3px;text-transform:uppercase}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-1.5px;margin-bottom:40px}
+.sec-title em{font-style:normal;background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* SKILL GRID */
+.skill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.skill-card{background:var(--bg);padding:28px 24px;position:relative;overflow:hidden;transition:background .3s}
+.skill-card:hover{background:rgba(0,255,136,.04)}
+.skill-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:linear-gradient(to bottom,var(--green),var(--cyan));transition:height .4s}
+.skill-card:hover::before{height:100%}
+.sk-icon{font-size:28px;margin-bottom:14px}
+.sk-name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:6px}
+.sk-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.sk-bar{height:3px;background:rgba(0,255,136,.1);margin-top:8px;position:relative;overflow:hidden}
+.sk-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));transform-origin:left;transition:transform 1s ease .3s}
+.sk-level{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:1px;margin-top:5px}
+
+/* ── PROJECT — OURIN ── */
+.project-hero{background:var(--bg2);border:1px solid var(--border);position:relative;overflow:hidden;padding:48px;margin-bottom:2px}
+.project-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(0,255,136,.07) 0%,transparent 60%);pointer-events:none}
+.project-hero::after{content:'OURIN';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Syne',sans-serif;font-weight:800;font-size:160px;color:rgba(0,255,136,.03);letter-spacing:-8px;pointer-events:none;white-space:nowrap}
+.ph-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);padding:5px 12px;margin-bottom:18px;font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px;text-transform:uppercase}
+.ph-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,6vw,64px);letter-spacing:-2px;line-height:1;margin-bottom:14px}
+.ph-title span{background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ph-desc{font-size:14px;color:rgba(224,240,234,.6);line-height:1.85;max-width:580px;margin-bottom:28px;font-weight:300}
+.ph-stats{display:flex;gap:0;margin-bottom:32px;border:1px solid var(--border)}
+.ph-stat{padding:16px 24px;border-right:1px solid var(--border);flex:1;text-align:center}
+.ph-stat:last-child{border-right:none}
+.ph-stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--green)}
+.ph-stat-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.ph-btns{display:flex;gap:10px;flex-wrap:wrap}
+.ph-techs{display:flex;gap:6px;flex-wrap:wrap;margin-top:24px}
+.ph-tech{font-family:'Space Mono',monospace;font-size:9px;padding:4px 10px;border:1px solid var(--border2);color:var(--cyan);letter-spacing:1px;text-transform:uppercase;background:rgba(0,229,255,.05)}
+
+/* OTHER PROJECTS */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2px}
+.proj-card{background:var(--bg);padding:24px;position:relative;overflow:hidden;transition:background .3s}
+.proj-card:hover{background:rgba(0,255,136,.04)}
+.proj-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0;transition:opacity .3s}
+.proj-card:hover::before{opacity:1}
+.pc-icon{font-size:24px;margin-bottom:12px}
+.pc-name{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;margin-bottom:6px}
+.pc-desc{font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.pc-tag{font-family:'Space Mono',monospace;font-size:8px;padding:3px 8px;border:1px solid var(--border);color:var(--green);letter-spacing:1px;text-transform:uppercase;display:inline-block}
+
+/* ── TIMELINE / JOURNEY ── */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--green),transparent)}
+.tl-item{position:relative;padding:0 0 40px 32px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;background:var(--green);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.tl-year{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:6px}
+.tl-title{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:6px}
+.tl-desc{font-size:13.5px;color:var(--muted);line-height:1.7}
+
+/* ── CONTACT ── */
+.contact-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 32px;text-align:center;position:relative;z-index:1;overflow:hidden}
+.contact-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,255,136,.07) 0%,transparent 60%);pointer-events:none}
+.contact-links{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:36px;background:var(--border);border:1px solid var(--border);width:100%}
+.contact-link{background:var(--bg);padding:24px 20px;display:flex;align-items:center;gap:12px;text-decoration:none;transition:all .3s;width:100%}
+.contact-link:hover{background:rgba(0,255,136,.06)}
+.cl-icon{font-size:20px;flex-shrink:0}
+.cl-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text)}
+.cl-handle{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.cl-arr{margin-left:auto;color:var(--green);font-family:'Space Mono',monospace;transition:transform .2s}
+.contact-link:hover .cl-arr{transform:translateX(4px)}
+
+/* FOOTER */
+footer{padding:24px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;flex-wrap:wrap;gap:12px}
+.ft-name{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--green)}
+.ft-copy{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.ft-links{display:flex;gap:20px}
+.ft-link{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.ft-link:hover{color:var(--green)}
+
+/* SCROLL INDICATOR */
+.scroll-ind{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:float 3s ease-in-out infinite}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--green),transparent)}
+.scroll-text{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;writing-mode:vertical-rl}
+
+/* INDIA FLAG ACCENT */
+.india-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;padding:4px 10px;border:1px solid var(--border);margin-bottom:12px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-right{display:none}
+  .skill-grid{grid-template-columns:1fr 1fr}
+  .proj-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .ph-stats{flex-wrap:wrap}
+  .ph-stat{min-width:100px}
+  .contact-link{min-width:140px;padding:16px 20px}
+}
+@media(max-width:480px){
+  .hero{padding:90px 18px 50px}
+  .section{padding:60px 18px}
+  .skill-grid{grid-template-columns:1fr}
+  .project-hero{padding:28px 18px}
+  nav{padding:12px 18px}
+  .hero-stats{gap:18px}
+  .contact-section{padding:60px 18px}
+  footer{padding:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-hex">AM</div>
+    <div>
+      <div class="nav-name">ASHISH</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="status"><span class="sdot"></span> Available</div>
+    <a href="#contact" class="nav-cta">Hire Me →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="india-badge">🇮🇳 India — Builder of Things</div>
+      <div class="hero-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Full Stack Developer</span>
+      </div>
+      <h1 class="hero-name">
+        <span class="n1">ASHISH</span>
+        <span class="n2">MANDAL</span>
+      </h1>
+      <div class="typewriter" id="typewriter"><span id="tw-text"></span></div>
+      <p class="hero-desc">I build things that actually work. From WhatsApp bots with 1000+ commands to full-stack web apps — I turn ideas into working software. Python, Java, HTML and whatever it takes to ship.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">⚡ View Projects</a>
+        <a href="https://wa.me/916000570671" class="btn-secondary">💬 WhatsApp Me</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num" data-target="1000">0</div>
+          <div class="stat-label">Commands Built</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-target="50">0</div>
+          <div class="stat-label">K+ Users</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-target="35">0</div>
+          <div class="stat-label">Categories</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-target="3">0</div>
+          <div class="stat-label">Years Coding</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="code-card">
+        <div class="cc-header">
+          <div class="cc-dots">
+            <div class="cc-dot" style="background:#ff5f57"></div>
+            <div class="cc-dot" style="background:#febc2e"></div>
+            <div class="cc-dot" style="background:#28c840"></div>
+          </div>
+          <div class="cc-title">ashish.py</div>
+        </div>
+        <div class="cc-body">
+<span class="cm"># Developer Profile</span>
+<span class="kw">class</span> <span class="fn">AshishMandal</span><span class="op">:</span>
+
+  <span class="fn">name</span> <span class="op">=</span> <span class="st">"Ashish Mandal"</span>
+  <span class="fn">from_</span> <span class="op">=</span> <span class="st">"🇮🇳 India"</span>
+  <span class="fn">role</span> <span class="op">=</span> <span class="st">"Developer"</span>
+
+  <span class="fn">skills</span> <span class="op">=</span> <span class="op">[</span>
+    <span class="st">"Python"</span><span class="op">,</span>
+    <span class="st">"Java"</span><span class="op">,</span>
+    <span class="st">"HTML/CSS/JS"</span><span class="op">,</span>
+    <span class="st">"Baileys"</span><span class="op">,</span>
+    <span class="st">"Node.js"</span>
+  <span class="op">]</span>
+
+  <span class="fn">main_project</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="st">"name"</span><span class="op">:</span> <span class="st">"OURIN Bot"</span><span class="op">,</span>
+    <span class="st">"commands"</span><span class="op">:</span> <span class="nm">1000</span><span class="op">,</span>
+    <span class="st">"users"</span><span class="op">:</span> <span class="st">"50K+"</span>
+  <span class="op">}</span>
+
+  <span class="fn">status</span> <span class="op">=</span> <span class="st">"🟢 Building..."</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    <div class="scroll-text">Scroll</div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="sec-label"><span>02 — Skills</span></div>
+  <h2 class="sec-title">What I <em>Build With</em></h2>
+  <div class="skill-grid">
+    <div class="skill-card">
+      <div class="sk-icon">🐍</div>
+      <div class="sk-name">Python</div>
+      <div class="sk-desc">Backend scripting, automation, bot logic, API integrations. My go-to for rapid development.</div>
+      <div class="sk-bar"><div class="sk-fill" style="transform:scaleX(.88)"></div></div>
+      <div class="sk-level">Advanced — 88%</div>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">☕</div>
+      <div class="sk-name">Java</div>
+      <div class="sk-desc">Object-oriented programming, application development, structured system design.</div>
+      <div class="sk-bar"><div class="sk-fill" style="transform:scaleX(.72)"></div></div>
+      <div class="sk-level">Intermediate — 72%</div>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">🌐</div>
+      <div class="sk-name">HTML / CSS / JS</div>
+      <div class="sk-desc">Full frontend development — from landing pages to interactive documentation sites like this one.</div>
+      <div class="sk-bar"><div class="sk-fill" style="transform:scaleX(.85)"></div></div>
+      <div class="sk-level">Advanced — 85%</div>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">⚡</div>
+      <div class="sk-name">Node.js / Baileys</div>
+      <div class="sk-desc">WhatsApp automation using the Baileys framework. Built the entire OURIN bot ecosystem on this.</div>
+      <div class="sk-bar"><div class="sk-fill" style="transform:scaleX(.90)"></div></div>
+      <div class="sk-level">Expert — 90%</div>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">🤖</div>
+      <div class="sk-name">AI Integration</div>
+      <div class="sk-desc">Integrating GPT-4o, Gemini, DeepSeek, Flux, DALL-E into production applications.</div>
+      <div class="sk-bar"><div class="sk-fill" style="transform:scaleX(.82)"></div></div>
+      <div class="sk-level">Advanced — 82%</div>
+    </div>
+    <div class="skill-card">
+      <div class="sk-icon">🔧</div>
+      <div class="sk-name">System & VPS</div>
+      <div class="sk-desc">Linux server management, VPS deployment, automation scripts, CI/CD basics.</div>
+      <div class="sk-bar"><div class="sk-fill" style="transform:scaleX(.75)"></div></div>
+      <div class="sk-level">Intermediate — 75%</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <div class="sec-label"><span>03 — Projects</span></div>
+  <h2 class="sec-title">Things I've <em>Shipped</em></h2>
+
+  <!-- OURIN HERO PROJECT -->
+  <div class="project-hero">
+    <div class="ph-tag"><span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;animation:pulse 2s infinite"></span> Main Project — Active</div>
+    <h3 class="ph-title"><span>OURIN</span> Bot</h3>
+    <p class="ph-desc">The most feature-rich WhatsApp bot ever built. 1000+ commands across 35 categories — AI integration (GPT-4o, Gemini, DeepSeek), media downloader (30+ platforms), RPG system, group management, carousel messages, Google Sheets integration, VPS panel, and much more.</p>
+    <div class="ph-stats">
+      <div class="ph-stat">
+        <div class="ph-stat-num">1000+</div>
+        <div class="ph-stat-label">Commands</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num">35</div>
+        <div class="ph-stat-label">Categories</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num">50K+</div>
+        <div class="ph-stat-label">Users</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num">99%</div>
+        <div class="ph-stat-label">Uptime</div>
+      </div>
+    </div>
+    <div class="ph-btns">
+      <a href="https://ourinpro.vercel.app/" class="btn-primary">🌐 Visit Site</a>
+      <a href="https://wa.me/916000570671" class="btn-secondary">⚡ Try Bot</a>
+      <a href="commands.html" class="btn-secondary">📋 Commands</a>
+    </div>
+    <div class="ph-techs">
+      <span class="ph-tech">Node.js</span>
+      <span class="ph-tech">Baileys</span>
+      <span class="ph-tech">Python</span>
+      <span class="ph-tech">GPT-4o</span>
+      <span class="ph-tech">Gemini API</span>
+      <span class="ph-tech">Google Sheets API</span>
+      <span class="ph-tech">HTML/CSS/JS</span>
+      <span class="ph-tech">Vercel</span>
+    </div>
+  </div>
+
+  <!-- OTHER PROJECTS -->
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="pc-icon">📊</div>
+      <div class="pc-name">OURIN Docs</div>
+      <div class="pc-desc">Complete documentation site for OURIN Bot. Dark cyberpunk aesthetic with interactive command browser, search, and live preview.</div>
+      <span class="pc-tag">HTML/CSS/JS</span>
+    </div>
+    <div class="proj-card">
+      <div class="pc-icon">🎠</div>
+      <div class="pc-name">Carousel Engine</div>
+      <div class="pc-desc">Custom WhatsApp carousel message system with Google Sheets auto-generation. Supports URL, copy, call and reply button types.</div>
+      <span class="pc-tag">Node.js</span>
+    </div>
+    <div class="proj-card">
+      <div class="pc-icon">🖥️</div>
+      <div class="pc-name">Hosting Panel</div>
+      <div class="pc-desc">Built-in VPS/hosting panel system with 159 commands. Multi-server support (v1–v5), seller management, and automated provisioning.</div>
+      <span class="pc-tag">Python</span>
+    </div>
+    <div class="proj-card">
+      <div class="pc-icon">⚔️</div>
+      <div class="pc-name">RPG System</div>
+      <div class="pc-desc">Full WhatsApp RPG with 58 commands — adventure, duel, gacha, casino, fishing, hunting, crafting, marriage, guilds and economy.</div>
+      <span class="pc-tag">Node.js</span>
+    </div>
+    <div class="proj-card">
+      <div class="pc-icon">🤖</div>
+      <div class="pc-name">AI Hub</div>
+      <div class="pc-desc">Multi-model AI integration — GPT-4o, GPT-5, Gemini, DeepSeek, Qwen3, Flux Pro, DALL-E, and 20+ image transformation tools.</div>
+      <span class="pc-tag">API Integration</span>
+    </div>
+    <div class="proj-card">
+      <div class="pc-icon">📥</div>
+      <div class="pc-name">Universal Downloader</div>
+      <div class="pc-desc">Media downloader supporting 30+ platforms — YouTube, TikTok (no watermark), Instagram, Spotify, Terabox, and more.</div>
+      <span class="pc-tag">Python</span>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="section" id="journey">
+  <div class="sec-label"><span>04 — Journey</span></div>
+  <h2 class="sec-title">My <em>Timeline</em></h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023</div>
+      <div class="tl-title">Started Coding 🚀</div>
+      <div class="tl-desc">Picked up Python and HTML. Built small scripts, got obsessed with automation. Started exploring the WhatsApp API space.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023 — Sep</div>
+      <div class="tl-title">OURIN Bot v1.0 Launched</div>
+      <div class="tl-desc">First public release of OURIN Bot with 100 core commands on the Baileys framework. The foundation of everything.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2024</div>
+      <div class="tl-title">Scaling Up ⚡</div>
+      <div class="tl-desc">Added AI integration (GPT-4, DALL-E), full RPG system, media downloader for 30+ platforms. Users grew to 10K+.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2025</div>
+      <div class="tl-title">1000+ Commands</div>
+      <div class="tl-desc">Complete rewrite with the Ourin plugin framework. Launched carousel messages, Google Sheets integration, VPS panel system.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2026 — Now</div>
+      <div class="tl-title">50,000+ Users 🎯</div>
+      <div class="tl-desc">OURIN v2.5.0 — 1000+ commands, 35 categories, 50K users, 99% uptime. GPT-5, Gemini 1.5 Pro, Qwen3 and more AI models added.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div style="position:relative;z-index:1">
+    <div class="sec-label" style="justify-content:center"><span>05 — Contact</span></div>
+    <h2 class="sec-title" style="text-align:center">Let's <em>Connect</em></h2>
+    <p style="font-size:14px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.8;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px">Available for collaborations, projects, and bot development. Hit me up on any platform below.</p>
+    <div class="contact-links">
+      <a href="https://wa.me/916000570671" class="contact-link">
+        <span class="cl-icon">💬</span>
+        <div><div class="cl-name">WhatsApp</div><div class="cl-handle">+91 6000 570 671</div></div>
+        <span class="cl-arr">→</span>
+      </a>
+      <a href="https://t.me/stkrootedcyber" class="contact-link">
+        <span class="cl-icon">✈️</span>
+        <div><div class="cl-name">Telegram</div><div class="cl-handle">@stkrootedcyber</div></div>
+        <span class="cl-arr">→</span>
+      </a>
+      <a href="https://github.com/ashishmandal029/" class="contact-link">
+        <span class="cl-icon">💻</span>
+        <div><div class="cl-name">GitHub</div><div class="cl-handle">ashishmandal029</div></div>
+        <span class="cl-arr">→</span>
+      </a>
+      <a href="https://x.com/Ashisham029" class="contact-link">
+        <span class="cl-icon">🐦</span>
+        <div><div class="cl-name">Twitter / X</div><div class="cl-handle">@Ashisham029</div></div>
+        <span class="cl-arr">→</span>
+      </a>
+      <a href="https://discord.gg/PyPnwuBAK" class="contact-link">
+        <span class="cl-icon">🎮</span>
+        <div><div class="cl-name">Discord</div><div class="cl-handle">OURIN Server</div></div>
+        <span class="cl-arr">→</span>
+      </a>
+      <a href="https://ourinpro.vercel.app/" class="contact-link">
+        <span class="cl-icon">🌐</span>
+        <div><div class="cl-name">Website</div><div class="cl-handle">ourinpro.vercel.app</div></div>
+        <span class="cl-arr">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="ft-name">ASHISH MANDAL</div>
+    <div class="ft-copy">🇮🇳 India — Built with ❤️ & lots of caffeine</div>
+  </div>
+  <div class="ft-links">
+    <a href="ourin-docs.html" class="ft-link">Docs</a>
+    <a href="commands.html" class="ft-link">Commands</a>
+    <a href="https://ourinpro.vercel.app/" class="ft-link">OURIN</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 80);
+});
+document.querySelectorAll('a,button,.skill-card,.proj-card,.cmd-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px';
+    cursor.style.height = '20px';
+    ring.style.width = '56px';
+    ring.style.height = '56px';
+    ring.style.borderColor = 'rgba(0,255,136,.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px';
+    cursor.style.height = '12px';
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,255,136,.4)';
+  });
+});
+
+// TYPEWRITER
+const words = ['Coder.', 'Developer.', 'Bot Builder.', 'Automator.', 'Problem Solver.'];
+let wi = 0, ci = 0, deleting = false;
+const el = document.getElementById('tw-text');
+function type() {
+  const word = words[wi];
+  if (!deleting) {
+    el.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    el.textContent = word.slice(0, --ci);
+    if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+  }
+  setTimeout(type, deleting ? 60 : 100);
+}
+type();
+
+// COUNT UP
+function countUp(el, target) {
+  let current = 0;
+  const step = Math.ceil(target / 60);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current + (el.parentElement.querySelector('.stat-label').textContent.includes('K') ? '' : '+');
+    if (current >= target) clearInterval(timer);
+  }, 30);
+}
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('[data-target]').forEach(el => {
+        countUp(el, parseInt(el.dataset.target));
+      });
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+const statsEl = document.querySelector('.hero-stats');
+if (statsEl) observer.observe(statsEl);
+
+// SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>
