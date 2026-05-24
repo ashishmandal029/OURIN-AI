@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>OURIN — All Commands</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #030508;
+  --bg2: #060c12;
+  --bg3: #0a141e;
+  --green: #00ff88;
+  --cyan: #00e5ff;
+  --amber: #ffaa00;
+  --red: #ff2255;
+  --purple: #9b59ff;
+  --text: #e0f0ea;
+  --muted: #3d6050;
+  --border: rgba(0,255,136,0.10);
+  --border2: rgba(0,255,136,0.20);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* BG GRID */
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.lhex{width:32px;height:32px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:9px;color:#030508}
+.lname{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--green)}
+.lsub{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.h-search{flex:1;min-width:180px;max-width:360px;position:relative}
+.h-search input{width:100%;background:rgba(0,255,136,0.05);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:8px 36px 8px 14px;outline:none;transition:all .2s;letter-spacing:.5px}
+.h-search input::placeholder{color:var(--muted)}
+.h-search input:focus{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.08);box-shadow:0 0 0 2px rgba(0,255,136,.08)}
+.h-search .si{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--green);font-size:14px;pointer-events:none}
+.h-stat{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;white-space:nowrap}
+.h-stat span{color:var(--green)}
+.h-back{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;padding:7px 12px;border:1px solid var(--border);letter-spacing:1px;transition:all .2s;flex-shrink:0}
+.h-back:hover{color:var(--green);border-color:var(--border2)}
+
+/* ── HERO STRIP ── */
+.hero{padding:32px 24px 24px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,255,136,0.06) 0%,transparent 60%);pointer-events:none}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(22px,4vw,40px);letter-spacing:-1.5px;line-height:1.05;margin-bottom:8px}
+.hero-title span{background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:13.5px;color:rgba(224,240,234,0.6);line-height:1.7;max-width:600px;margin-bottom:16px}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:4px 10px;border:1px solid;text-transform:uppercase;cursor:pointer;transition:all .2s;background:transparent;color:var(--text)}
+.pill.all{border-color:rgba(0,255,136,.3);color:var(--green)}
+.pill.all.active,.pill.all:hover{background:var(--green);color:#030508}
+.pill[data-cat]{border-color:var(--border)}
+.pill[data-cat]:hover{border-color:var(--border2);background:rgba(0,255,136,.05)}
+.pill[data-cat].active{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.1);color:var(--green)}
+.pill .pcount{opacity:.6;font-size:8px}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:calc(100vh - 200px);position:relative;z-index:1}
+
+/* ── SIDEBAR ── */
+.cat-sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--border);position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;padding:12px 0}
+.cat-sidebar::-webkit-scrollbar{width:3px}
+.cat-sidebar::-webkit-scrollbar-thumb{background:var(--border)}
+.cs-title{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 14px 4px}
+.cs-link{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;font-size:12.5px;color:rgba(224,240,234,.5);cursor:pointer;border-left:2px solid transparent;transition:all .2s;gap:6px}
+.cs-link:hover{color:var(--text);background:rgba(0,255,136,.04)}
+.cs-link.active{color:var(--green);border-left-color:var(--green);background:rgba(0,255,136,.06)}
+.cs-icon{font-size:13px;flex-shrink:0}
+.cs-name{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-num{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);flex-shrink:0}
+
+/* ── MAIN ── */
+.cmain{flex:1;min-width:0;padding:20px 24px 60px}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);scroll-margin-top:80px}
+.sec-head::before{content:'';width:3px;height:20px;background:linear-gradient(to bottom,var(--green),var(--cyan));flex-shrink:0}
+.sec-icon{font-size:18px}
+.sec-name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.5px}
+.sec-cnt{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);margin-left:4px}
+.sec-wrap{margin-bottom:48px}
+
+/* COMMAND GRID */
+.cmd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+
+/* COMMAND CARD */
+.cmd-card{background:var(--bg);padding:14px 16px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.cmd-card:hover{background:rgba(0,255,136,.04)}
+.cmd-card.active{background:rgba(0,255,136,.07);border-left:2px solid var(--green)}
+.cmd-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,.03),transparent);opacity:0;transition:opacity .2s}
+.cmd-card:hover::after{opacity:1}
+.cc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.cc-name{font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);font-weight:700;word-break:break-all;flex:1}
+.cc-tags{display:flex;gap:3px;flex-wrap:wrap;flex-shrink:0}
+.tag{font-family:'Space Mono',monospace;font-size:8px;padding:2px 5px;text-transform:uppercase;letter-spacing:.5px}
+.tag.O{background:rgba(255,170,0,.1);color:var(--amber);border:1px solid rgba(255,170,0,.2)}
+.tag.P{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
+.tag.A{background:rgba(255,34,85,.1);color:var(--red);border:1px solid rgba(255,34,85,.2)}
+.tag.L{background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.15)}
+.cc-desc{font-size:12px;color:rgba(224,240,234,.55);line-height:1.6}
+
+/* PREVIEW PANEL */
+.preview{position:fixed;right:0;top:0;bottom:0;width:320px;background:rgba(6,12,18,.98);border-left:1px solid var(--border);z-index:200;transform:translateX(100%);transition:transform .3s ease;backdrop-filter:blur(20px);display:flex;flex-direction:column}
+.preview.open{transform:translateX(0)}
+.pv-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.pv-title{font-family:'Syne',sans-serif;font-weight:800;font-size:15px}
+.pv-close{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.pv-close:hover{color:var(--green);border-color:var(--border2)}
+.pv-body{flex:1;overflow-y:auto;padding:18px}
+.pv-body::-webkit-scrollbar{width:3px}
+.pv-body::-webkit-scrollbar-thumb{background:var(--border)}
+.pv-cmd{font-family:'Space Mono',monospace;font-size:18px;color:var(--green);font-weight:700;margin-bottom:10px;word-break:break-all}
+.pv-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.pv-section-title{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:18px}
+.pv-desc{font-size:13.5px;color:rgba(224,240,234,.72);line-height:1.8;margin-bottom:4px}
+/* PHONE MOCKUP */
+.phone{background:var(--bg2);border:1px solid var(--border2);border-radius:4px;overflow:hidden;margin-top:8px}
+.phone-bar{background:rgba(0,255,136,.08);padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.phone-dot{width:6px;height:6px;border-radius:50%}
+.phone-status{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-left:auto}
+.chat-area{padding:14px;display:flex;flex-direction:column;gap:8px;min-height:120px}
+.msg{max-width:85%;padding:8px 12px;font-size:12.5px;line-height:1.6;position:relative;word-break:break-word}
+.msg.user{align-self:flex-end;background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.2);color:var(--text)}
+.msg.bot{align-self:flex-start;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.15);color:var(--text)}
+.msg.user::after{content:'You';position:absolute;top:-16px;right:0;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px}
+.msg.bot::after{content:'OURIN';position:absolute;top:-16px;left:0;font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:1px}
+.msg-time{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;text-align:right}
+.msg-wrap{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+/* Usage box */
+.usage-box{background:var(--bg3);border:1px solid var(--border);padding:12px;margin-top:4px;font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(224,240,234,.7);line-height:1.8}
+.usage-box .uc{color:var(--green)}
+.usage-box .ua{color:var(--cyan)}
+.usage-box .um{color:var(--muted);font-style:italic}
+/* No results */
+.no-results{padding:48px 24px;text-align:center;color:var(--muted)}
+.no-results .nr-icon{font-size:40px;margin-bottom:12px}
+.no-results .nr-text{font-family:'Syne',sans-serif;font-size:18px;margin-bottom:6px;color:var(--text)}
+.no-results .nr-sub{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px}
+
+/* MOBILE */
+@media(max-width:768px){
+  .cat-sidebar{display:none}
+  .cmain{padding:16px 14px 60px}
+  .preview{width:100%;border-left:none;border-top:1px solid var(--border)}
+  .hero{padding:20px 14px 18px}
+  .header{padding:10px 14px;gap:10px}
+  .h-search{min-width:0}
+  .cmd-grid{grid-template-columns:1fr}
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.cmd-card{animation:fadeIn .3s ease both}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="ourin-docs.html" class="logo">
+    <div class="lhex">OUR</div>
+    <div>
+      <div class="lname">OURIN</div>
+      <div class="lsub">Commands</div>
+    </div>
+  </a>
+  <div class="h-search">
+    <input type="text" id="searchInput" placeholder="Search commands... e.g. .tiktok" autocomplete="off" spellcheck="false">
+    <span class="si">⌕</span>
+  </div>
+  <div class="h-stat">Showing <span id="visCount">0</span> of <span id="totalCount">0</span></div>
+  <a href="ourin-docs.html" class="h-back">← Docs</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1 class="hero-title">All <span>Commands</span></h1>
+  <p class="hero-desc">Browse, search and preview every OURIN command. Click any command to see usage example and live chat preview.</p>
+  <div class="hero-pills" id="pillBar"></div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="cat-sidebar" id="catSidebar"></aside>
+
+  <!-- MAIN -->
+  <div class="cmain" id="cmdMain"></div>
+</div>
+
+<!-- PREVIEW PANEL -->
+<div class="preview" id="preview">
+  <div class="pv-head">
+    <div class="pv-title">Command Preview</div>
+    <button class="pv-close" id="pvClose">✕ CLOSE</button>
+  </div>
+  <div class="pv-body" id="pvBody"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
+const CATS = [
+  {
+    id:'owner', icon:'👑', name:'OWNER', cmds:[
+      {n:'.addprem',tags:['O','L'],desc:'Add premium access to a user',ex:'.addprem 628xxx',res:'✅ User 628xxx has been granted Premium access.'},
+      {n:'.addowner',tags:['O','L'],desc:'Add a new bot owner',ex:'.addowner 628xxx',res:'✅ New owner added successfully.'},
+      {n:'.ban',tags:['O','L'],desc:'Ban a user from using the bot',ex:'.ban 628xxx',res:'🚫 User 628xxx has been banned from OURIN.'},
+      {n:'.unban',tags:['O','L'],desc:'Unban a banned user',ex:'.unban 628xxx',res:'✅ User 628xxx has been unbanned.'},
+      {n:'.block',tags:['O','L'],desc:'Block a number on WhatsApp',ex:'.block 628xxx',res:'🔒 Number blocked successfully.'},
+      {n:'.unblock',tags:['O','L'],desc:'Unblock a blocked number',ex:'.unblock 628xxx',res:'✅ Number unblocked.'},
+      {n:'.bcgc',tags:['O','L'],desc:'Broadcast message to all groups',ex:'.bcgc Hello everyone!',res:'📢 Broadcast sent to 24 groups.'},
+      {n:'.bcpc',tags:['O','L'],desc:'Broadcast message to personal chats',ex:'.bcpc OURIN update!',res:'📢 Broadcast sent to all users.'},
+      {n:'.restart',tags:['O','L'],desc:'Restart the bot',ex:'.restart',res:'🔄 Restarting OURIN Bot... Please wait.'},
+      {n:'.eval',tags:['O','L'],desc:'Execute JavaScript code directly',ex:'.eval 1+1',res:'Output: 2'},
+      {n:'.exec',tags:['O','L'],desc:'Execute shell command on server',ex:'.exec uptime',res:'Server uptime: 12 days, 4:32'},
+      {n:'.addkoin',tags:['O','L'],desc:'Add coins to a user account',ex:'.addkoin 628xxx 1000',res:'✅ Added 1000 coins to 628xxx.'},
+      {n:'.addexp',tags:['O','L'],desc:'Add experience points to user',ex:'.addexp 628xxx 500',res:'✅ Added 500 EXP to 628xxx.'},
+      {n:'.addlevel',tags:['O','L'],desc:'Add levels to a user',ex:'.addlevel 628xxx 5',res:'✅ Added 5 levels to 628xxx.'},
+      {n:'.delkoin',tags:['O','L'],desc:'Remove coins from user account',ex:'.delkoin 628xxx 500',res:'✅ Removed 500 coins from 628xxx.'},
+      {n:'.setprefix',tags:['O','L'],desc:'Set bot command prefix',ex:'.setprefix !',res:'✅ Prefix changed to: !'},
+      {n:'.botmode',tags:['O','L'],desc:'Toggle bot mode (public/self)',ex:'.botmode self',res:'🤖 Bot mode set to: SELF'},
+      {n:'.autoread',tags:['O','L'],desc:'Toggle auto read messages',ex:'.autoread on',res:'✅ Auto read enabled.'},
+      {n:'.autotyping',tags:['O','L'],desc:'Toggle auto typing indicator',ex:'.autotyping on',res:'✅ Auto typing indicator enabled.'},
+      {n:'.payment',tags:['L'],desc:'Show payment info and QR code',ex:'.payment',res:'💳 Payment info sent. Scan QR to pay.'},
+      {n:'.schedule',tags:['O','L'],desc:'Schedule a message to be sent later',ex:'.schedule 08:00 Good morning!',res:'⏰ Message scheduled for 08:00.'},
+      {n:'.backupdb',tags:['O','L'],desc:'Backup the bot database',ex:'.backupdb',res:'💾 Database backup complete. File sent.'},
+      {n:'.savedb',tags:['O','L'],desc:'Save current database state',ex:'.savedb',res:'✅ Database saved successfully.'},
+      {n:'.join',tags:['O','L'],desc:'Join a WhatsApp group via invite link',ex:'.join https://chat.whatsapp.com/xxx',res:'✅ Joined group successfully.'},
+      {n:'.leave',tags:['O','L'],desc:'Leave a WhatsApp group',ex:'.leave',res:'👋 Left the group.'},
+      {n:'.deploy',tags:['O','L'],desc:'Deploy bot updates from GitHub',ex:'.deploy',res:'🚀 Deploying latest update...'},
+    ]
+  },
+  {
+    id:'main', icon:'🏠', name:'MAIN', cmds:[
+      {n:'.menu',tags:['L'],desc:'Show all 35 command categories',ex:'.menu',res:'📋 OURIN Bot v2.5.0\n35 Categories | 1000+ Commands\nType .menucat <category> to explore.'},
+      {n:'.menucat',tags:['L'],desc:'Show commands in a specific category',ex:'.menucat ai',res:'🤖 AI Category — 66 commands\n.gpt4o .gemini .deepseek .flux-pro...'},
+      {n:'.allmenu',tags:['L'],desc:'Show all commands in one list',ex:'.allmenu',res:'📋 All Commands (1000+)\n[Full list sent...]'},
+      {n:'.ping',tags:['L'],desc:'Check bot response time',ex:'.ping',res:'🏓 Pong! Response: 42ms\nStatus: Online ✅'},
+      {n:'.stats',tags:['L'],desc:'View bot statistics and uptime',ex:'.stats',res:'📊 OURIN Stats\nUptime: 12d 4h\nUsers: 50,241\nGroups: 1,847\nCmds Today: 98,432'},
+      {n:'.leaderboard',tags:['L'],desc:'Show global top users leaderboard',ex:'.leaderboard',res:'🏆 Top 10 Users\n1. Ashish — 99,999 coins\n2. Riya — 88,800 coins\n3. Arjun — 77,700 coins...'},
+      {n:'.owner',tags:['L'],desc:'Show bot owner contact info',ex:'.owner',res:'👑 OURIN Owner\nAshish | @stkrootedcyber\nWA: +91 6000 570 671'},
+      {n:'.rules',tags:['L'],desc:'Show bot usage rules',ex:'.rules',res:'📜 OURIN Rules\n1. No spam\n2. Respect limits\n3. No abuse...'},
+      {n:'.totalfitur',tags:['L'],desc:'Show total number of commands',ex:'.totalfitur',res:'⚡ OURIN has 1,047 commands across 35 categories.'},
+      {n:'.carifitur',tags:['L'],desc:'Search for a specific feature',ex:'.carifitur download',res:'🔍 Found 31 results for "download"\n.ytmp4 .tiktok .instagramdl...'},
+      {n:'.donasi',tags:['L'],desc:'Show donation/support info',ex:'.donasi',res:'💚 Support OURIN Development!\nPayment details sent.'},
+      {n:'.jadibot',tags:['O','L'],desc:'Turn your number into a bot',ex:'.jadibot',res:'🤖 Your number is now a bot! Send .stopjadibot to stop.'},
+      {n:'.system',tags:['L'],desc:'Show server system info',ex:'.system',res:'🖥️ System Info\nCPU: 12%\nRAM: 1.2GB / 4GB\nNode: v20.x'},
+      {n:'.ping2',tags:['L'],desc:'Alternative ping with more info',ex:'.ping2',res:'🏓 Pong! 38ms\nBot: Online | DB: Connected | API: OK'},
+      {n:'.tqto',tags:['L'],desc:'Show credits and thanks',ex:'.tqto',res:'💚 Thanks to all contributors!\nBaileys, OpenAI, Gemini...'},
+      {n:'.sheetmenu',tags:['L'],desc:'Show menu from Google Sheets',ex:'.sheetmenu',res:'📋 Menu loaded from Google Sheets!'},
+      {n:'.benefitpremium',tags:['L'],desc:'Show premium membership benefits',ex:'.benefitpremium',res:'💎 Premium Benefits:\n✓ Unlimited AI\n✓ 500+ Commands\n✓ Priority support...'},
+      {n:'.benefitowner',tags:['L'],desc:'Show owner tier benefits',ex:'.benefitowner',res:'👑 Owner Benefits:\n✓ All Premium features\n✓ Full bot control\n✓ Source code...'},
+    ]
+  },
+  {
+    id:'tools', icon:'🛠️', name:'TOOLS', cmds:[
+      {n:'.sendtable',tags:['O','L'],desc:'Send a formatted Unicode table to any number',ex:'.sendtable @me\n|Title\n|Subtitle\n|Footer\n|Col1,Col2,Col3\n|Data1,Data2,Data3',res:'📊 Table sent successfully!'},
+      {n:'.sendgtable',tags:['O','L'],desc:'Send table from live Google Sheets data',ex:'.sendgtable @me\n|https://docs.google.com/spreadsheets/d/xxx\n|My Title|Footer',res:'📊 7 rows fetched. Table sent!'},
+      {n:'.sendtablev2',tags:['O','L'],desc:'Send table with multi-row grouping using ;;',ex:'.sendtablev2 @me',res:'📊 Advanced table sent!'},
+      {n:'.sendcarousel',tags:['O','L'],desc:'Send interactive carousel card with buttons',ex:'.sendcarousel 628xxx\n|Hi!|OURIN|Quote\n|Title\n|Description\n|Footer|https://img.url\n|url,Visit,https://site.com\n|copy,Copy,CODE123',res:'🎠 Carousel sent successfully!'},
+      {n:'.sendgcarouselv3',tags:['O','L'],desc:'Auto-generate carousel from Google Sheets',ex:'.sendgcarouselv3 628xxx\n|https://docs.google.com/spreadsheets/d/xxx',res:'🎠 Carousel generated from sheet! Sent.'},
+      {n:'.createcarousel',tags:['L'],desc:'Create a carousel message template',ex:'.createcarousel',res:'🎠 Carousel template created. Edit and send!'},
+      {n:'.sendbtn',tags:['O','L'],desc:'Send a message with interactive buttons',ex:'.sendbtn 628xxx\n|Message text\n|Button 1\n|Button 2',res:'✅ Button message sent!'},
+      {n:'.remini',tags:['L'],desc:'Enhance image quality to HD using AI',ex:'.remini [attach photo]',res:'✨ HD enhancement complete! Photo sent.'},
+      {n:'.removebg',tags:['L'],desc:'Remove background from image',ex:'.removebg [attach photo]',res:'✅ Background removed! Transparent PNG sent.'},
+      {n:'.ocr',tags:['L'],desc:'Extract text from an image',ex:'.ocr [attach image]',res:'📝 Extracted Text:\n"Hello World!\nThis is OCR result..."'},
+      {n:'.qrcode',tags:['L'],desc:'Generate QR code from text or URL',ex:'.qrcode https://ourinpro.vercel.app',res:'📱 QR code generated and sent!'},
+      {n:'.ssweb',tags:['L'],desc:'Take a screenshot of any website',ex:'.ssweb https://google.com',res:'📸 Screenshot of google.com sent!'},
+      {n:'.carbon',tags:['L'],desc:'Create beautiful code snippet image',ex:'.carbon console.log("Hello OURIN!")',res:'✅ Carbon code image sent!'},
+      {n:'.tempmail',tags:['L'],desc:'Generate a temporary email address',ex:'.tempmail',res:'📧 Temp email: ourin_abc123@tempmail.io\nValid for 10 minutes.'},
+      {n:'.imgtoprompt',tags:['L'],desc:'Generate AI prompt from an image',ex:'.imgtoprompt [attach image]',res:'✨ Prompt: "A cyberpunk city at night with neon lights..."'},
+      {n:'.invoicemaker',tags:['L'],desc:'Generate a professional invoice',ex:'.invoicemaker Ashish | Item 1: ₹500 | Item 2: ₹300',res:'📄 Invoice generated and sent as PDF!'},
+      {n:'.ipwho',tags:['L'],desc:'Lookup IP address information',ex:'.ipwho 8.8.8.8',res:'🌍 IP: 8.8.8.8\nCountry: USA\nISP: Google LLC\nCity: Mountain View'},
+      {n:'.tourl',tags:['L'],desc:'Upload media and get a URL',ex:'.tourl [attach file]',res:'🔗 File URL: https://cdn.ourin.io/xxx.jpg'},
+      {n:'.ptv',tags:['L'],desc:'Convert video to WhatsApp view-once',ex:'.ptv [attach video]',res:'✅ Converted to view-once video!'},
+      {n:'.nikparser',tags:['L'],desc:'Parse Indonesian NIK ID card number',ex:'.nikparser 3201234512345678',res:'👤 NIK Info:\nName: -\nBorn: 23-12-1990\nGender: Male\nAddress: Bandung, West Java'},
+      {n:'.readmore',tags:['L'],desc:'Send long text with read more collapse',ex:'.readmore Very long text here...',res:'✅ Read-more message sent!'},
+      {n:'.grammar',tags:['L'],desc:'Fix grammar in your text',ex:'.grammar i want go to school',res:'✅ Corrected: "I want to go to school."'},
+      {n:'.pastebin',tags:['L'],desc:'Upload text to Pastebin and get link',ex:'.pastebin My long code here...',res:'📋 Pastebin: https://pastebin.com/xxxxx'},
+      {n:'.hdvid',tags:['P','L'],desc:'Enhance video quality to HD',ex:'.hdvid [attach video]',res:'✨ HD video enhancement complete!'},
+    ]
+  },
+  {
+    id:'ai', icon:'🤖', name:'AI', cmds:[
+      {n:'.gpt4o',tags:['L'],desc:'Chat with OpenAI GPT-4o — multimodal AI',ex:'.gpt4o Explain black holes simply',res:'🤖 GPT-4o: Black holes are regions in space where gravity is so strong that nothing, not even light, can escape...'},
+      {n:'.gemini',tags:['L'],desc:'Chat with Google Gemini 1.5 Pro',ex:'.gemini Write a poem about the moon',res:'✨ Gemini:\nThe moon hangs low like a silver coin,\nWhere tides and dreams and lovers join...'},
+      {n:'.deepseek',tags:['L'],desc:'Chat with DeepSeek AI model',ex:'.deepseek What is quantum entanglement?',res:'🤖 DeepSeek: Quantum entanglement is a phenomenon where two particles become correlated...'},
+      {n:'.gpt5',tags:['L'],desc:'Access GPT-5 for advanced reasoning',ex:'.gpt5 Solve this logic puzzle...',res:'🤖 GPT-5: Based on the constraints given...'},
+      {n:'.qwen3',tags:['L'],desc:'Chat with Alibaba Qwen3 model',ex:'.qwen3 Tell me about AI trends',res:'🤖 Qwen3: AI trends in 2026 include multimodal models...'},
+      {n:'.perplexity',tags:['L'],desc:'Search and answer with Perplexity AI',ex:'.perplexity Latest AI news today',res:'🔍 Perplexity: [Web-grounded answer with sources]'},
+      {n:'.copilot',tags:['L'],desc:'Chat with Microsoft Copilot',ex:'.copilot Help me write an email',res:'📧 Copilot: Subject: [Your email draft here...]'},
+      {n:'.kimi',tags:['L'],desc:'Chat with Kimi AI by Moonshot',ex:'.kimi Translate this to Japanese',res:'🤖 Kimi: これは日本語の翻訳です。'},
+      {n:'.claudehaiku',tags:['L'],desc:'Chat with Anthropic Claude Haiku',ex:'.claudehaiku Summarize this article',res:'🤖 Claude Haiku: [Article summary...]'},
+      {n:'.flux-pro',tags:['L'],desc:'Generate image with Flux Pro model',ex:'.flux-pro A futuristic Tokyo skyline at sunset',res:'🖼️ Flux Pro image generated! [1024x1024]'},
+      {n:'.text2img',tags:['L'],desc:'Generate image from text prompt',ex:'.text2img A dragon flying over mountains',res:'🖼️ Image generated and sent!'},
+      {n:'.ideogram',tags:['L'],desc:'Generate image with Ideogram AI',ex:'.ideogram Neon sign saying OURIN BOT',res:'🖼️ Ideogram image sent!'},
+      {n:'.toghibli',tags:['L'],desc:'Convert your photo to Ghibli anime style',ex:'.toghibli [attach selfie]',res:'🎨 Ghibli-style image generated!'},
+      {n:'.toanime',tags:['P','L'],desc:'Convert photo to full anime style',ex:'.toanime [attach photo]',res:'🎨 Anime-style image sent!'},
+      {n:'.tocartoon',tags:['P','L'],desc:'Convert photo to cartoon illustration',ex:'.tocartoon [attach photo]',res:'🎨 Cartoon version sent!'},
+      {n:'.tochibi',tags:['L'],desc:'Convert photo to chibi character',ex:'.tochibi [attach photo]',res:'🎨 Cute chibi version sent!'},
+      {n:'.tofigure',tags:['L'],desc:'Convert photo to action figure style',ex:'.tofigure [attach photo]',res:'🎨 Action figure image sent!'},
+      {n:'.tohijab',tags:['L'],desc:'Add hijab to a photo using AI',ex:'.tohijab [attach photo]',res:'🎨 AI hijab styling complete!'},
+      {n:'.tomekah',tags:['L'],desc:'Add Mecca/Makkah background to photo',ex:'.tomekah [attach photo]',res:'🕋 Makkah-themed photo sent!'},
+      {n:'.colorize',tags:['L'],desc:'Colorize a black and white photo',ex:'.colorize [attach b&w photo]',res:'🌈 Colorized photo sent!'},
+      {n:'.faceswap',tags:['L'],desc:'Swap faces between two photos',ex:'.faceswap [attach two photos]',res:'😄 Face swap complete!'},
+      {n:'.img2img',tags:['L'],desc:'Transform image using AI prompt',ex:'.img2img cyberpunk style [attach photo]',res:'🖼️ Transformed image sent!'},
+      {n:'.feelbetter',tags:['L'],desc:'AI mental health support chat',ex:'.feelbetter I am feeling stressed',res:'💚 I hear you. Stress can be tough. Let\'s talk about what might help...'},
+      {n:'.ourin-ai',tags:['L'],desc:'Chat with OURIN\'s own AI assistant',ex:'.ourin-ai Who are you?',res:'🤖 I am OURIN AI, powered by STK. I can help with anything!'},
+      {n:'.muslimai',tags:['L'],desc:'Islamic AI — quran, dua, and guidance',ex:'.muslimai Dua for anxiety',res:'☪️ Dua: رَبَّنَا لَا تُؤَاخِذْنَا... (full dua with translation)'},
+      {n:'.anime-gen',tags:['L'],desc:'Generate anime art from prompt',ex:'.anime-gen Naruto running through forest',res:'🎌 Anime art generated!'},
+      {n:'.webpilot',tags:['L'],desc:'AI browses a website and answers',ex:'.webpilot https://bbc.com Summarize top news',res:'📰 WebPilot: Top news today includes...'},
+      {n:'.story',tags:['L'],desc:'AI generates a creative story',ex:'.story A robot discovers emotions',res:'📖 Once upon a time, in the year 2099...'},
+      {n:'.ainsfw',tags:['P','L'],desc:'AI NSFW image generation (18+)',ex:'.ainsfw [Premium only]',res:'🔞 [Premium feature — 18+ content generated]'},
+    ]
+  },
+  {
+    id:'download', icon:'📥', name:'DOWNLOAD', cmds:[
+      {n:'.ytmp4',tags:['L'],desc:'Download YouTube video (up to 720p)',ex:'.ytmp4 https://youtube.com/watch?v=xxx',res:'🎬 Fetching video...\n✅ Lofi Music Mix | 720p | 48.2MB sent!'},
+      {n:'.ytmp3',tags:['L'],desc:'Download YouTube audio as MP3',ex:'.ytmp3 https://youtube.com/watch?v=xxx',res:'🎵 Audio extracted!\n✅ Lofi Music Mix.mp3 sent!'},
+      {n:'.tiktok',tags:['L'],desc:'Download TikTok video without watermark',ex:'.tiktok https://tiktok.com/@user/video/xxx',res:'📱 Removing watermark...\n✅ TikTok video (no watermark) sent!'},
+      {n:'.tt',tags:['L'],desc:'Alias for .tiktok command',ex:'.tt https://tiktok.com/...',res:'✅ TikTok video sent!'},
+      {n:'.ttmp4',tags:['L'],desc:'Download TikTok as MP4 file',ex:'.ttmp4 https://tiktok.com/...',res:'✅ TikTok.mp4 sent!'},
+      {n:'.ttmp3',tags:['L'],desc:'Extract audio from TikTok video',ex:'.ttmp3 https://tiktok.com/...',res:'🎵 TikTok audio.mp3 sent!'},
+      {n:'.instagramdl',tags:['L'],desc:'Download Instagram Reels, posts, stories',ex:'.instagramdl https://instagram.com/reel/xxx',res:'📸 Instagram Reel downloaded!\n✅ Video sent!'},
+      {n:'.facebookdl',tags:['L'],desc:'Download Facebook video',ex:'.facebookdl https://fb.com/video/xxx',res:'✅ Facebook video downloaded and sent!'},
+      {n:'.spotifydl',tags:['L'],desc:'Download Spotify track audio',ex:'.spotifydl https://open.spotify.com/track/xxx',res:'🎵 Spotify track downloaded!\n✅ song.mp3 sent!'},
+      {n:'.redditdl',tags:['L'],desc:'Download Reddit video or image',ex:'.redditdl https://reddit.com/r/xxx/comments/xxx',res:'✅ Reddit media downloaded and sent!'},
+      {n:'.capcutdl',tags:['L'],desc:'Download CapCut video',ex:'.capcutdl https://capcut.com/share/xxx',res:'✅ CapCut video downloaded!'},
+      {n:'.terabox',tags:['L'],desc:'Download file from Terabox',ex:'.terabox https://1024terabox.com/xxx',res:'📦 Terabox file downloaded and sent!'},
+      {n:'.mediafiredl',tags:['L'],desc:'Download file from MediaFire',ex:'.mediafiredl https://mediafire.com/file/xxx',res:'📦 MediaFire file downloaded!'},
+      {n:'.githubdl',tags:['L'],desc:'Download from GitHub releases',ex:'.githubdl https://github.com/user/repo/releases/xxx',res:'📦 GitHub release file downloaded!'},
+      {n:'.pixeldraindl',tags:['L'],desc:'Download from Pixeldrain',ex:'.pixeldraindl https://pixeldrain.com/u/xxx',res:'📦 Pixeldrain file downloaded!'},
+      {n:'.sfiledl',tags:['L'],desc:'Download from Sfile',ex:'.sfiledl https://sfile.mobi/xxx',res:'📦 Sfile downloaded!'},
+      {n:'.threaddl',tags:['L'],desc:'Download Threads video/image',ex:'.threaddl https://threads.net/xxx',res:'✅ Threads media downloaded!'},
+      {n:'.douyindl',tags:['L'],desc:'Download Douyin (Chinese TikTok) video',ex:'.douyindl https://douyin.com/xxx',res:'✅ Douyin video downloaded!'},
+      {n:'.dailymotiondl',tags:['L'],desc:'Download Dailymotion video',ex:'.dailymotiondl https://dailymotion.com/video/xxx',res:'✅ Dailymotion video downloaded!'},
+      {n:'.likeedl',tags:['L'],desc:'Download Likee video',ex:'.likeedl https://likee.video/xxx',res:'✅ Likee video downloaded!'},
+      {n:'.snackvideodl',tags:['L'],desc:'Download Snack Video',ex:'.snackvideodl https://snackvideo.com/xxx',res:'✅ Snack video downloaded!'},
+      {n:'.pindl',tags:['L'],desc:'Download Pinterest image or video',ex:'.pindl https://pinterest.com/pin/xxx',res:'📌 Pinterest media downloaded!'},
+      {n:'.rednotedl',tags:['L'],desc:'Download from Red Note / Xiaohongshu',ex:'.rednotedl https://xiaohongshu.com/xxx',res:'✅ Red Note media downloaded!'},
+      {n:'.videy',tags:['L'],desc:'Download Videy video',ex:'.videy https://videy.co/xxx',res:'✅ Videy video downloaded!'},
+      {n:'.cocofundl',tags:['L'],desc:'Download Cocofun video',ex:'.cocofundl https://cocofun.net/xxx',res:'✅ Cocofun video downloaded!'},
+      {n:'.aio',tags:['L'],desc:'Universal downloader — any supported platform',ex:'.aio https://youtube.com/watch?v=xxx',res:'✅ Detected: YouTube\nDownloading video... Sent!'},
+      {n:'.aio2',tags:['L'],desc:'Alternative universal downloader',ex:'.aio2 https://tiktok.com/...',res:'✅ Detected: TikTok\nDownloading... Sent!'},
+      {n:'.dl',tags:['L'],desc:'Quick universal download shortcut',ex:'.dl https://instagram.com/reel/xxx',res:'✅ Download complete! Sent.'},
+    ]
+  },
+  {
+    id:'search', icon:'🔍', name:'SEARCH', cmds:[
+      {n:'.google',tags:['L'],desc:'Search Google and get top results',ex:'.google best WhatsApp bots 2026',res:'🔍 Google Results:\n1. OURIN Bot — ourinpro.vercel.app\n2. ...'},
+      {n:'.play',tags:['L'],desc:'Search and play YouTube music',ex:'.play Bohemian Rhapsody',res:'🎵 Found: Bohemian Rhapsody — Queen\nDuration: 5:55\n[Audio sent]'},
+      {n:'.spotify',tags:['L'],desc:'Search Spotify for track info',ex:'.spotify Blinding Lights The Weeknd',res:'🎵 Spotify:\nBlinding Lights — The Weeknd\nAlbum: After Hours | 3:22'},
+      {n:'.soundcloud',tags:['L'],desc:'Search and play SoundCloud tracks',ex:'.soundcloud lofi hip hop',res:'🎵 SoundCloud: Lofi Hip Hop Mix\n[Audio sent]'},
+      {n:'.yts',tags:['L'],desc:'Search YouTube videos by keyword',ex:'.yts Python tutorial 2026',res:'📺 YouTube Search Results:\n1. Python Full Course 2026 — 5M views\n2. Learn Python Fast...'},
+      {n:'.film',tags:['L'],desc:'Search for movie information',ex:'.film Inception',res:'🎬 Inception (2010)\n⭐ 8.8/10 | Director: Christopher Nolan\nGenre: Sci-Fi, Thriller\nIMDb: Top 250 #13'},
+      {n:'.lirik',tags:['L'],desc:'Search for song lyrics',ex:'.lirik Shape of You Ed Sheeran',res:'🎵 Shape of You — Ed Sheeran\n♪ The club isn\'t the best place to find a lover...'},
+      {n:'.anime',tags:['L'],desc:'Search anime info from MyAnimeList',ex:'.anime Attack on Titan',res:'🎌 Shingeki no Kyojin\n⭐ 9.0 | Episodes: 87 | Status: Finished\nGenre: Action, Drama, Fantasy'},
+      {n:'.npm',tags:['L'],desc:'Search for npm package information',ex:'.npm baileys',res:'📦 @whiskeysockets/baileys\nv6.7.0 | Downloads: 500K/week\nWhatsApp Web API library'},
+      {n:'.bingimage',tags:['L'],desc:'Search for images on Bing',ex:'.bingimage sunset ocean 4K',res:'🖼️ Bing Image Results sent! (Top 5 images)'},
+      {n:'.pixiv',tags:['L'],desc:'Search Pixiv for anime artwork',ex:'.pixiv rem re zero',res:'🎨 Pixiv Results:\n[Top artwork sent]'},
+      {n:'.pins',tags:['L'],desc:'Search Pinterest for images',ex:'.pins aesthetic room decor',res:'📌 Pinterest: Top images sent!'},
+      {n:'.apkmod',tags:['L'],desc:'Search for modded APK files',ex:'.apkmod spotify premium',res:'📱 Found: Spotify MOD v8.9.x\nDownload: [link]'},
+      {n:'.android1',tags:['L'],desc:'Search Android apps on Android1',ex:'.android1 netflix',res:'📱 Android1: Netflix v8.x\n[Download link sent]'},
+      {n:'.chords',tags:['L'],desc:'Get guitar chords for a song',ex:'.chords Wonderwall Oasis',res:'🎸 Wonderwall — Oasis\nChords: Em7 - G - Dsus4 - A7sus4\n[Full chord chart sent]'},
+      {n:'.mcpedl',tags:['L'],desc:'Search Minecraft PE mods/maps',ex:'.mcpedl survival island map',res:'⛏️ MCPE DL: Survival Island Map v2\n[Download link]'},
+      {n:'.tiktokfoto',tags:['L'],desc:'Search TikTok photo slideshow posts',ex:'.tiktokfoto cute cats',res:'🐱 TikTok Photos: [Top results sent]'},
+      {n:'.playtiktok',tags:['L'],desc:'Search and play TikTok audio',ex:'.playtiktok viral sound 2026',res:'🎵 TikTok audio found and sent!'},
+      {n:'.spotplay',tags:['L'],desc:'Search Spotify and play preview',ex:'.spotplay Levitating Dua Lipa',res:'🎵 Spotify Preview: Levitating sent!'},
+      {n:'.melolo',tags:['L'],desc:'Search Melolo for Indonesian music',ex:'.melolo kangen band',res:'🎵 Melolo: Kangen Band results...'},
+    ]
+  },
+  {
+    id:'sticker', icon:'🖼️', name:'STICKER', cmds:[
+      {n:'.sticker',tags:['L'],desc:'Convert image or GIF to WhatsApp sticker',ex:'.sticker [attach image]',res:'✅ Sticker created and sent!'},
+      {n:'.attp',tags:['L'],desc:'Create animated text sticker (fire/rainbow)',ex:'.attp OURIN BOT',res:'✨ Animated text sticker sent!'},
+      {n:'.attp2',tags:['L'],desc:'Alternative animated text sticker style',ex:'.attp2 Hello World',res:'✨ Animated sticker v2 sent!'},
+      {n:'.ttp',tags:['L'],desc:'Create text-to-picture sticker',ex:'.ttp My Custom Text',res:'✅ Text sticker sent!'},
+      {n:'.brat',tags:['L'],desc:'Create viral Brat-style sticker',ex:'.brat ourin bot is the best',res:'✅ Brat sticker sent! [charli xcx style]'},
+      {n:'.bratanime',tags:['L'],desc:'Brat sticker with anime background',ex:'.bratanime kawaii bot',res:'✅ Brat anime sticker sent!'},
+      {n:'.bratgreen',tags:['L'],desc:'Brat sticker on green background',ex:'.bratgreen vibes only',res:'✅ Brat green sticker sent!'},
+      {n:'.brathd',tags:['L'],desc:'High-definition Brat sticker',ex:'.brathd premium quality',res:'✅ HD Brat sticker sent!'},
+      {n:'.bratwhite',tags:['L'],desc:'Brat sticker on white background',ex:'.bratwhite clean aesthetic',res:'✅ Brat white sticker sent!'},
+      {n:'.bratpatrick',tags:['L'],desc:'Brat sticker with Patrick Star theme',ex:'.bratpatrick lol',res:'✅ Patrick brat sticker sent!'},
+      {n:'.bratsquidward',tags:['L'],desc:'Brat sticker with Squidward theme',ex:'.bratsquidward sad noises',res:'✅ Squidward brat sticker sent!'},
+      {n:'.bratvermeil',tags:['L'],desc:'Brat sticker with Vermeil color theme',ex:'.bratvermeil ourin',res:'✅ Vermeil brat sticker sent!'},
+      {n:'.bratvid',tags:['L'],desc:'Create Brat-style video sticker',ex:'.bratvid [attach video]',res:'✅ Brat video sticker sent!'},
+      {n:'.bratcewek',tags:['L'],desc:'Brat sticker with girl theme',ex:'.bratcewek girl power',res:'✅ Brat girl sticker sent!'},
+      {n:'.emojimix',tags:['L'],desc:'Mix two emojis into a new sticker',ex:'.emojimix 🔥💧',res:'✅ Mixed emoji sticker: 🔥+💧 = 🌊🔥 sent!'},
+      {n:'.qc',tags:['L'],desc:'Create a fake WhatsApp quote sticker',ex:'.qc Ashish|This bot is amazing! @OURIN',res:'✅ Quote card sticker sent!'},
+      {n:'.smeme',tags:['L'],desc:'Create a meme sticker with top/bottom text',ex:'.smeme TOP TEXT|BOTTOM TEXT [attach image]',res:'✅ Meme sticker created!'},
+      {n:'.swm',tags:['L'],desc:'Sticker with watermark text overlay',ex:'.swm @OURIN [attach image]',res:'✅ Watermarked sticker sent!'},
+      {n:'.stickerpack',tags:['L'],desc:'Create and pack multiple stickers',ex:'.stickerpack [attach multiple images]',res:'✅ Sticker pack created and sent!'},
+      {n:'.linesticker',tags:['L'],desc:'Search and download Line stickers',ex:'.linesticker Ryan the Lion',res:'✅ Line sticker pack downloaded!'},
+      {n:'.pinpack',tags:['L'],desc:'Create sticker pack from Pinterest images',ex:'.pinpack cute cats',res:'✅ Pinterest sticker pack sent!'},
+    ]
+  },
+  {
+    id:'group', icon:'👥', name:'GROUP', cmds:[
+      {n:'.kick',tags:['L','A'],desc:'Remove a member from the group',ex:'.kick @user',res:'👢 @user has been removed from the group.'},
+      {n:'.promote',tags:['L','A'],desc:'Promote a member to group admin',ex:'.promote @user',res:'⬆️ @user has been promoted to admin!'},
+      {n:'.demote',tags:['L','A'],desc:'Demote an admin to regular member',ex:'.demote @user',res:'⬇️ @user has been demoted.'},
+      {n:'.add',tags:['L','A'],desc:'Add a number to the group',ex:'.add 628xxx',res:'✅ 628xxx added to group!'},
+      {n:'.tagall',tags:['L','A'],desc:'Mention all group members at once',ex:'.tagall Please read pinned message!',res:'📢 @member1 @member2 @member3...\nPlease read pinned message!'},
+      {n:'.welcome',tags:['L','A'],desc:'Enable/disable welcome messages',ex:'.welcome on',res:'✅ Welcome message enabled for this group.'},
+      {n:'.setwelcome',tags:['L','A'],desc:'Customize the welcome message text',ex:'.setwelcome Welcome to our group, @user! 👋',res:'✅ Welcome message updated!'},
+      {n:'.goodbye',tags:['L','A'],desc:'Enable/disable goodbye messages',ex:'.goodbye on',res:'✅ Goodbye message enabled.'},
+      {n:'.poll',tags:['L'],desc:'Create an interactive poll',ex:'.poll Favorite bot?\n1. OURIN\n2. Other',res:'📊 Poll created!\n❓ Favorite bot?\n1️⃣ OURIN\n2️⃣ Other\nVote by replying!'},
+      {n:'.antilink',tags:['L','A'],desc:'Block links automatically in group',ex:'.antilink on',res:'🔒 Anti-link enabled. Links will be deleted.'},
+      {n:'.antijudol',tags:['L','A'],desc:'Block gambling/slot machine links',ex:'.antijudol on',res:'🚫 Anti-judol enabled. Gambling links blocked.'},
+      {n:'.antitoxic',tags:['L','A'],desc:'Auto-remove toxic/hate words',ex:'.antitoxic on',res:'🛡️ Anti-toxic enabled. Toxic words will be removed.'},
+      {n:'.antisticker',tags:['L','A'],desc:'Block stickers from being sent in group',ex:'.antisticker on',res:'🚫 Anti-sticker enabled.'},
+      {n:'.antimedia',tags:['L','A'],desc:'Block media files in group',ex:'.antimedia on',res:'🚫 Anti-media enabled. Media will be deleted.'},
+      {n:'.warn',tags:['L','A'],desc:'Give a warning to a member',ex:'.warn @user No spamming!',res:'⚠️ @user has been warned! (1/3)\nReason: No spamming!'},
+      {n:'.listwarn',tags:['L','A'],desc:'Show all warnings in the group',ex:'.listwarn',res:'📋 Group Warnings:\n@user1 — 2 warnings\n@user2 — 1 warning'},
+      {n:'.slowmode',tags:['L','A'],desc:'Enable message slow mode',ex:'.slowmode 30',res:'⏱️ Slow mode enabled: 30 seconds between messages.'},
+      {n:'.groupinfo',tags:['L'],desc:'Show group information and stats',ex:'.groupinfo',res:'ℹ️ Group Info:\nName: My Group\nMembers: 128\nAdmins: 4\nCreated: Jan 2026'},
+      {n:'.close',tags:['L','A'],desc:'Close group chat (only admins can message)',ex:'.close',res:'🔒 Group closed. Only admins can send messages.'},
+      {n:'.open',tags:['L','A'],desc:'Open group chat for all members',ex:'.open',res:'🔓 Group opened. All members can send messages.'},
+      {n:'.absen',tags:['L'],desc:'Attendance check for group members',ex:'.absen',res:'✋ Attendance noted! You have checked in.'},
+      {n:'.mulaiabsen',tags:['L','A'],desc:'Start attendance session',ex:'.mulaiabsen',res:'📋 Attendance session started! Members type .absen to check in.'},
+      {n:'.autoai',tags:['L'],desc:'Toggle AI auto-reply in group',ex:'.autoai on',res:'🤖 Auto AI enabled! I will respond to messages in this group.'},
+      {n:'.autodl',tags:['L','A'],desc:'Auto download any media shared in group',ex:'.autodl on',res:'📥 Auto download enabled! Shared links will be downloaded.'},
+      {n:'.giveaway',tags:['L'],desc:'Start a group giveaway',ex:'.giveaway 3 winners | 1 hour | Prize: Premium',res:'🎉 Giveaway started!\nPrize: Premium\nDuration: 1 hour\nType .join to participate!'},
+      {n:'.linkgc',tags:['L','A'],desc:'Get group invite link',ex:'.linkgc',res:'🔗 Group Invite Link:\nhttps://chat.whatsapp.com/xxxxx'},
+      {n:'.resetlinkgc',tags:['L','A'],desc:'Reset/revoke group invite link',ex:'.resetlinkgc',res:'🔄 Group link reset. Old link is now invalid.'},
+      {n:'.setppgc',tags:['L','A'],desc:'Change group profile picture',ex:'.setppgc [attach image]',res:'✅ Group photo updated!'},
+      {n:'.setnamegc',tags:['L','A'],desc:'Change group name',ex:'.setnamegc OURIN Community',res:'✅ Group name changed to: OURIN Community'},
+      {n:'.topchat',tags:['L'],desc:'Show most active chatters in group',ex:'.topchat',res:'💬 Top Chatters Today:\n1. @ashish — 248 msgs\n2. @riya — 189 msgs\n3. @arjun — 156 msgs'},
+    ]
+  },
+  {
+    id:'fun', icon:'🎮', name:'FUN', cmds:[
+      {n:'.cekkhodam',tags:['L'],desc:'Check your spirit guardian (khodam)',ex:'.cekkhodam',res:'👻 Your Khodam: Black Tiger\nStrength: ⭐⭐⭐⭐⭐\nYour guardian protects you from enemies!'},
+      {n:'.jodoh',tags:['L'],desc:'Find your soulmate match',ex:'.jodoh @user',res:'💕 Jodoh meter: @ashish + @riya = 87%\n❤️ High compatibility! You might be meant for each other!'},
+      {n:'.dare',tags:['L'],desc:'Get a random dare challenge',ex:'.dare',res:'😈 Dare: Send a voice message singing your favorite song for 30 seconds!'},
+      {n:'.truth',tags:['L'],desc:'Get a random truth question',ex:'.truth',res:'🤔 Truth: What is the most embarrassing thing you have ever done in public?'},
+      {n:'.rate',tags:['L'],desc:'Rate something out of 100',ex:'.rate OURIN Bot',res:'⭐ OURIN Bot Rating: 99/100\n🔥 Absolutely legendary!'},
+      {n:'.puisi',tags:['L'],desc:'Generate a romantic poem',ex:'.puisi for my girlfriend',res:'💝 Puisi:\nDalam diammu tersimpan ribuan kata,\nYang ingin kuucap setiap pagi tiba...'},
+      {n:'.bucin',tags:['L'],desc:'Generate a love-struck message',ex:'.bucin @user',res:'💘 @user is bucin level: 100%\n😭 They would do anything for their crush!'},
+      {n:'.akankah',tags:['L'],desc:'Ask "Will it happen?" — yes/no oracle',ex:'.akankah Will I pass my exam?',res:'🔮 Oracle says: YES!\n✨ The stars align in your favor!'},
+      {n:'.apakah',tags:['L'],desc:'Ask "What is it?" — fun fortune style',ex:'.apakah What is my destiny?',res:'🔮 Your destiny: Becoming a legendary developer!'},
+      {n:'.sulap',tags:['L','A'],desc:'Magic trick — disappear and reappear in group',ex:'.sulap',res:'✨ Abracadabra! You have disappeared... *poof*\n[Removes and re-adds user]'},
+      {n:'.tembak',tags:['L'],desc:'Shoot your shot / confess to someone',ex:'.tembak @user kamu cantik banget',res:'💘 @user received a love confession!\n"Kamu cantik banget" — Anonymous'},
+      {n:'.soulmatch',tags:['L'],desc:'Find your soul match percentage',ex:'.soulmatch @user',res:'👥 Soul Match: @ashish & @riya = 92%\n💫 Twin flames detected!'},
+      {n:'.mimpi',tags:['L'],desc:'Interpret a dream meaning',ex:'.mimpi I dreamed about flying',res:'🌙 Dream: Flying\nMeaning: You are seeking freedom and new opportunities in life!'},
+      {n:'.renungan',tags:['L'],desc:'Get a daily reflection/motivation quote',ex:'.renungan',res:'✨ "Success is not final, failure is not fatal: It is the courage to continue that counts." — Churchill'},
+      {n:'.gay',tags:['L'],desc:'Random fun meter (joke command)',ex:'.gay @user',res:'🌈 @user gay meter: 34%\n😂 More straight than rainbow!'},
+      {n:'.ganteng',tags:['L'],desc:'Rate handsome level',ex:'.ganteng @user',res:'😎 @user ganteng level: 94%\n🔥 Pretty much a model!'},
+      {n:'.cantik',tags:['L'],desc:'Rate beauty level',ex:'.cantik @user',res:'💄 @user cantik level: 97%\n✨ Absolutely gorgeous!'},
+      {n:'.sultan',tags:['L'],desc:'Rate wealth/rich level (for fun)',ex:'.sultan @user',res:'💰 @user sultan level: 78%\n💸 Living comfortably above average!'},
+    ]
+  },
+  {
+    id:'game', icon:'🎯', name:'GAME', cmds:[
+      {n:'.tebakgambar',tags:['L'],desc:'Guess the picture game',ex:'.tebakgambar',res:'🖼️ Guess this image!\n[Blurred image sent]\nType the answer to win coins!'},
+      {n:'.tebaklagu',tags:['L'],desc:'Guess the song from a snippet',ex:'.tebaklagu',res:'🎵 Guess this song!\n[Short audio clip sent]\n⏱️ You have 30 seconds!'},
+      {n:'.tebakkata',tags:['L'],desc:'Guess the scrambled word',ex:'.tebakkata',res:'🔤 Unscramble this word:\nU T O I N R\n⏱️ 30 seconds!'},
+      {n:'.family100',tags:['L'],desc:'Family Feud style quiz game',ex:'.family100',res:'👨‍👩‍👧‍👦 Family 100!\nQ: Name a famous social media platform!\nTop answers: [Facebook, Instagram, TikTok...]'},
+      {n:'.tictactoe',tags:['L'],desc:'Play Tic-Tac-Toe against another user',ex:'.tictactoe @user',res:'❌⭕ Tic-Tac-Toe!\n@ashish (X) vs @user (O)\n[Game board sent] Your turn!'},
+      {n:'.werewolf',tags:['L'],desc:'Play Werewolf/Mafia group game',ex:'.werewolf',res:'🐺 Werewolf game starting!\nPlayers joining... Type .join to participate!\nMinimum 5 players needed.'},
+      {n:'.ulartangga',tags:['L'],desc:'Play Snake and Ladder board game',ex:'.ulartangga',res:'🎲 Snake & Ladder!\n[Game board sent]\nType .roll to roll the dice!'},
+      {n:'.suitpvp',tags:['L'],desc:'Rock Paper Scissors PvP match',ex:'.suitpvp @user',res:'✂️ @ashish challenges @user!\nChoose: .rock .paper .scissors\n⏱️ 15 seconds!'},
+      {n:'.asahotak',tags:['L'],desc:'Brain teaser / logic puzzle game',ex:'.asahotak',res:'🧠 Brain Teaser:\nI have cities but no houses, mountains but no trees. What am I?\n⏱️ 60 seconds to answer!'},
+      {n:'.riddle',tags:['L'],desc:'Get a riddle to solve',ex:'.riddle',res:'🤔 Riddle:\nThe more you take, the more you leave behind. What am I?\n⏱️ Answer within 60 seconds!'},
+      {n:'.tebakbendera',tags:['L'],desc:'Guess the country flag',ex:'.tebakbendera',res:'🏳️ Guess this flag!\n[Flag image sent]\n⏱️ 20 seconds!'},
+      {n:'.tebakhewan',tags:['L'],desc:'Guess the animal from description',ex:'.tebakhewan',res:'🐾 Guess this animal!\nI have stripes and live in jungle, what am I?\n⏱️ 30 seconds!'},
+      {n:'.tebaknegara',tags:['L'],desc:'Guess the country from clues',ex:'.tebaknegara',res:'🌍 Guess this country!\nClue: Famous for Eiffel Tower\n⏱️ 20 seconds!'},
+      {n:'.tebaklagu',tags:['L'],desc:'Guess song from scrambled lyrics',ex:'.tebaklagu',res:'🎵 Guess the song from these lyrics:\n"Never gonna give you ___, never gonna ___ you down"\n⏱️ 30 seconds!'},
+      {n:'.kataacak',tags:['L'],desc:'Random scrambled word challenge',ex:'.kataacak',res:'🔤 Scrambled word: T A B O R\nUnscramble to win 100 coins!'},
+      {n:'.dungeon',tags:['L'],desc:'Enter the dungeon RPG mini-game',ex:'.dungeon',res:'⚔️ You enter a dark dungeon...\nChoose your path:\n1️⃣ Go left\n2️⃣ Go right\n3️⃣ Turn back'},
+      {n:'.caklontong',tags:['L'],desc:'Cak Lontong style riddle humor',ex:'.caklontong',res:'😄 Cak Lontong Tebak-tebakan!\nKenapa ikan tidak bisa main piano?\nJawab: Karena tidak ada keyboard di laut! 😂'},
+      {n:'.siapakahaku',tags:['L'],desc:'Guess who am I character quiz',ex:'.siapakahaku',res:'🎭 Siapakah Aku?\nAku adalah pahlawan Indonesia...\nAku lahir di Sumatera Utara...\nSiapakah Aku?'},
+    ]
+  },
+  {
+    id:'rpg', icon:'⚔️', name:'RPG', cmds:[
+      {n:'.adventure',tags:['L'],desc:'Go on an RPG adventure quest',ex:'.adventure',res:'⚔️ You begin your adventure!\nYou enter the Dark Forest...\nChoose: [1] Fight Monster [2] Explore [3] Return to town'},
+      {n:'.duel',tags:['L'],desc:'Challenge another player to a duel',ex:'.duel @user',res:'⚔️ @ashish challenges @user to a DUEL!\n@user must accept within 30 seconds.\nType .accept to fight!'},
+      {n:'.arena',tags:['L'],desc:'Enter the group battle arena',ex:'.arena',res:'🏟️ Arena Battle!\nType .join to enter!\nBattle starts in 60 seconds. Prize: 500 coins!'},
+      {n:'.gacha',tags:['L'],desc:'Gacha pull for rare items and characters',ex:'.gacha',res:'🎰 Gacha Roll!\n✨ You got: LEGENDARY Sword of Flames!\n🔥 5-star item acquired!'},
+      {n:'.casino',tags:['L'],desc:'Play casino games to win coins',ex:'.casino 500',res:'🎰 Casino Bet: 500 coins\n🎲 Rolling dice... 7!\n✅ You WIN! +750 coins!'},
+      {n:'.slot',tags:['L'],desc:'Play slot machine for coin rewards',ex:'.slot 200',res:'🎰 SLOT MACHINE!\n🍎 | 💎 | 🍎\nSo close! Try again!'},
+      {n:'.coinflip',tags:['L'],desc:'Flip a coin bet',ex:'.coinflip 1000 heads',res:'🪙 Flipping coin...\nResult: HEADS! ✅\nYou WIN 1000 coins!'},
+      {n:'.fishing',tags:['L'],desc:'Go fishing to catch fish and earn coins',ex:'.fishing',res:'🎣 You cast your line...\n10 seconds later...\n🐟 You caught a Rare Tuna! +150 coins'},
+      {n:'.hunt',tags:['L'],desc:'Hunt animals in the wild for resources',ex:'.hunt',res:'🏹 You go hunting...\n🦌 You found a Deer!\nFight! You WIN! +80 coins +5 EXP'},
+      {n:'.mining',tags:['L'],desc:'Mine resources and gems underground',ex:'.mining',res:'⛏️ You go mining...\n💎 Diamond found! (+200 coins)\n🪨 Stone x5 added to inventory.'},
+      {n:'.woodcut',tags:['L'],desc:'Chop wood and gather resources',ex:'.woodcut',res:'🪓 You chop trees...\n🌲 Oak Wood x10 collected! +30 coins'},
+      {n:'.shop',tags:['L'],desc:'Open the RPG item shop',ex:'.shop',res:'🏪 OURIN Shop:\n⚔️ Iron Sword — 500 coins\n🛡️ Shield — 400 coins\n🧪 Health Potion — 100 coins\nType .buy <item>'},
+      {n:'.inventory',tags:['L'],desc:'Check your item inventory',ex:'.inventory',res:'🎒 Your Inventory:\n⚔️ Iron Sword x1\n🧪 Health Potion x3\n💰 Coins: 2,450'},
+      {n:'.daily',tags:['L'],desc:'Claim daily coin reward',ex:'.daily',res:'🎁 Daily Reward Claimed!\n+100 coins | 🔥 3-day streak!\nStreak bonus: +50 extra coins!'},
+      {n:'.weekly',tags:['L'],desc:'Claim weekly bonus coins',ex:'.weekly',res:'🎁 Weekly Reward!\n+700 coins claimed! Come back in 7 days.'},
+      {n:'.hourly',tags:['L'],desc:'Claim hourly coin bonus',ex:'.hourly',res:'⏰ Hourly Bonus: +25 coins!\nNext claim in 1 hour.'},
+      {n:'.marry',tags:['L'],desc:'Propose marriage to another user',ex:'.marry @user',res:'💍 @ashish proposes to @user!\n@user type .accept or .reject to respond.'},
+      {n:'.divorce',tags:['L'],desc:'Divorce your current in-game partner',ex:'.divorce',res:'💔 You and @user are now divorced. 😢\nYou lost 200 coins in the settlement.'},
+      {n:'.bank',tags:['L'],desc:'Manage your bank account',ex:'.bank',res:'🏦 Your Bank:\nBalance: 5,000 coins\nDeposit: .deposit <amount>\nWithdraw: .withdraw <amount>'},
+      {n:'.lottery',tags:['L'],desc:'Buy lottery ticket for jackpot',ex:'.lottery',res:'🎟️ Lottery ticket purchased!\nDraw at midnight. Jackpot: 50,000 coins!\nYour ticket: #4829'},
+      {n:'.quest',tags:['L'],desc:'View and accept active quests',ex:'.quest',res:'📜 Available Quests:\n🗡️ Slay 10 Goblins — Reward: 500 coins\n🌿 Gather 20 herbs — Reward: 300 coins'},
+      {n:'.guild',tags:['L'],desc:'Create or join a guild',ex:'.guild',res:'⚔️ Guild Menu:\n.guild create <name>\n.guild join <name>\n.guild info\n.guild members'},
+      {n:'.cook',tags:['L'],desc:'Cook food items from ingredients',ex:'.cook',res:'🍳 Cooking...\n🍖 Grilled Meat crafted! +80 HP restore item.'},
+      {n:'.craft',tags:['L'],desc:'Craft weapons and items',ex:'.craft sword',res:'⚒️ Crafting Iron Sword...\nRequired: Iron x5 + Wood x3 ✅\n⚔️ Iron Sword crafted!'},
+      {n:'.profile',tags:['L'],desc:'View your RPG profile stats',ex:'.profile',res:'👤 Profile: Ashish\nLevel: 24 | EXP: 8,420\n❤️ HP: 350/350 | ⚔️ ATK: 85\n💰 Coins: 12,500\n🏆 Rank: Knight'},
+    ]
+  },
+  {
+    id:'media', icon:'🎬', name:'MEDIA', cmds:[
+      {n:'.mengkane',tags:['L'],desc:'Play Mengkane viral sound (1-52 variants)',ex:'.mengkane5',res:'🔊 Playing Mengkane #5...\n[Audio sent]'},
+      {n:'.sound',tags:['L'],desc:'Play sound effect from library (1-250)',ex:'.sound69',res:'🔊 Sound Effect #69 sent!\n[Audio clip]'},
+      {n:'.music',tags:['L'],desc:'Play a music track',ex:'.music',res:'🎵 Playing music...\n[Audio track sent]'},
+      {n:'.mengkane1',tags:['L'],desc:'Mengkane sound effect #1',ex:'.mengkane1',res:'🔊 Mengkane #1 sent!'},
+      {n:'.mengkane10',tags:['L'],desc:'Mengkane sound effect #10',ex:'.mengkane10',res:'🔊 Mengkane #10 sent!'},
+      {n:'.mengkane25',tags:['L'],desc:'Mengkane sound effect #25',ex:'.mengkane25',res:'🔊 Mengkane #25 sent!'},
+      {n:'.mengkane52',tags:['L'],desc:'Mengkane sound effect #52 (last)',ex:'.mengkane52',res:'🔊 Mengkane #52 sent!'},
+      {n:'.sound1',tags:['L'],desc:'Sound effect #1',ex:'.sound1',res:'🔊 Sound #1 sent!'},
+      {n:'.sound50',tags:['L'],desc:'Sound effect #50',ex:'.sound50',res:'🔊 Sound #50 sent!'},
+      {n:'.sound100',tags:['L'],desc:'Sound effect #100',ex:'.sound100',res:'🔊 Sound #100 sent!'},
+      {n:'.sound200',tags:['L'],desc:'Sound effect #200',ex:'.sound200',res:'🔊 Sound #200 sent!'},
+      {n:'.sound250',tags:['L'],desc:'Sound effect #250 (last)',ex:'.sound250',res:'🔊 Sound #250 — last one sent!'},
+    ]
+  },
+  {
+    id:'convert', icon:'🔄', name:'CONVERT', cmds:[
+      {n:'.bass',tags:['L'],desc:'Add heavy bass boost to audio',ex:'.bass [attach audio]',res:'🔊 Bass boosted audio sent!'},
+      {n:'.nightcore',tags:['L'],desc:'Apply nightcore effect (faster + pitch up)',ex:'.nightcore [attach audio]',res:'🎵 Nightcore version sent!'},
+      {n:'.reverse',tags:['L'],desc:'Reverse audio playback',ex:'.reverse [attach audio]',res:'🔄 Reversed audio sent!'},
+      {n:'.robot',tags:['L'],desc:'Apply robot voice effect',ex:'.robot [attach audio/voice]',res:'🤖 Robot voice effect applied!'},
+      {n:'.demon',tags:['L'],desc:'Apply deep demon voice effect',ex:'.demon [attach voice]',res:'😈 Demon voice effect sent!'},
+      {n:'.underwater',tags:['L'],desc:'Apply underwater sound effect',ex:'.underwater [attach audio]',res:'🌊 Underwater effect applied!'},
+      {n:'.helium',tags:['L'],desc:'Apply helium/chipmunk voice effect',ex:'.helium [attach voice]',res:'🎈 Helium voice effect sent! 🐿️'},
+      {n:'.earrape',tags:['L'],desc:'Apply extreme volume distortion',ex:'.earrape [attach audio]',res:'💥 Earrape effect applied! 🔊🔊🔊'},
+      {n:'.slow',tags:['L'],desc:'Slow down audio speed',ex:'.slow [attach audio]',res:'🐢 Slow version sent!'},
+      {n:'.fast',tags:['L'],desc:'Speed up audio playback',ex:'.fast [attach audio]',res:'⚡ Sped up version sent!'},
+      {n:'.echo',tags:['L'],desc:'Add echo effect to audio',ex:'.echo [attach audio]',res:'🔊 Echo effect applied!'},
+      {n:'.tupai',tags:['L'],desc:'Apply chipmunk voice (tupai = squirrel)',ex:'.tupai [attach voice]',res:'🐿️ Tupai voice effect sent!'},
+      {n:'.smooth',tags:['L'],desc:'Apply smooth audio enhancement',ex:'.smooth [attach audio]',res:'✨ Smoothed audio sent!'},
+      {n:'.concert',tags:['L'],desc:'Apply concert hall reverb effect',ex:'.concert [attach audio]',res:'🎭 Concert effect applied!'},
+      {n:'.8bit',tags:['L'],desc:'Apply 8-bit retro game audio effect',ex:'.8bit [attach audio]',res:'🎮 8-bit version sent!'},
+      {n:'.radio',tags:['L'],desc:'Apply AM radio filter effect',ex:'.radio [attach audio]',res:'📻 Radio effect applied!'},
+      {n:'.phone',tags:['L'],desc:'Apply telephone/phone call filter',ex:'.phone [attach audio]',res:'📞 Phone filter applied!'},
+      {n:'.cave',tags:['L'],desc:'Apply cave echo reverb effect',ex:'.cave [attach audio]',res:'🕳️ Cave echo effect sent!'},
+      {n:'.vibrato',tags:['L'],desc:'Apply vibrato (trembling pitch) effect',ex:'.vibrato [attach audio]',res:'🎵 Vibrato effect applied!'},
+      {n:'.tremolo',tags:['L'],desc:'Apply tremolo (volume modulation) effect',ex:'.tremolo [attach audio]',res:'🎶 Tremolo effect applied!'},
+    ]
+  },
+  {
+    id:'ephoto', icon:'🎨', name:'EPHOTO', cmds:[
+      {n:'.glitchtext',tags:['L'],desc:'Create glitch text photo effect',ex:'.glitchtext OURIN BOT',res:'🎨 Glitch text image sent!'},
+      {n:'.neonglitch',tags:['L'],desc:'Neon + glitch combined text effect',ex:'.neonglitch OURIN',res:'✨ Neon glitch image sent!'},
+      {n:'.advancedglow',tags:['L'],desc:'Advanced glowing text effect',ex:'.advancedglow OURIN',res:'💫 Advanced glow image sent!'},
+      {n:'.typographytext',tags:['L'],desc:'Beautiful typography art from text',ex:'.typographytext Hello World',res:'✍️ Typography image sent!'},
+      {n:'.gradienttext',tags:['L'],desc:'Gradient colored text effect',ex:'.gradienttext OURIN BOT',res:'🌈 Gradient text image sent!'},
+      {n:'.logomaker',tags:['L'],desc:'Create a logo from text',ex:'.logomaker OURIN',res:'🏷️ Logo created and sent!'},
+      {n:'.galaxystyle',tags:['L'],desc:'Galaxy universe text effect',ex:'.galaxystyle cosmos',res:'🌌 Galaxy style image sent!'},
+      {n:'.galaxywallpaper',tags:['L'],desc:'Generate galaxy wallpaper',ex:'.galaxywallpaper',res:'🌌 Galaxy wallpaper sent!'},
+      {n:'.luxurygold',tags:['L'],desc:'Luxury gold text effect',ex:'.luxurygold PREMIUM',res:'👑 Luxury gold image sent!'},
+      {n:'.multicoloredneon',tags:['L'],desc:'Multicolored neon text effect',ex:'.multicoloredneon PARTY',res:'🌈 Multicolored neon sent!'},
+      {n:'.blackpinkstyle',tags:['L'],desc:'BLACKPINK kpop style text effect',ex:'.blackpinkstyle BLINK',res:'🌸 BLACKPINK style image sent!'},
+      {n:'.blackpinklogo',tags:['L'],desc:'BLACKPINK logo style',ex:'.blackpinklogo OURIN',res:'🌸 BLACKPINK logo sent!'},
+      {n:'.royaltext',tags:['L'],desc:'Royal/crown themed text effect',ex:'.royaltext KING OURIN',res:'👑 Royal text image sent!'},
+      {n:'.watercolortext',tags:['L'],desc:'Watercolor painted text effect',ex:'.watercolortext beautiful',res:'🎨 Watercolor text sent!'},
+      {n:'.rainytext',tags:['L'],desc:'Rainy atmosphere text effect',ex:'.rainytext sadness',res:'🌧️ Rainy text image sent!'},
+      {n:'.glowingtext',tags:['L'],desc:'Glowing light text effect',ex:'.glowingtext GLOW UP',res:'💡 Glowing text sent!'},
+      {n:'.pixelglitch',tags:['L'],desc:'Pixel art + glitch text effect',ex:'.pixelglitch PIXEL',res:'👾 Pixel glitch image sent!'},
+      {n:'.1917style',tags:['L'],desc:'Vintage 1917 film style text',ex:'.1917style VINTAGE',res:'📽️ 1917-style image sent!'},
+      {n:'.summerbeach',tags:['L'],desc:'Summer beach theme text effect',ex:'.summerbeach summer vibes',res:'🏖️ Summer beach image sent!'},
+      {n:'.freecreate',tags:['L'],desc:'Free-form creative text effect',ex:'.freecreate anything here',res:'✨ Custom creative image sent!'},
+    ]
+  },
+  {
+    id:'canvas', icon:'🖼️', name:'CANVAS', cmds:[
+      {n:'.fake-tweet',tags:['L'],desc:'Create a fake Twitter/X tweet screenshot',ex:'.fake-tweet @elonmusk|OURIN Bot is the best bot ever made!',res:'🐦 Fake tweet image sent!'},
+      {n:'.fakecall',tags:['L'],desc:'Create a fake incoming call screenshot',ex:'.fakecall Ashish|+91 6000 570 671',res:'📱 Fake call screenshot sent!'},
+      {n:'.fakecallwa',tags:['L'],desc:'Create a fake WhatsApp call screenshot',ex:'.fakecallwa Ashish',res:'📱 Fake WA call image sent!'},
+      {n:'.fakebankjago',tags:['L'],desc:'Create a fake Bank Jago transfer receipt',ex:'.fakebankjago Ashish|500000|Transfer',res:'🏦 Fake Bank Jago receipt sent!'},
+      {n:'.fakedana',tags:['L'],desc:'Create a fake DANA e-wallet receipt',ex:'.fakedana Ashish|100000',res:'💳 Fake DANA receipt sent!'},
+      {n:'.fakestory',tags:['L'],desc:'Create a fake WhatsApp story screenshot',ex:'.fakestory [attach image] Caption text',res:'📖 Fake WA story sent!'},
+      {n:'.fakestory2',tags:['L'],desc:'Fake story v2 style',ex:'.fakestory2 [attach image]',res:'📖 Fake story v2 sent!'},
+      {n:'.fakedev',tags:['L'],desc:'Fake developer/hacker terminal screenshot',ex:'.fakedev Ashish|OURIN Systems',res:'💻 Fake dev screenshot sent!'},
+      {n:'.fakeff',tags:['L'],desc:'Fake Free Fire profile/stats',ex:'.fakeff AshishGamer|999|Heroic',res:'🎮 Fake FF profile sent!'},
+      {n:'.fakeml',tags:['L'],desc:'Fake Mobile Legends profile',ex:'.fakeml AshishML|MYTHIC',res:'⚔️ Fake ML profile sent!'},
+      {n:'.ktp-maker',tags:['L'],desc:'Create a fake Indonesian ID card (KTP)',ex:'.ktp-maker Ashish|Jakarta|1990-01-01',res:'🪪 Fake KTP image sent!'},
+      {n:'.balogo',tags:['L'],desc:'Create Blue Archive style logo',ex:'.balogo OURIN|ACADEMY',res:'🎓 Blue Archive logo sent!'},
+      {n:'.iqc',tags:['L'],desc:'Create an IQ score certificate image',ex:'.iqc 180|Ashish',res:'🧠 IQ Certificate: Ashish — 180 IQ sent!'},
+      {n:'.fake-xnxx',tags:['L'],desc:'Fake video site thumbnail (joke)',ex:'.fake-xnxx [attach image] Title here',res:'😂 Fake thumbnail image sent!'},
+      {n:'.math',tags:['L'],desc:'Generate a math problem card image',ex:'.math 2+2=?',res:'🔢 Math card image sent!'},
+      {n:'.gura',tags:['L'],desc:'Create Gawr Gura anime card',ex:'.gura [attach image]',res:'🦈 Gura card sent!'},
+      {n:'.ustadz',tags:['L'],desc:'Create ustadz preaching meme card',ex:'.ustadz Text for quote',res:'☪️ Ustadz card image sent!'},
+    ]
+  },
+  {
+    id:'user', icon:'👤', name:'USER', cmds:[
+      {n:'.profile',tags:['L'],desc:'View your full RPG and user profile',ex:'.profile',res:'👤 Profile: Ashish\nLevel: 24 | EXP: 8,420/10,000\n💰 Coins: 12,500\n🏆 Rank: Knight\n📅 Joined: Jan 2026'},
+      {n:'.daily',tags:['L'],desc:'Claim your daily coin bonus',ex:'.daily',res:'🎁 Daily Reward!\n+100 coins | 🔥 Streak: 5 days\nStreak Bonus: +50 coins!'},
+      {n:'.koin',tags:['L'],desc:'Check your current coin balance',ex:'.koin',res:'💰 Your Balance: 12,500 coins\nBank: 5,000 coins\nTotal: 17,500 coins'},
+      {n:'.exp',tags:['L'],desc:'Check your experience points',ex:'.exp',res:'⭐ EXP: 8,420 / 10,000\nLevel 24 → 25\nProgress: ████████░░ 84%'},
+      {n:'.level',tags:['L'],desc:'Check your current level',ex:'.level',res:'📊 Level: 24\n⭐ EXP: 8,420/10,000\n🏆 Rank: Knight'},
+      {n:'.levelup',tags:['L'],desc:'Level up when you have enough EXP',ex:'.levelup',res:'🎉 LEVEL UP! 24 → 25!\n+50 max HP | +10 ATK\nYou are now a Senior Knight!'},
+      {n:'.energi',tags:['L'],desc:'Check your energy points',ex:'.energi',res:'⚡ Energy: 85/100\nRecharges 1 per 5 minutes.'},
+      {n:'.buyenergi',tags:['L'],desc:'Buy energy with coins',ex:'.buyenergi 50',res:'✅ Bought 50 energy for 250 coins!\n⚡ Energy: 100/100'},
+      {n:'.daftar',tags:['L'],desc:'Register to the bot system',ex:'.daftar',res:'✅ Registered successfully!\nWelcome to OURIN, Ashish!\nYou received: 500 starter coins 🎁'},
+      {n:'.birthday',tags:['L'],desc:'Check upcoming birthdays',ex:'.birthday',res:'🎂 Upcoming Birthdays:\n🎉 @riya — Tomorrow!\n🎂 @arjun — Dec 25'},
+      {n:'.setbirthday',tags:['L'],desc:'Set your birthday date',ex:'.setbirthday 01-01-2000',res:'✅ Birthday set: January 1, 2000\nI will remind everyone on your special day! 🎂'},
+      {n:'.buyfitur',tags:['L'],desc:'Purchase a specific feature/command',ex:'.buyfitur .ainsfw',res:'💳 Purchase .ainsfw\nCost: 5,000 coins\nType .confirm to proceed.'},
+    ]
+  },
+  {
+    id:'stalker', icon:'🕵️', name:'STALKER', cmds:[
+      {n:'.igstalk',tags:['L'],desc:'Get Instagram profile information',ex:'.igstalk ourinbot',res:'📸 Instagram: @ourinbot\nFollowers: 12.4K | Following: 234\nPosts: 89 | Bio: "Official OURIN Bot"'},
+      {n:'.tiktokstalk',tags:['L'],desc:'Get TikTok profile information',ex:'.tiktokstalk ourinbot',res:'🎵 TikTok: @ourinbot\nFollowers: 45.2K | Likes: 890K\nVideos: 156'},
+      {n:'.githubstalk',tags:['L'],desc:'Get GitHub profile information',ex:'.githubstalk ashishmandal029',res:'💻 GitHub: ashishmandal029\nRepos: 42 | Stars: 1.2K\nFollowers: 890'},
+      {n:'.ytstalk',tags:['L'],desc:'Get YouTube channel information',ex:'.ytstalk OURIN Official',res:'📺 YouTube: OURIN Official\nSubscribers: 28K\nVideos: 67 | Views: 1.2M'},
+      {n:'.wastalk',tags:['L'],desc:'Get WhatsApp profile picture and info',ex:'.wastalk 628xxx',res:'📱 WA Profile: 628xxx\n[Profile photo sent]\nStatus: "OURIN Bot Admin"'},
+      {n:'.discordstalk',tags:['L'],desc:'Get Discord user information',ex:'.discordstalk 123456789',res:'💬 Discord: Ashish#0001\nID: 123456789\nCreated: Jan 2022'},
+      {n:'.ffstalk',tags:['L'],desc:'Get Free Fire game profile',ex:'.ffstalk 123456789',res:'🎮 Free Fire: AshishGamer\nLevel: 99 | Rank: Heroic\nKills: 4,521'},
+      {n:'.genshinstalk',tags:['L'],desc:'Get Genshin Impact profile',ex:'.genshinstalk 123456789',res:'⚔️ Genshin: UID 123456789\nAR: 58 | World Level: 8\nCharacters: 42'},
+      {n:'.robloxstalk',tags:['L'],desc:'Get Roblox profile information',ex:'.robloxstalk ashishdev',res:'🟡 Roblox: ashishdev\nFriends: 234 | Followers: 1.2K\nJoined: 2019'},
+      {n:'.pintereststalk',tags:['L'],desc:'Get Pinterest profile information',ex:'.pintereststalk ourinbot',res:'📌 Pinterest: ourinbot\nFollowers: 5.6K\nPins: 892'},
+    ]
+  },
+  {
+    id:'vps', icon:'🌊', name:'VPS', cmds:[
+      {n:'.cekvps',tags:['L'],desc:'Check VPS server status',ex:'.cekvps',res:'🖥️ VPS Status:\n✅ server-01: ONLINE | RAM: 45% | CPU: 12%\n✅ server-02: ONLINE | RAM: 67% | CPU: 28%'},
+      {n:'.listvps',tags:['L'],desc:'List all your VPS instances',ex:'.listvps',res:'📋 Your VPS List:\n1. OURIN-Main | IP: 103.xxx.xxx | ONLINE\n2. Bot-Server | IP: 192.xxx.xxx | ONLINE'},
+      {n:'.infovps',tags:['L'],desc:'Get detailed VPS server information',ex:'.infovps',res:'ℹ️ VPS Info:\nIP: 103.xxx.xxx\nOS: Ubuntu 22.04\nCPU: 4 cores | RAM: 8GB | Disk: 160GB'},
+      {n:'.vpsstatus',tags:['L'],desc:'Check VPS uptime and status',ex:'.vpsstatus',res:'📊 VPS Status Report:\nUptime: 45 days, 12:34\nLoad: 0.42 | Disk: 45% used'},
+      {n:'.vps1g1c',tags:['L'],desc:'Create 1GB/1 core VPS server',ex:'.vps1g1c my-server Ubuntu22',res:'🚀 Creating VPS: 1GB/1 core\nOS: Ubuntu 22.04\n⏳ Provisioning... ~2 minutes'},
+      {n:'.vps2g2c',tags:['L'],desc:'Create 2GB/2 core VPS server',ex:'.vps2g2c bot-server Ubuntu22',res:'🚀 Creating VPS: 2GB/2 cores\n⏳ Provisioning...'},
+      {n:'.vps4g2c',tags:['L'],desc:'Create 4GB/2 core VPS server',ex:'.vps4g2c large-server Debian11',res:'🚀 Creating VPS: 4GB/2 cores\n⏳ Provisioning...'},
+      {n:'.delvps',tags:['L'],desc:'Delete a VPS server instance',ex:'.delvps server-01',res:'⚠️ Are you sure? Type .confirm to delete server-01.\nThis action cannot be undone!'},
+      {n:'.turnon',tags:['L'],desc:'Power on a VPS server',ex:'.turnon server-01',res:'✅ VPS server-01 is now ONLINE!'},
+      {n:'.turnoff',tags:['L'],desc:'Power off a VPS server',ex:'.turnoff server-01',res:'⚠️ VPS server-01 powered OFF.'},
+      {n:'.restartvps',tags:['L'],desc:'Restart a VPS server',ex:'.restartvps server-01',res:'🔄 Restarting server-01...\n✅ Server back online in 45 seconds.'},
+      {n:'.sisavps',tags:['L'],desc:'Check remaining VPS quota',ex:'.sisavps',res:'📊 VPS Quota:\nUsed: 2/5 servers\nRemaining: 3 slots available'},
+    ]
+  },
+  {
+    id:'panel', icon:'🖥️', name:'PANEL', cmds:[
+      {n:'.cpanel',tags:['L'],desc:'Open the main hosting panel',ex:'.cpanel',res:'🖥️ cPanel Dashboard\n[Server v1-v5 stats]\nUse .listserverv1 to see servers.'},
+      {n:'.listserverv1',tags:['L'],desc:'List all servers on panel v1',ex:'.listserverv1',res:'📋 Panel v1 Servers:\n1. server-alpha | Active | Expires: Dec 2026\n2. server-beta | Active | Expires: Jan 2027'},
+      {n:'.listadminv1',tags:['L'],desc:'List admins on panel v1',ex:'.listadminv1',res:'👑 Panel v1 Admins:\n1. @ashish — Super Admin\n2. @riya — Admin'},
+      {n:'.listuserv1',tags:['L'],desc:'List users on panel v1',ex:'.listuserv1',res:'👥 Panel v1 Users:\nTotal: 24 active users'},
+      {n:'.serverinfov1',tags:['L'],desc:'Get server info from panel v1',ex:'.serverinfov1',res:'ℹ️ Server v1 Info:\nStatus: Online | Users: 24\nUptime: 99.9% | Resources: Normal'},
+      {n:'.addseller',tags:['L'],desc:'Add a seller to the panel system',ex:'.addseller 628xxx v1',res:'✅ Seller 628xxx added to Panel v1!'},
+      {n:'.1gbv1',tags:['L'],desc:'Create 1GB server on panel v1',ex:'.1gbv1 clientname',res:'✅ 1GB server created for clientname on Panel v1!'},
+      {n:'.5gbv3',tags:['L'],desc:'Create 5GB server on panel v3',ex:'.5gbv3 bigclient',res:'✅ 5GB server created on Panel v3!'},
+      {n:'.unliv1',tags:['L'],desc:'Create unlimited server on panel v1',ex:'.unliv1 vip-client',res:'✅ Unlimited server created on Panel v1!'},
+      {n:'.delserverv1',tags:['L'],desc:'Delete a server from panel v1',ex:'.delserverv1 server-id',res:'✅ Server deleted from Panel v1.'},
+      {n:'.jedacreate',tags:['O','L'],desc:'Create bandwidth jeda/limit config',ex:'.jedacreate',res:'✅ Jeda configuration created!'},
+      {n:'.installtemaenigma',tags:['O','L'],desc:'Install Enigma panel theme',ex:'.installtemaenigma v1',res:'✅ Enigma theme installed on Panel v1!'},
+    ]
+  },
+  {
+    id:'religi', icon:'☪️', name:'RELIGI/ISLAMIC', cmds:[
+      {n:'.jadwalsholat',tags:['L'],desc:'Get prayer times for your city',ex:'.jadwalsholat Jakarta',res:'🕌 Prayer Times — Jakarta\nFajr: 04:12 | Dhuhr: 11:54\nAsr: 15:18 | Maghrib: 17:58\nIsha: 19:09'},
+      {n:'.quran',tags:['L'],desc:'Read Quran verses by surah and ayat',ex:'.quran 2:255',res:'📖 Al-Baqarah [2:255] — Ayat Kursi\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ...\nTranslation: Allah — there is no deity except Him...'},
+      {n:'.murrotal',tags:['L'],desc:'Play Quran murotal recitation audio',ex:'.murrotal Al-Fatihah',res:'🎵 Murotal: Al-Fatihah\nReciter: Sheikh Mishary Rashid\n[Audio sent]'},
+      {n:'.asmaulhusna',tags:['L'],desc:'Get the 99 names of Allah',ex:'.asmaulhusna',res:'☪️ Asmaul Husna (99 Names of Allah):\n1. Ar-Rahman (الرحمن) — The Most Gracious\n2. Ar-Rahim (الرحيم) — The Most Merciful...'},
+      {n:'.islami',tags:['L'],desc:'Get Islamic quotes and reminders',ex:'.islami',res:'☪️ Islamic Reminder:\n"And whoever relies upon Allah — then He is sufficient for him." (65:3)'},
+    ]
+  },
+  {
+    id:'info', icon:'ℹ️', name:'INFO', cmds:[
+      {n:'.gempa',tags:['L'],desc:'Get latest earthquake information',ex:'.gempa',res:'🌍 Latest Earthquake:\nMagnitude: 5.2 | Location: Java Sea\nDepth: 34km | Time: 10 minutes ago\nStatus: No tsunami warning'},
+      {n:'.jadwalbola',tags:['L'],desc:'Get football match schedule',ex:'.jadwalbola',res:'⚽ Football Schedule Today:\nManchester United vs Chelsea — 20:00 WIB\nBarcelona vs Real Madrid — 22:45 WIB'},
+      {n:'.infotourney',tags:['L'],desc:'Get esports tournament info',ex:'.infotourney Mobile Legends',res:'🎮 MLBB Tournament:\nMPL Season 14 — Grand Finals\nDate: Dec 25-26 | Prize: $300,000'},
+      {n:'.bluearchive-char',tags:['L'],desc:'Get Blue Archive character info',ex:'.bluearchive-char Shiroko',res:'🎓 Blue Archive: Shiroko\nSchool: Abydos | Role: Striker\nRarity: 3★ | Weapon: SG'},
+      {n:'.buildml',tags:['L'],desc:'Get Mobile Legends hero build guide',ex:'.buildml Fanny',res:'⚔️ Fanny Build Guide:\n🎪 Emblem: Jungle\n📦 Items: Blade of Heptaseas, Brute Force Breastplate...'},
+      {n:'.benefitpartner',tags:['L'],desc:'Show partner membership benefits',ex:'.benefitpartner',res:'🤝 Partner Benefits:\n✓ Custom bot name\n✓ Priority hosting\n✓ Revenue sharing...'},
+    ]
+  },
+  {
+    id:'primbon', icon:'🔮', name:'PRIMBON', cmds:[
+      {n:'.artinama',tags:['L'],desc:'Get the meaning of a name',ex:'.artinama Ashish',res:'🔮 Meaning of "Ashish":\nOrigin: Sanskrit\nMeaning: Blessing, Divine Blessings\nPersonality: Creative, ambitious, spiritual'},
+      {n:'.zodiak',tags:['L'],desc:'Get zodiac horoscope reading',ex:'.zodiak Scorpio',res:'♏ Scorpio Horoscope Today:\nLove: ⭐⭐⭐⭐\nCareer: ⭐⭐⭐\nHealth: ⭐⭐⭐⭐⭐\nLucky number: 7'},
+      {n:'.ramalanjodoh',tags:['L'],desc:'Get love/destiny prediction',ex:'.ramalanjodoh Ashish Riya',res:'💕 Ramalan Jodoh: Ashish & Riya\nCompatibility: 89%\n✨ Very strong connection!'},
+      {n:'.tafsirmimpi',tags:['L'],desc:'Interpret dream meaning (primbon style)',ex:'.tafsirmimpi I dreamed of water',res:'💧 Tafsir: Dreaming of water\nMeaning: Purity, new beginning, incoming fortune\nPrimbon: Jawa tradition says upcoming luck!'},
+      {n:'.nomerhoki',tags:['L'],desc:'Get your lucky numbers',ex:'.nomerhoki',res:'🎯 Lucky Numbers Today:\n7, 13, 28, 42, 99\nExtra lucky: 7!'},
+      {n:'.kecocokannamapasangan',tags:['L'],desc:'Name compatibility check for couples',ex:'.kecocokannamapasangan Ashish Riya',res:'💑 Name Match: Ashish + Riya\nScore: 92/100\n❤️ Excellent match!'},
+    ]
+  },
+  {
+    id:'clan', icon:'⚔️', name:'CLAN', cmds:[
+      {n:'.clancreate',tags:['L'],desc:'Create a new clan',ex:'.clancreate OURIN Warriors',res:'⚔️ Clan Created: OURIN Warriors!\nTag: [OURIN]\nLevel: 1 | Members: 1/30'},
+      {n:'.clanjoin',tags:['L'],desc:'Join an existing clan',ex:'.clanjoin OURIN Warriors',res:'✅ You joined clan: OURIN Warriors!\nWelcome, warrior!'},
+      {n:'.claninfo',tags:['L'],desc:'View clan information and stats',ex:'.claninfo',res:'⚔️ OURIN Warriors\nLevel: 5 | Members: 24/30\nWins: 142 | Losses: 31\nRank: #3 Global'},
+      {n:'.clanmembers',tags:['L'],desc:'Show clan member list',ex:'.clanmembers',res:'👥 OURIN Warriors Members:\n1. Ashish (Leader) — Lv.24\n2. Riya (Co-Leader) — Lv.22\n3. Arjun — Lv.19...'},
+      {n:'.clanleave',tags:['L'],desc:'Leave your current clan',ex:'.clanleave',res:'👋 You left clan: OURIN Warriors.'},
+      {n:'.clanwar',tags:['L'],desc:'Start or join a clan war',ex:'.clanwar',res:'⚔️ CLAN WAR!\nOURIN Warriors vs Thunder Clan\nDuration: 24 hours\nBattle starts NOW!'},
+      {n:'.claninvite',tags:['L'],desc:'Invite someone to your clan',ex:'.claninvite @user',res:'📨 Clan invitation sent to @user!\nThey have 24 hours to accept.'},
+      {n:'.clankick',tags:['L'],desc:'Kick a member from your clan',ex:'.clankick @user',res:'👢 @user has been removed from OURIN Warriors.'},
+      {n:'.clanleaderboard',tags:['L'],desc:'Show global clan leaderboard',ex:'.clanleaderboard',res:'🏆 Clan Leaderboard:\n1. Dragon Clan — 892 wins\n2. Shadow Guild — 867 wins\n3. OURIN Warriors — 142 wins'},
+    ]
+  },
+  {
+    id:'tts', icon:'🔊', name:'TTS', cmds:[
+      {n:'.tts',tags:['L'],desc:'Text to speech in normal voice',ex:'.tts Hello, I am OURIN Bot!',res:'🔊 TTS Audio sent!\n[Voice: Hello, I am OURIN Bot!]'},
+      {n:'.ttsgoku',tags:['L'],desc:'Text to speech in Goku\'s voice',ex:'.ttsgoku Kamehameha!',res:'🔊 Goku TTS: Kamehameha! [Audio sent]'},
+      {n:'.ttsmickey',tags:['L'],desc:'Text to speech in Mickey Mouse voice',ex:'.ttsmickey Oh boy!',res:'🎉 Mickey TTS: Oh boy! [Audio sent]'},
+      {n:'.ttseminem',tags:['L'],desc:'Text to speech in Eminem rap style',ex:'.ttseminem My name is Slim Shady',res:'🎤 Eminem TTS sent! [Rap style audio]'},
+      {n:'.ttselon',tags:['L'],desc:'Text to speech in Elon Musk voice',ex:'.ttselon We are going to Mars',res:'🚀 Elon TTS: We are going to Mars [Audio]'},
+      {n:'.ttsnahida',tags:['L'],desc:'Text to speech in Nahida (Genshin) voice',ex:'.ttsnahida Hello traveler',res:'✨ Nahida TTS sent! [Cute anime voice]'},
+    ]
+  },
+  {
+    id:'random', icon:'🎲', name:'RANDOM', cmds:[
+      {n:'.meme',tags:['L'],desc:'Get a random meme image',ex:'.meme',res:'😂 Random meme sent!\n[Funny meme image]'},
+      {n:'.anime',tags:['L'],desc:'Get a random anime image',ex:'.anime',res:'🎌 Random anime image sent!'},
+      {n:'.ppcouple',tags:['L'],desc:'Get matching couple profile pictures',ex:'.ppcouple',res:'💕 Couple PP sent!\n[2 matching anime couple images]'},
+      {n:'.barandom',tags:['L'],desc:'Get a random image from various themes',ex:'.barandom',res:'🎲 Random image sent!'},
+      {n:'.quotesimage',tags:['L'],desc:'Get a motivational quote image',ex:'.quotesimage',res:'✨ Quote Image sent!\n"Dream big, work hard, stay humble."'},
+      {n:'.lahelu',tags:['L'],desc:'Get a random meme from Lahelu (Indonesian)',ex:'.lahelu',res:'😂 Lahelu meme sent!\n[Indonesian meme image]'},
+    ]
+  },
+  {
+    id:'cecan', icon:'💃', name:'CECAN', cmds:[
+      {n:'.cecanindo',tags:['L'],desc:'Get a random Indonesian girl photo',ex:'.cecanindo',res:'💃 Indonesian girl photo sent! 🇮🇩'},
+      {n:'.cecanjepang',tags:['L'],desc:'Get a random Japanese girl photo',ex:'.cecanjepang',res:'💃 Japanese girl photo sent! 🇯🇵'},
+      {n:'.cecankorea',tags:['L'],desc:'Get a random Korean girl photo',ex:'.cecankorea',res:'💃 Korean girl photo sent! 🇰🇷'},
+      {n:'.cecanchina',tags:['L'],desc:'Get a random Chinese girl photo',ex:'.cecanchina',res:'💃 Chinese girl photo sent! 🇨🇳'},
+      {n:'.cecanthai',tags:['L'],desc:'Get a random Thai girl photo',ex:'.cecanthai',res:'💃 Thai girl photo sent! 🇹🇭'},
+      {n:'.cecanvietnam',tags:['L'],desc:'Get a random Vietnamese girl photo',ex:'.cecanvietnam',res:'💃 Vietnamese girl photo sent! 🇻🇳'},
+    ]
+  },
+  {
+    id:'asupan', icon:'📦', name:'ASUPAN', cmds:[
+      {n:'.asupan',tags:['L'],desc:'Get random food/content media',ex:'.asupan',res:'🍱 Asupan content sent!'},
+      {n:'.asupantiktok',tags:['L'],desc:'Get random TikTok-style content',ex:'.asupantiktok',res:'📱 TikTok asupan sent!'},
+      {n:'.bocil',tags:['L'],desc:'Get random funny kid content',ex:'.bocil',res:'😂 Bocil content sent!'},
+      {n:'.ukhty',tags:['L'],desc:'Get random ukhty (sister) content',ex:'.ukhty',res:'💕 Ukhty content sent!'},
+    ]
+  },
+  {
+    id:'berita', icon:'📰', name:'BERITA', cmds:[
+      {n:'.berita',tags:['L'],desc:'Get latest Indonesian news',ex:'.berita',res:'📰 Latest News:\n1. Technology update...\n2. Economy news...\n[Top 5 articles sent]'},
+      {n:'.cnn',tags:['L'],desc:'Get latest CNN Indonesia news',ex:'.cnn',res:'📺 CNN Indonesia Latest:\n1. Breaking: ...\n2. Politics: ...'},
+      {n:'.cnbc',tags:['L'],desc:'Get CNBC Indonesia business news',ex:'.cnbc',res:'💼 CNBC Indonesia:\n1. Stock market update...\n2. Economic report...'},
+      {n:'.antara',tags:['L'],desc:'Get Antara news agency updates',ex:'.antara',res:'📡 Antara News:\n[Latest Antara articles sent]'},
+      {n:'.sindonews',tags:['L'],desc:'Get Sindonews latest articles',ex:'.sindonews',res:'📰 Sindonews Latest:\n[Top articles sent]'},
+    ]
+  },
+  {
+    id:'linode', icon:'☁️', name:'LINODE', cmds:[
+      {n:'.linode2gb',tags:['O','L'],desc:'Create a Linode 2GB VPS instance',ex:'.linode2gb my-server',res:'☁️ Creating Linode 2GB...\n✅ Server created! IP: 192.xxx.xxx\nRoot pass sent privately.'},
+      {n:'.linode4gb',tags:['O','L'],desc:'Create a Linode 4GB VPS instance',ex:'.linode4gb bot-server',res:'☁️ Linode 4GB created!\nIP: 172.xxx.xxx'},
+      {n:'.listlinode',tags:['O','L'],desc:'List all Linode VPS instances',ex:'.listlinode',res:'☁️ Your Linodes:\n1. linode-01 | 2GB | Running\n2. linode-02 | 4GB | Running'},
+      {n:'.onlinode',tags:['O','L'],desc:'Power on a Linode instance',ex:'.onlinode linode-01',res:'✅ Linode linode-01 powered ON!'},
+      {n:'.offlinode',tags:['O','L'],desc:'Power off a Linode instance',ex:'.offlinode linode-01',res:'⚠️ Linode linode-01 powered OFF.'},
+      {n:'.rebootlinode',tags:['O','L'],desc:'Reboot a Linode instance',ex:'.rebootlinode linode-01',res:'🔄 Rebooting linode-01...'},
+      {n:'.delinode',tags:['O','L'],desc:'Delete a Linode instance',ex:'.delinode linode-01',res:'🗑️ Linode linode-01 deleted. Resources freed.'},
+      {n:'.saldolinode',tags:['O','L'],desc:'Check Linode account balance',ex:'.saldolinode',res:'💰 Linode Balance: $45.20 USD\nMonthly estimate: $28.00'},
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let activeCat = 'all';
+let activeCmd = null;
+let searchQ = '';
+
+const totalCmds = CATS.reduce((a,c)=>a+c.cmds.length,0);
+document.getElementById('totalCount').textContent = totalCmds;
+
+// ══════════════════════════════════════════════════
+// BUILD SIDEBAR
+// ══════════════════════════════════════════════════
+function buildSidebar(){
+  const sb = document.getElementById('catSidebar');
+  sb.innerHTML = `<div class="cs-title">Categories</div>
+  <div class="cs-link active" data-cat="all" onclick="filterCat('all',this)">
+    <span class="cs-icon">📋</span><span class="cs-name">All Commands</span><span class="cs-num">${totalCmds}</span>
+  </div>`;
+  CATS.forEach(c=>{
+    sb.innerHTML += `<div class="cs-link" data-cat="${c.id}" onclick="filterCat('${c.id}',this)">
+      <span class="cs-icon">${c.icon}</span><span class="cs-name">${c.name}</span><span class="cs-num">${c.cmds.length}</span>
+    </div>`;
+  });
+}
+
+// ══════════════════════════════════════════════════
+// BUILD PILLS
+// ══════════════════════════════════════════════════
+function buildPills(){
+  const pb = document.getElementById('pillBar');
+  pb.innerHTML = `<button class="pill all active" onclick="filterCat('all',this)">All <span class="pcount">${totalCmds}</span></button>`;
+  CATS.forEach(c=>{
+    pb.innerHTML += `<button class="pill" data-cat="${c.id}" onclick="filterCat('${c.id}',this)">${c.icon} ${c.name} <span class="pcount">${c.cmds.length}</span></button>`;
+  });
+}
+
+// ══════════════════════════════════════════════════
+// FILTER
+// ══════════════════════════════════════════════════
+function filterCat(cat, el){
+  activeCat = cat;
+  // Update sidebar
+  document.querySelectorAll('.cs-link').forEach(l=>l.classList.remove('active'));
+  const sbEl = document.querySelector(`.cs-link[data-cat="${cat}"]`);
+  if(sbEl) sbEl.classList.add('active');
+  // Update pills
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll(`.pill[data-cat="${cat}"], .pill.all`).forEach(p=>{
+    if(cat==='all' && p.classList.contains('all')) p.classList.add('active');
+    if(cat!=='all' && p.dataset.cat===cat) p.classList.add('active');
+  });
+  renderMain();
+  if(cat!=='all'){
+    const sec = document.getElementById('sec-'+cat);
+    if(sec) setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }
+}
+
+// ══════════════════════════════════════════════════
+// RENDER MAIN
+// ══════════════════════════════════════════════════
+function renderMain(){
+  const main = document.getElementById('cmdMain');
+  const q = searchQ.toLowerCase().trim();
+  let html = '';
+  let visCount = 0;
+
+  const catsToShow = activeCat==='all' ? CATS : CATS.filter(c=>c.id===activeCat);
+
+  catsToShow.forEach(cat=>{
+    const filtered = cat.cmds.filter(cmd=>{
+      if(!q) return true;
+      return cmd.n.includes(q) || cmd.desc.toLowerCase().includes(q) || cmd.n.replace('.','').includes(q.replace('.',''));
+    });
+    if(!filtered.length) return;
+    visCount += filtered.length;
+
+    html += `<div class="sec-wrap" id="sec-${cat.id}">
+      <div class="sec-head">
+        <span class="sec-icon">${cat.icon}</span>
+        <span class="sec-name">${cat.name}</span>
+        <span class="sec-cnt">${filtered.length} commands</span>
+      </div>
+      <div class="cmd-grid">`;
+
+    filtered.forEach(cmd=>{
+      const tagsHtml = cmd.tags.map(t=>`<span class="tag ${t}">${t==='O'?'Owner':t==='P'?'Prem':t==='A'?'Admin':'Limit'}</span>`).join('');
+      html += `<div class="cmd-card" onclick="showPreview('${encodeURIComponent(JSON.stringify(cmd))}')" id="card-${cmd.n.replace('.','').replace(/[^a-z0-9]/gi,'_')}">
+        <div class="cc-top">
+          <span class="cc-name">${cmd.n}</span>
+          <div class="cc-tags">${tagsHtml}</div>
+        </div>
+        <div class="cc-desc">${cmd.desc}</div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  if(!visCount){
+    html = `<div class="no-results">
+      <div class="nr-icon">🔍</div>
+      <div class="nr-text">No commands found</div>
+      <div class="nr-sub">Try a different search query</div>
+    </div>`;
+  }
+
+  main.innerHTML = html;
+  document.getElementById('visCount').textContent = visCount;
+}
+
+// ══════════════════════════════════════════════════
+// PREVIEW
+// ══════════════════════════════════════════════════
+function showPreview(encoded){
+  const cmd = JSON.parse(decodeURIComponent(encoded));
+  const pv = document.getElementById('preview');
+  const body = document.getElementById('pvBody');
+
+  const tagsHtml = cmd.tags.map(t=>{
+    const labels={O:'Owner Only',P:'Premium Only',A:'Admin Only',L:'Limit Required'};
+    return `<span class="tag ${t}">${labels[t]||t}</span>`;
+  }).join('');
+
+  const exLines = cmd.ex.split('\n').map(l=>`<span class="uc">${l}</span>`).join('\n');
+  const resLines = cmd.res.split('\n').map(l=>`<span class="ua">${l}</span>`).join('\n');
+
+  body.innerHTML = `
+    <div class="pv-cmd">${cmd.n}</div>
+    <div class="pv-tags">${tagsHtml}</div>
+
+    <div class="pv-section-title">Description</div>
+    <div class="pv-desc">${cmd.desc}</div>
+
+    <div class="pv-section-title">Usage</div>
+    <div class="usage-box"><span class="uc">${cmd.ex.split('\n')[0]}</span>${cmd.ex.split('\n').slice(1).map(l=>`\n<span class="ua">${l}</span>`).join('')}</div>
+
+    <div class="pv-section-title">Chat Preview</div>
+    <div class="phone">
+      <div class="phone-bar">
+        <div class="phone-dot" style="background:#ff5f57"></div>
+        <div class="phone-dot" style="background:#febc2e"></div>
+        <div class="phone-dot" style="background:#28c840"></div>
+        <span class="phone-status">OURIN BOT ● ONLINE</span>
+      </div>
+      <div class="chat-area">
+        <div class="msg-wrap">
+          <div class="msg user">${cmd.ex.split('\n')[0]}<div class="msg-time">Now</div></div>
+          <div class="msg bot">${cmd.res.replace(/\n/g,'<br>')}<div class="msg-time">Now ✓✓</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-section-title">Access Level</div>
+    <div class="usage-box">
+      ${cmd.tags.includes('O') ? '<span class="uc">👑 Owner Only</span>\n' : ''}${cmd.tags.includes('P') ? '<span class="ua">💎 Premium Required</span>\n' : ''}${cmd.tags.includes('A') ? '<span style="color:var(--red)">🔒 Group Admin Required</span>\n' : ''}<span class="um">⚡ Limit (Ⓛ) applied to this command</span>
+    </div>
+  `;
+
+  pv.classList.add('open');
+}
+
+document.getElementById('pvClose').addEventListener('click',()=>{
+  document.getElementById('preview').classList.remove('open');
+});
+
+// ══════════════════════════════════════════════════
+// SEARCH
+// ══════════════════════════════════════════════════
+document.getElementById('searchInput').addEventListener('input',function(){
+  searchQ = this.value;
+  if(searchQ && activeCat!=='all'){
+    activeCat='all';
+    document.querySelectorAll('.cs-link').forEach(l=>l.classList.remove('active'));
+    const allLink = document.querySelector('.cs-link[data-cat="all"]');
+    if(allLink) allLink.classList.add('active');
+    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+    const allPill = document.querySelector('.pill.all');
+    if(allPill) allPill.classList.add('active');
+  }
+  renderMain();
+});
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+buildSidebar();
+buildPills();
+renderMain();
+</script>
+</body>
+</html>
