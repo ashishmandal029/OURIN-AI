@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>OURIN — AI Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #030508;
+  --bg2: #060c12;
+  --bg3: #0a141e;
+  --green: #00ff88;
+  --cyan: #00e5ff;
+  --amber: #ffaa00;
+  --red: #ff2255;
+  --purple: #9b59ff;
+  --text: #e0f0ea;
+  --muted: #3d6050;
+  --border: rgba(0,255,136,0.10);
+  --border2: rgba(0,255,136,0.20);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column}
+
+/* BG GRID */
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.lhex{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:8px;color:#030508}
+.lname{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--green)}
+.lsub{font-family:'Space Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.h-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.h-status{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;display:flex;align-items:center;gap:6px}
+.h-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.h-back{font-family:'Space Mono',monospace;font-size:8px;color:#030508;text-decoration:none;padding:6px 10px;border:1px solid var(--green);letter-spacing:1px;transition:all .2s;flex-shrink:0;background:var(--green)}
+.h-back:hover{background:rgba(0,255,136,0.7)}
+
+/* HERO */
+.hero{padding:28px 24px 20px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;flex-shrink:0}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,255,136,0.06) 0%,transparent 60%);pointer-events:none}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(20px,3vw,34px);letter-spacing:-1.5px;line-height:1.05;margin-bottom:6px}
+.hero-title span{background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:13px;color:rgba(224,240,234,0.55);line-height:1.6;max-width:500px}
+
+/* MAIN LAYOUT */
+.chat-layout{flex:1;display:flex;flex-direction:column;position:relative;z-index:1;max-width:860px;width:100%;margin:0 auto;padding:0 0 0 0;height:calc(100vh - 160px)}
+
+/* MESSAGES AREA */
+.messages{flex:1;overflow-y:auto;padding:24px 20px 16px;display:flex;flex-direction:column;gap:20px;scroll-behavior:smooth}
+.messages::-webkit-scrollbar{width:3px}
+.messages::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* WELCOME STATE */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:40px 20px;gap:16px}
+.welcome-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:24px;animation:fabPulse 2.5s ease-in-out infinite}
+.welcome-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px}
+.welcome-title span{background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.welcome-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1.5px}
+.suggestions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+.sug-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5px;color:var(--text);background:var(--bg2);border:1px solid var(--border2);padding:7px 14px;cursor:pointer;transition:all .2s;text-align:left}
+.sug-btn:hover{border-color:var(--green);color:var(--green);background:rgba(0,255,136,0.05)}
+
+/* MESSAGE BUBBLES */
+.msg-row{display:flex;flex-direction:column;gap:4px;animation:fadeIn .3s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg-row.user-row{align-items:flex-end}
+.msg-row.bot-row{align-items:flex-start}
+.msg-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;padding:0 4px}
+.msg-label.you{color:var(--muted)}
+.msg-label.ai{color:var(--green)}
+.bubble{max-width:75%;padding:12px 16px;font-size:13.5px;line-height:1.75;word-break:break-word;position:relative}
+.bubble.user{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--text);border-radius:2px 2px 0 2px}
+.bubble.bot{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);color:var(--text);border-radius:2px 2px 2px 0}
+.bubble.error{background:rgba(255,34,85,0.08);border:1px solid rgba(255,34,85,0.2);color:var(--red)}
+.msg-time{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);padding:0 4px}
+
+/* TYPING INDICATOR */
+.typing{display:flex;align-items:center;gap:5px;padding:12px 16px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);width:fit-content}
+.typing span{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:typing .8s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes typing{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
+
+/* INPUT BAR */
+.input-bar{border-top:1px solid var(--border);padding:16px 20px;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);flex-shrink:0}
+.input-wrap{display:flex;gap:10px;align-items:flex-end;background:rgba(0,255,136,0.04);border:1px solid var(--border2);padding:10px 14px;transition:all .2s}
+.input-wrap:focus-within{border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.07);box-shadow:0 0 0 2px rgba(0,255,136,0.06)}
+#msgInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Outfit',sans-serif;font-size:13.5px;resize:none;max-height:120px;min-height:22px;line-height:1.6;overflow-y:auto}
+#msgInput::placeholder{color:var(--muted)}
+#msgInput::-webkit-scrollbar{width:2px}
+.send-btn{width:36px;height:36px;background:linear-gradient(135deg,var(--green),var(--cyan));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all .2s;color:#030508;font-weight:700}
+.send-btn:hover{opacity:0.85;transform:scale(1.05)}
+.send-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
+.input-hint{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.5px;margin-top:8px;text-align:center}
+.input-hint span{color:rgba(0,255,136,0.5)}
+
+/* CLEAR BTN */
+.clear-btn{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);background:none;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.clear-btn:hover{color:var(--red);border-color:rgba(255,34,85,0.3)}
+
+@media(max-width:768px){
+  .hero{padding:18px 14px 16px}
+  .messages{padding:16px 14px 12px}
+  .input-bar{padding:12px 14px}
+  .bubble{max-width:90%}
+  .suggestions{flex-direction:column;align-items:stretch}
+  .sug-btn{text-align:center}
+}
+@keyframes fabPulse{0%,100%{box-shadow:0 0 20px rgba(0,255,136,0.3)}50%{box-shadow:0 0 36px rgba(0,255,136,0.6)}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="ourin-docs.html" class="logo">
+    <div class="lhex">OR</div>
+    <div>
+      <div class="lname">OURIN</div>
+      <div class="lsub">AI Chat</div>
+    </div>
+  </a>
+  <div class="h-right">
+    <div class="h-status">
+      <div class="h-dot"></div>
+      <span>ONLINE</span>
+    </div>
+    <button class="clear-btn" onclick="clearChat()">🗑 CLEAR</button>
+    <a href="ourin-docs.html" class="h-back">← DOCS</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1 class="hero-title">OURIN <span>AI</span></h1>
+  <p class="hero-desc">Powered by Claude AI. Ask anything — commands, help, info, ya kuch bhi!</p>
+</div>
+
+<!-- CHAT LAYOUT -->
+<div class="chat-layout">
+
+  <!-- MESSAGES -->
+  <div class="messages" id="messages">
+    <!-- WELCOME -->
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <div class="welcome-title">Namaste! Main hoon <span>OURIN AI</span></div>
+      <div class="welcome-sub">// POWERED BY CLAUDE · ASK ANYTHING</div>
+      <div class="suggestions">
+        <button class="sug-btn" onclick="sendSuggestion(this)">OURIN ke commands kya hain?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Premium kaise lena hai?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Bot ko group mein kaise add karein?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Game commands list batao</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT BAR -->
+  <div class="input-bar">
+    <div class="input-wrap">
+      <textarea id="msgInput" placeholder="Kuch bhi poocho..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="input-hint">Enter = Send &nbsp;·&nbsp; <span>Shift+Enter</span> = New line</div>
+  </div>
+
+</div>
+
+<script>
+const API_URL = 'https://api.nexray.eu.cc/ai/claude';
+let isLoading = false;
+
+const messagesEl = document.getElementById('messages');
+const inputEl = document.getElementById('msgInput');
+const sendBtn = document.getElementById('sendBtn');
+const welcomeEl = document.getElementById('welcome');
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function getTime() {
+  return new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+}
+
+function appendMsg(text, type) {
+  if (welcomeEl) welcomeEl.remove();
+
+  const row = document.createElement('div');
+  row.className = `msg-row ${type === 'user' ? 'user-row' : 'bot-row'}`;
+
+  const label = document.createElement('div');
+  label.className = `msg-label ${type === 'user' ? 'you' : 'ai'}`;
+  label.textContent = type === 'user' ? 'YOU' : 'OURIN AI';
+
+  const bubble = document.createElement('div');
+  bubble.className = `bubble ${type === 'error' ? 'error' : type}`;
+  bubble.textContent = text;
+
+  const time = document.createElement('div');
+  time.className = 'msg-time';
+  time.textContent = getTime();
+
+  row.appendChild(label);
+  row.appendChild(bubble);
+  row.appendChild(time);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return bubble;
+}
+
+function showTyping() {
+  const row = document.createElement('div');
+  row.className = 'msg-row bot-row';
+  row.id = 'typingRow';
+
+  const label = document.createElement('div');
+  label.className = 'msg-label ai';
+  label.textContent = 'OURIN AI';
+
+  const typing = document.createElement('div');
+  typing.className = 'typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+
+  row.appendChild(label);
+  row.appendChild(typing);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingRow');
+  if (t) t.remove();
+}
+
+function sendSuggestion(btn) {
+  inputEl.value = btn.textContent;
+  sendMessage();
+}
+
+async function sendMessage() {
+  const text = inputEl.value.trim();
+  if (!text || isLoading) return;
+
+  isLoading = true;
+  sendBtn.disabled = true;
+  inputEl.value = '';
+  inputEl.style.height = 'auto';
+
+  appendMsg(text, 'user');
+  showTyping();
+
+  try {
+    const encodedText = encodeURIComponent(text);
+    const res = await fetch(`${API_URL}?text=${encodedText}`);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data = await res.json();
+
+    removeTyping();
+
+    // Try multiple response formats
+    const reply =
+      data?.result ||
+      data?.response ||
+      data?.text ||
+      data?.content ||
+      data?.message ||
+      data?.reply ||
+      (typeof data === 'string' ? data : null) ||
+      JSON.stringify(data);
+
+    appendMsg(reply, 'bot');
+
+  } catch (err) {
+    removeTyping();
+    appendMsg('⚠️ Error: API se response nahi mila. Please retry karein.', 'error');
+    console.error('API Error:', err);
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    inputEl.focus();
+  }
+}
+
+function clearChat() {
+  if (!confirm('Chat clear karein?')) return;
+  messagesEl.innerHTML = `
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <div class="welcome-title">Namaste! Main hoon <span style="background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">OURIN AI</span></div>
+      <div class="welcome-sub">// POWERED BY CLAUDE · ASK ANYTHING</div>
+      <div class="suggestions">
+        <button class="sug-btn" onclick="sendSuggestion(this)">OURIN ke commands kya hain?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Premium kaise lena hai?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Bot ko group mein kaise add karein?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Game commands list batao</button>
+      </div>
+    </div>`;
+}
+
+// Focus on load
+window.onload = () => inputEl.focus();
+</script>
+</body>
+</html>
