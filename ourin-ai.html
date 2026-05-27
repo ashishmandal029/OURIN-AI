@@ -28,12 +28,12 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
 
 /* HEADER */
-.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
-.lhex{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:8px;color:#030508}
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:6px;text-decoration:none;flex-shrink:0}
+.lhex{width:20px;height:20px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:6px;color:#030508}
 .lname{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--green)}
 .lsub{font-family:'Space Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.h-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.h-right{display:flex;align-items:center;gap:8px;margin-left:auto}
 .h-status{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;display:flex;align-items:center;gap:6px}
 .h-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
