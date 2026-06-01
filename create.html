@@ -13,7 +13,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
 
 /* HEADER */
-.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:6px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .lhex{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:8px;color:#030508}
 .lname{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--green)}
@@ -121,12 +121,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear
 .empty-sub{font-size:12px;color:rgba(224,240,234,.25);line-height:1.6}
 
 /* ACTION BAR */
-.action-bar{display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center}
-.btn-gen{font-family:'Space Mono',monospace;font-size:10px;background:var(--green);border:1px solid var(--green);color:#030508;padding:11px 26px;cursor:pointer;letter-spacing:1px;font-weight:700;transition:opacity .2s}
+.action-bar{display:flex;gap:6px;margin-top:16px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:nowrap;align-items:center}
+.btn-gen{font-family:'Space Mono',monospace;font-size:8px;background:var(--green);border:1px solid var(--green);color:#030508;padding:8px 12px;cursor:pointer;letter-spacing:.8px;font-weight:700;transition:opacity .2s;white-space:nowrap}
 .btn-gen:hover{opacity:.85}
-.btn-prev{font-family:'Space Mono',monospace;font-size:10px;background:transparent;border:1px solid var(--border2);color:var(--text);padding:11px 16px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.btn-prev{font-family:'Space Mono',monospace;font-size:8px;background:transparent;border:1px solid var(--border2);color:var(--text);padding:8px 10px;cursor:pointer;letter-spacing:.8px;transition:all .2s;white-space:nowrap}
 .btn-prev:hover{border-color:rgba(0,255,136,.4);color:var(--green)}
-.btn-reset{font-family:'Space Mono',monospace;font-size:10px;background:rgba(255,34,85,.07);border:1px solid rgba(255,34,85,.2);color:var(--red);padding:11px 14px;cursor:pointer;letter-spacing:1px;margin-left:auto}
+.btn-reset{font-family:'Space Mono',monospace;font-size:8px;background:rgba(255,34,85,.07);border:1px solid rgba(255,34,85,.2);color:var(--red);padding:8px 10px;cursor:pointer;letter-spacing:.8px;margin-left:auto;white-space:nowrap}
 .btn-reset:hover{background:rgba(255,34,85,.14)}
 
 /* OUTPUT */
@@ -144,7 +144,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear
 
 /* FLOATING ADD BUTTON */
 .fab-wrap{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.fab{height:40px;padding:0 18px;background:var(--green);border:none;border-radius:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#030508;transition:all .2s;white-space:nowrap}
+.fab{height:auto;padding:8px 12px;background:var(--green);border:none;border-radius:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.8px;color:#030508;transition:all .2s;white-space:nowrap}
 .fab:hover{box-shadow:0 0 22px rgba(0,255,136,.4);opacity:.9}
 .fab.open{background:var(--red);color:#fff}
 .fab-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:1px;background:rgba(3,5,8,.9);border:1px solid rgba(0,255,136,.2);padding:3px 9px;pointer-events:none}
