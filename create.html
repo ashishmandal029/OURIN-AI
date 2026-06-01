@@ -13,158 +13,187 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
 
 /* HEADER */
-.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .lhex{width:28px;height:28px;background:linear-gradient(135deg,var(--green),var(--cyan));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:8px;color:#030508}
 .lname{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--green)}
 .lsub{font-family:'Space Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.h-badge{font-family:'Space Mono',monospace;font-size:8px;color:#030508;background:var(--cyan);padding:3px 8px;letter-spacing:1px;flex-shrink:0}
+.h-badge{font-family:'Space Mono',monospace;font-size:8px;color:#030508;background:var(--cyan);padding:3px 8px;letter-spacing:1px}
+.h-count{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);border:1px solid rgba(0,255,136,.25);padding:3px 10px;margin-left:auto}
 
 /* HERO */
-.hero{padding:32px 24px 24px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,255,136,0.06) 0%,transparent 60%);pointer-events:none}
-.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(22px,4vw,40px);letter-spacing:-1.5px;line-height:1.05;margin-bottom:8px}
+.hero{padding:26px 24px 18px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(0,255,136,0.05) 0%,transparent 60%);pointer-events:none}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(20px,4vw,34px);letter-spacing:-1.5px;line-height:1.05;margin-bottom:6px}
 .hero-title span{background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-desc{font-size:13.5px;color:rgba(224,240,234,0.6);line-height:1.7;max-width:640px}
-.hero-cmd{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);padding:6px 12px;margin-top:12px;display:inline-block}
+.hero-desc{font-size:12.5px;color:rgba(224,240,234,0.5);line-height:1.7;max-width:620px}
+.hero-cmd{font-family:'Space Mono',monospace;font-size:9px;color:var(--cyan);background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.12);padding:5px 12px;margin-top:10px;display:inline-block}
 
 /* LAYOUT */
-.layout{display:flex;min-height:calc(100vh - 200px);position:relative;z-index:1}
-.sidebar{width:220px;flex-shrink:0;border-right:1px solid var(--border);position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;padding:12px 0}
+.layout{display:flex;min-height:calc(100vh - 170px);position:relative;z-index:1}
+
+/* SIDEBAR */
+.sidebar{width:190px;flex-shrink:0;border-right:1px solid var(--border);position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;padding:10px 0;display:flex;flex-direction:column}
 .sidebar::-webkit-scrollbar{width:3px}
 .sidebar::-webkit-scrollbar-thumb{background:var(--border)}
-.sb-title{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 14px 4px}
-.sb-link{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:12px;color:rgba(224,240,234,.5);cursor:pointer;border-left:2px solid transparent;transition:all .2s}
-.sb-link:hover{color:var(--text);background:rgba(0,255,136,.04)}
-.sb-link.active{color:var(--green);border-left-color:var(--green);background:rgba(0,255,136,.06)}
-.main{flex:1;min-width:0;padding:28px 28px 80px}
+.sb-title{font-family:'Space Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 12px 4px}
+.sb-blocks{flex:1;overflow-y:auto}
+.sb-item{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:11px;color:rgba(224,240,234,.4);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.sb-item:hover{color:var(--text);background:rgba(0,255,136,.04)}
+.sb-item .sb-num{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);padding:1px 5px;flex-shrink:0}
+.sb-item .sb-x{margin-left:auto;color:var(--red);font-size:10px;opacity:0;padding:0 4px;transition:opacity .15s}
+.sb-item:hover .sb-x{opacity:1}
+.sb-footer{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.sb-btn{font-family:'Space Mono',monospace;font-size:8px;color:#030508;background:var(--green);border:none;padding:6px 0;cursor:pointer;letter-spacing:1px;text-align:center;transition:opacity .2s;width:100%}
+.sb-btn:hover{opacity:.8}
+.sb-btn.cyan{background:var(--cyan)}
+.sb-btn.red{background:rgba(255,34,85,.15);color:var(--red);border:1px solid rgba(255,34,85,.2)}
 
-/* TABS */
-.tool-tabs{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px;overflow-x:auto;flex-wrap:wrap}
-.tool-tab{flex:1;min-width:80px;padding:10px 8px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.8px;text-transform:uppercase;background:var(--bg);color:var(--muted);cursor:pointer;border:none;transition:all .2s;white-space:nowrap;text-align:center}
-.tool-tab:hover{background:rgba(0,255,136,.04);color:var(--text)}
-.tool-tab.active{background:rgba(0,255,136,.08);color:var(--green)}
-.tool-tab .ti{display:block;font-size:13px;margin-bottom:3px}
+/* MAIN */
+.main{flex:1;min-width:0;padding:20px 22px 120px}
 
-/* META SECTION (Title/Footer) */
-.meta-bar{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;margin-bottom:20px}
-.meta-bar-head{font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+/* META BAR */
+.meta-bar{background:var(--bg2);border:1px solid rgba(0,229,255,.18);padding:14px 16px;margin-bottom:16px;position:relative}
+.meta-bar::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--cyan),var(--green))}
+.meta-bar-head{font-family:'Space Mono',monospace;font-size:8px;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
 .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-/* SECTION */
-.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.sec-head::before{content:'';width:3px;height:20px;background:linear-gradient(to bottom,var(--green),var(--cyan));flex-shrink:0}
-.sec-icon{font-size:18px}
-.sec-name{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.5px}
-.sec-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-left:4px}
-
-/* FORM SECTIONS */
-.form-section{display:none}
-.form-section.active{display:block;animation:fadeIn .25s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
 /* FIELDS */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .fg.full{grid-template-columns:1fr}
 .fg.tri{grid-template-columns:1fr 1fr 1fr}
-.fg.quad{grid-template-columns:1fr 1fr 1fr 1fr}
-.field{display:flex;flex-direction:column;gap:6px}
-.field label{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
 .field label .req{color:var(--red);margin-left:2px}
-.field input,.field textarea,.field select{background:rgba(0,255,136,0.04);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:11px;padding:9px 12px;outline:none;transition:all .2s;letter-spacing:.4px;width:100%;resize:vertical}
-.field textarea{min-height:80px}
+.field input,.field textarea,.field select{background:rgba(0,255,136,0.04);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:11px;padding:8px 10px;outline:none;transition:border-color .2s,background .2s;width:100%;resize:vertical}
+.field textarea{min-height:90px}
 .field input::placeholder,.field textarea::placeholder{color:var(--muted)}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.07);box-shadow:0 0 0 2px rgba(0,255,136,.06)}
-.field-hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:2px}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.06)}
+.field-hint{font-size:10px;color:var(--muted);line-height:1.5}
 .field select option{background:var(--bg3)}
-.toggle-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(0,255,136,.03);border:1px solid var(--border)}
-.toggle-row label{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;cursor:pointer}
-.toggle-row input[type=checkbox]{accent-color:var(--green);width:14px;height:14px;cursor:pointer}
-
-/* BUILDER */
-.builder{border:1px solid var(--border);background:var(--bg2);padding:14px;margin-bottom:16px}
-.bl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.bl-title{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase}
-.bl-add{font-family:'Space Mono',monospace;font-size:9px;color:#030508;background:var(--green);border:none;padding:5px 12px;cursor:pointer;letter-spacing:1px;transition:all .2s}
-.bl-add:hover{background:rgba(0,255,136,0.7)}
-.item-row{display:flex;gap:6px;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:6px}
-.item-row input,.item-row select,.item-row textarea{flex:1;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:5px 8px;outline:none;min-width:0;resize:vertical}
-.item-row input:focus,.item-row select:focus,.item-row textarea:focus{border-color:rgba(0,255,136,.4)}
-.item-row select{flex:0 0 auto;width:90px}
-.rm-btn{background:rgba(255,34,85,.1);border:1px solid rgba(255,34,85,.2);color:var(--red);font-family:'Space Mono',monospace;font-size:9px;padding:5px 8px;cursor:pointer;flex-shrink:0;transition:all .2s}
-.rm-btn:hover{background:rgba(255,34,85,.2)}
-
-/* CARD ITEM */
-.card-item{border:1px solid var(--border);background:var(--bg3);padding:12px;margin-bottom:8px}
-.card-num{font-family:'Space Mono',monospace;font-size:8px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.card-grid.full{grid-template-columns:1fr}
-.card-grid.tri{grid-template-columns:1fr 1fr 1fr}
-.cfield{display:flex;flex-direction:column;gap:4px}
-.cfield label{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px}
-.cfield input,.cfield select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:5px 8px;outline:none;width:100%}
-.cfield input:focus,.cfield select:focus{border-color:rgba(0,255,136,.4)}
-.cfield select option{background:var(--bg3)}
-.card-rm{background:rgba(255,34,85,.08);border:1px solid rgba(255,34,85,.15);color:var(--red);font-family:'Space Mono',monospace;font-size:9px;padding:4px 10px;cursor:pointer;margin-top:8px}
 
 /* INFO BOX */
-.info-box{background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.15);padding:12px 14px;margin-bottom:20px;font-size:12px;color:rgba(224,240,234,.7);line-height:1.8}
-.info-box code{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);background:rgba(0,229,255,.08);padding:1px 5px}
+.info-box{background:rgba(0,229,255,.03);border:1px solid rgba(0,229,255,.1);padding:9px 12px;margin-bottom:12px;font-size:11px;color:rgba(224,240,234,.55);line-height:1.8}
+.info-box code{font-family:'Space Mono',monospace;font-size:9px;color:var(--cyan);background:rgba(0,229,255,.08);padding:1px 4px}
 
-/* ACTIONS */
-.action-bar{display:flex;gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center}
-.btn-gen{font-family:'Space Mono',monospace;font-size:10px;background:var(--green);border:1px solid var(--green);color:#030508;padding:10px 28px;cursor:pointer;letter-spacing:1px;font-weight:700;transition:all .2s}
-.btn-gen:hover{background:rgba(0,255,136,0.8)}
-.btn-prev{font-family:'Space Mono',monospace;font-size:10px;background:transparent;border:1px solid var(--border2);color:var(--text);padding:10px 20px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+/* DYNAMIC BLOCK CARD */
+.dyn-block{border:1px solid rgba(0,255,136,.22);background:var(--bg2);margin-bottom:10px;animation:slideIn .25s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.dyn-head{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(0,255,136,.04);border-bottom:1px solid var(--border);user-select:none}
+.dyn-icon{font-size:15px;flex-shrink:0}
+.dyn-name{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;letter-spacing:-.3px}
+.dyn-idx{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);padding:1px 6px;flex-shrink:0}
+.dyn-collapse{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);background:none;border:1px solid var(--border);padding:3px 8px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.dyn-collapse:hover{color:var(--green);border-color:var(--border2)}
+.dyn-del{font-family:'Space Mono',monospace;font-size:9px;color:var(--red);background:rgba(255,34,85,.08);border:1px solid rgba(255,34,85,.18);padding:3px 8px;cursor:pointer;flex-shrink:0;transition:background .15s}
+.dyn-del:hover{background:rgba(255,34,85,.18)}
+.dyn-body{padding:14px 16px}
+.dyn-block.collapsed .dyn-body{display:none}
+
+/* BUILDER (sub-items inside a block) */
+.builder{border:1px solid var(--border);background:var(--bg3);padding:11px;margin-bottom:11px}
+.bl-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.bl-title{font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase}
+.bl-add{font-family:'Space Mono',monospace;font-size:8px;color:#030508;background:var(--green);border:none;padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:opacity .2s}
+.bl-add:hover{opacity:.8}
+.item-row{display:flex;gap:5px;align-items:center;background:var(--bg2);border:1px solid var(--border);padding:7px 9px;margin-bottom:5px}
+.item-row input{flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:5px 7px;outline:none;min-width:0}
+.item-row input:focus{border-color:rgba(0,255,136,.4)}
+.rm-btn{background:rgba(255,34,85,.1);border:1px solid rgba(255,34,85,.2);color:var(--red);font-family:'Space Mono',monospace;font-size:9px;padding:4px 7px;cursor:pointer;flex-shrink:0;white-space:nowrap}
+.rm-btn:hover{background:rgba(255,34,85,.2)}
+
+/* CARD (sub-items like reel/post/product) */
+.card-item{border:1px solid var(--border);background:rgba(0,0,0,.2);padding:11px;margin-bottom:7px}
+.card-num{font-family:'Space Mono',monospace;font-size:7.5px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
+.card-grid.tri{grid-template-columns:1fr 1fr 1fr}
+.cfield{display:flex;flex-direction:column;gap:3px}
+.cfield label{font-family:'Space Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
+.cfield input,.cfield select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;padding:4px 7px;outline:none;width:100%}
+.cfield input:focus,.cfield select:focus{border-color:rgba(0,255,136,.35)}
+.cfield select option{background:var(--bg3)}
+.card-rm{background:rgba(255,34,85,.08);border:1px solid rgba(255,34,85,.15);color:var(--red);font-family:'Space Mono',monospace;font-size:8px;padding:3px 8px;cursor:pointer}
+
+/* EMPTY STATE */
+.empty-state{border:1px dashed rgba(0,255,136,.15);padding:36px 20px;text-align:center;margin-bottom:16px}
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty-title{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:rgba(224,240,234,.4);margin-bottom:6px}
+.empty-sub{font-size:12px;color:rgba(224,240,234,.25);line-height:1.6}
+
+/* ACTION BAR */
+.action-bar{display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center}
+.btn-gen{font-family:'Space Mono',monospace;font-size:10px;background:var(--green);border:1px solid var(--green);color:#030508;padding:11px 26px;cursor:pointer;letter-spacing:1px;font-weight:700;transition:opacity .2s}
+.btn-gen:hover{opacity:.85}
+.btn-prev{font-family:'Space Mono',monospace;font-size:10px;background:transparent;border:1px solid var(--border2);color:var(--text);padding:11px 16px;cursor:pointer;letter-spacing:1px;transition:all .2s}
 .btn-prev:hover{border-color:rgba(0,255,136,.4);color:var(--green)}
-.btn-reset{font-family:'Space Mono',monospace;font-size:10px;background:rgba(255,34,85,.08);border:1px solid rgba(255,34,85,.2);color:var(--red);padding:10px 16px;cursor:pointer;letter-spacing:1px;transition:all .2s;margin-left:auto}
-.btn-reset:hover{background:rgba(255,34,85,.15)}
+.btn-reset{font-family:'Space Mono',monospace;font-size:10px;background:rgba(255,34,85,.07);border:1px solid rgba(255,34,85,.2);color:var(--red);padding:11px 14px;cursor:pointer;letter-spacing:1px;margin-left:auto}
+.btn-reset:hover{background:rgba(255,34,85,.14)}
 
 /* OUTPUT */
-.output-wrap{margin-top:24px;display:none}
-.output-wrap.show{display:block;animation:fadeIn .3s ease}
-.out-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.output-wrap{margin-top:20px;display:none}
+.output-wrap.show{display:block;animation:slideIn .3s ease}
+.out-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
 .out-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase}
 .out-copy-btn{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);background:none;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all .2s}
-.out-copy-btn:hover{color:var(--green);border-color:var(--border2)}
-.out-copy-btn.copied{color:var(--green);border-color:rgba(0,255,136,.4)}
-.out-box{background:var(--bg2);border:1px solid var(--border);padding:16px 18px;font-family:'Space Mono',monospace;font-size:11.5px;color:rgba(224,240,234,.85);line-height:1.8;word-break:break-all;white-space:pre-wrap;max-height:220px;overflow-y:auto}
+.out-copy-btn:hover,.out-copy-btn.copied{color:var(--green);border-color:rgba(0,255,136,.4)}
+.out-box{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;font-family:'Space Mono',monospace;font-size:11px;color:rgba(224,240,234,.85);line-height:1.9;word-break:break-all;white-space:pre-wrap;max-height:200px;overflow-y:auto}
 .out-box::-webkit-scrollbar{width:3px}
 .out-box::-webkit-scrollbar-thumb{background:var(--border)}
-.out-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+.out-note{font-size:11px;color:var(--muted);margin-top:7px}
 .out-note span{color:var(--green)}
 
+/* FLOATING ADD BUTTON */
+.fab-wrap{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fab{height:40px;padding:0 18px;background:var(--green);border:none;border-radius:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#030508;transition:all .2s;white-space:nowrap}
+.fab:hover{box-shadow:0 0 22px rgba(0,255,136,.4);opacity:.9}
+.fab.open{background:var(--red);color:#fff}
+.fab-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:1px;background:rgba(3,5,8,.9);border:1px solid rgba(0,255,136,.2);padding:3px 9px;pointer-events:none}
+
+/* BLOCK PICKER */
+.picker-overlay{position:fixed;inset:0;z-index:190;background:rgba(3,5,8,.7);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+.picker-overlay.open{display:flex;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0}to{opacity:1}}
+.picker-sheet{background:var(--bg2);border:1px solid var(--border2);border-bottom:none;width:100%;max-width:680px;padding:20px 20px 32px;animation:sheetUp .25s ease}
+@keyframes sheetUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.picker-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.picker-title{font-family:'Syne',sans-serif;font-weight:800;font-size:17px}
+.picker-close{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;cursor:pointer;letter-spacing:1px}
+.picker-close:hover{color:var(--green)}
+.picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.picker-btn{background:var(--bg3);border:1px solid var(--border);padding:12px 10px;cursor:pointer;text-align:center;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.picker-btn:hover{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.05);transform:translateY(-2px)}
+.picker-btn .pi{font-size:22px}
+.picker-btn .pn{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:.5px}
+.picker-btn .pd{font-size:10px;color:var(--muted);line-height:1.4}
+
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(3,5,8,.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(3,5,8,.88);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border2);width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
-.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+.modal-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
 .modal-title{font-family:'Syne',sans-serif;font-weight:800;font-size:15px}
-.modal-close{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;letter-spacing:1px}
+.modal-close{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer}
 .modal-close:hover{color:var(--green)}
-.modal-body{padding:20px}
-.pv-sec{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;margin-top:18px}
-.pv-box{background:var(--bg3);border:1px solid var(--border);padding:12px;font-family:'Space Mono',monospace;font-size:11px;color:rgba(224,240,234,.7);line-height:1.8;word-break:break-all}
-.func-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.func-chip{font-family:'Space Mono',monospace;font-size:9px;padding:3px 9px;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.18);color:var(--green);letter-spacing:.5px}
+.modal-body{padding:18px}
+.pv-sec{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;margin-top:14px}
+.pv-box{background:var(--bg3);border:1px solid var(--border);padding:11px;font-family:'Space Mono',monospace;font-size:10.5px;color:rgba(224,240,234,.7);line-height:1.8;word-break:break-all}
+.func-chip{display:inline-block;font-family:'Space Mono',monospace;font-size:8px;padding:2px 8px;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.2);color:var(--green);margin:2px}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;z-index:999;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;padding:10px 18px;border:1px solid;transform:translateY(60px);opacity:0;transition:all .3s ease;pointer-events:none}
+.toast{position:fixed;bottom:96px;right:28px;z-index:999;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;padding:10px 16px;border:1px solid;transform:translateY(50px);opacity:0;transition:all .3s ease;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.3);color:var(--green)}
 .toast.error{background:rgba(255,34,85,.1);border-color:rgba(255,34,85,.3);color:var(--red)}
 
-/* DIVIDER */
-.sec-div{border:none;border-top:1px solid var(--border);margin:20px 0}
-
-@media(max-width:768px){
+@media(max-width:700px){
   .sidebar{display:none}
-  .main{padding:16px 14px 60px}
+  .main{padding:14px 12px 120px}
   .fg{grid-template-columns:1fr}
-  .fg.tri,.fg.quad{grid-template-columns:1fr 1fr}
-  .card-grid{grid-template-columns:1fr}
-  .card-grid.tri{grid-template-columns:1fr}
+  .fg.tri{grid-template-columns:1fr 1fr}
+  .card-grid{grid-template-columns:1fr 1fr}
   .meta-grid{grid-template-columns:1fr}
+  .picker-grid{grid-template-columns:repeat(3,1fr)}
+  .fab-wrap{right:16px;bottom:20px}
 }
 </style>
 </head>
@@ -172,257 +201,105 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear
 
 <!-- HEADER -->
 <header class="header">
-  <a href="#" class="logo">
+  <div class="logo">
     <div class="lhex">NX</div>
     <div><div class="lname">NIXCODE</div><div class="lsub">AIRich Builder</div></div>
-  </a>
+  </div>
   <div class="h-badge">createairich</div>
+  <div class="h-count" id="hdrCount">0 blocks</div>
 </header>
 
 <!-- HERO -->
 <div class="hero">
-  <h1 class="hero-title"><span>AIRich</span> Command Builder</h1>
-  <p class="hero-desc">Build full <code style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan)">.createairich</code> commands visually. Add blocks like text, image, video, code, table, product, reels, post, dan lainnya — lalu copy hasilnya ke WhatsApp.</p>
-  <div class="hero-cmd">.createairich TITLE|FOOTER|"func","param"|"func","param"|...</div>
+  <h1 class="hero-title"><span>AIRich</span> Builder</h1>
+  <p class="hero-desc">Neeche <strong style="color:var(--green)">+ Add Block</strong> button dabao, type chuno — multiple blocks ek saath add karo aur ek command mein generate karo.</p>
+  <div class="hero-cmd">.createairich TITLE | FOOTER | "func","param" | "func","param" | ...</div>
 </div>
 
 <div class="layout">
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sb-title">Content Blocks</div>
-  <div class="sb-link active" onclick="switchSection('addtext',this)"><span>📝</span> addtext</div>
-  <div class="sb-link" onclick="switchSection('addtip',this)"><span>💡</span> addtip</div>
-  <div class="sb-link" onclick="switchSection('addsuggest',this)"><span>💬</span> addsuggest</div>
-  <div class="sb-title" style="margin-top:12px">Media</div>
-  <div class="sb-link" onclick="switchSection('addimage',this)"><span>🖼️</span> addimage</div>
-  <div class="sb-link" onclick="switchSection('addvideo',this)"><span>🎬</span> addvideo</div>
-  <div class="sb-title" style="margin-top:12px">Data</div>
-  <div class="sb-link" onclick="switchSection('addcode',this)"><span>💻</span> addcode</div>
-  <div class="sb-link" onclick="switchSection('addtable',this)"><span>📊</span> addtable</div>
-  <div class="sb-link" onclick="switchSection('addsource',this)"><span>🔗</span> addsource</div>
-  <div class="sb-title" style="margin-top:12px">Commerce & Social</div>
-  <div class="sb-link" onclick="switchSection('addproduct',this)"><span>🛍️</span> addproduct</div>
-  <div class="sb-link" onclick="switchSection('addproducts',this)"><span>🛒</span> addproducts</div>
-  <div class="sb-link" onclick="switchSection('addreels',this)"><span>🎥</span> addreels</div>
-  <div class="sb-link" onclick="switchSection('addpost',this)"><span>📸</span> addpost</div>
+  <div class="sb-title">Added Blocks</div>
+  <div class="sb-blocks" id="sbBlocks">
+    <div style="padding:12px;font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);line-height:1.8">No blocks yet.<br>Click + Add Block</div>
+  </div>
+  <div class="sb-footer">
+    <button class="sb-btn" onclick="openPicker()">+ Add Block</button>
+    <button class="sb-btn cyan" onclick="generate()">⚡ Generate</button>
+    <button class="sb-btn" onclick="copyOut()" style="background:rgba(0,229,255,.15);color:var(--cyan);border:1px solid rgba(0,229,255,.25)">📋 Copy</button>
+    <button class="sb-btn red" onclick="resetAll()">🗑 Reset All</button>
+  </div>
 </aside>
 
 <div class="main">
 
-<!-- TABS -->
-<div class="tool-tabs">
-  <button class="tool-tab active" onclick="switchSection('addtext',this)"><span class="ti">📝</span>text</button>
-  <button class="tool-tab" onclick="switchSection('addtip',this)"><span class="ti">💡</span>tip</button>
-  <button class="tool-tab" onclick="switchSection('addsuggest',this)"><span class="ti">💬</span>suggest</button>
-  <button class="tool-tab" onclick="switchSection('addimage',this)"><span class="ti">🖼️</span>image</button>
-  <button class="tool-tab" onclick="switchSection('addvideo',this)"><span class="ti">🎬</span>video</button>
-  <button class="tool-tab" onclick="switchSection('addcode',this)"><span class="ti">💻</span>code</button>
-  <button class="tool-tab" onclick="switchSection('addtable',this)"><span class="ti">📊</span>table</button>
-  <button class="tool-tab" onclick="switchSection('addsource',this)"><span class="ti">🔗</span>source</button>
-  <button class="tool-tab" onclick="switchSection('addproduct',this)"><span class="ti">🛍️</span>product</button>
-  <button class="tool-tab" onclick="switchSection('addproducts',this)"><span class="ti">🛒</span>products</button>
-  <button class="tool-tab" onclick="switchSection('addreels',this)"><span class="ti">🎥</span>reels</button>
-  <button class="tool-tab" onclick="switchSection('addpost',this)"><span class="ti">📸</span>post</button>
-</div>
-
-<!-- META: Title + Footer (always visible) -->
-<div class="meta-bar">
-  <div class="meta-bar-head">⚙️ COMMAND META — Title &amp; Footer</div>
-  <div class="meta-grid">
-    <div class="field"><label>Title</label><input id="meta-title" placeholder="🚀 NIXCODE"><span class="field-hint">Command ka pehla field (optional)</span></div>
-    <div class="field"><label>Footer / Copyright</label><input id="meta-footer" placeholder="© Fiora Sylvie"><span class="field-hint">Command ka doosra field (optional)</span></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDTEXT
-════════════════════════════════ -->
-<div class="form-section active" id="form-addtext">
-  <div class="sec-head"><span class="sec-icon">📝</span><span class="sec-name">addtext</span><span class="sec-sub">Markdown text block</span></div>
-  <div class="info-box">
-    Supports: <code># Heading</code> <code>## Sub</code> <code>**bold**</code> <code>_italic_</code><br>
-    Highlight: <code>=={ text }==</code> &nbsp;|&nbsp; Link: <code>[Label](https://url)</code> &nbsp;|&nbsp; Newline: <code>\n</code>
-  </div>
-  <div class="field fg full"><label>Text Content <span class="req">*</span></label><textarea id="addtext-content" placeholder="# Halo Dunia&#10;## Sub Judul&#10;&#10;Ini teks biasa dengan **bold** dan _italic_&#10;&#10;=={{ Highlight }}==&#10;&#10;[Google](https://google.com)" style="min-height:120px"></textarea><span class="field-hint">Use \n for newline in output. The form renders real newlines.</span></div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDTIP
-════════════════════════════════ -->
-<div class="form-section" id="form-addtip">
-  <div class="sec-head"><span class="sec-icon">💡</span><span class="sec-name">addtip</span><span class="sec-sub">Metadata tip / info bar</span></div>
-  <div class="info-box">Short tip text shown as a metadata bar at the top of the message.</div>
-  <div class="field fg full"><label>Tip Text <span class="req">*</span></label><input id="addtip-content" placeholder="Selamat datang di NIXCODE!"></div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDSUGGEST
-════════════════════════════════ -->
-<div class="form-section" id="form-addsuggest">
-  <div class="sec-head"><span class="sec-icon">💬</span><span class="sec-name">addsuggest</span><span class="sec-sub">Quick reply pills</span></div>
-  <div class="info-box">Each pill = a tappable quick reply button. Separate with <code>;</code></div>
-  <div class="builder">
-    <div class="bl-head"><span class="bl-title">💬 Suggest Pills</span><button class="bl-add" onclick="addPill()">+ Add Pill</button></div>
-    <div id="suggest-pills"></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDIMAGE
-════════════════════════════════ -->
-<div class="form-section" id="form-addimage">
-  <div class="sec-head"><span class="sec-icon">🖼️</span><span class="sec-name">addimage</span><span class="sec-sub">Embed image via URL</span></div>
-  <div class="info-box">Direct image URL (CDN, Imgur, etc). Must be publicly accessible.</div>
-  <div class="field fg full"><label>Image URL <span class="req">*</span></label><input id="addimage-url" placeholder="https://cdn.ornzora.eu.cc/xxx-FIORA.jpg"></div>
-  <div id="img-preview-wrap" style="margin-top:10px;display:none">
-    <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:6px">PREVIEW</div>
-    <img id="img-preview" style="max-width:100%;max-height:200px;border:1px solid var(--border);object-fit:contain" alt="preview">
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDVIDEO
-════════════════════════════════ -->
-<div class="form-section" id="form-addvideo">
-  <div class="sec-head"><span class="sec-icon">🎬</span><span class="sec-name">addvideo</span><span class="sec-sub">Embed video with duration</span></div>
-  <div class="info-box">Provide MP4 URL and duration in seconds. Duration = <code>0</code> for auto.</div>
-  <div class="fg">
-    <div class="field"><label>Video URL <span class="req">*</span></label><input id="addvideo-url" placeholder="https://cdn.ornzora.eu.cc/xxx.mp4"></div>
-    <div class="field"><label>Duration (seconds)</label><input id="addvideo-dur" type="number" min="0" value="10" placeholder="10"><span class="field-hint">Set 0 to omit duration</span></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDCODE
-════════════════════════════════ -->
-<div class="form-section" id="form-addcode">
-  <div class="sec-head"><span class="sec-icon">💻</span><span class="sec-name">addcode</span><span class="sec-sub">Syntax-highlighted code block</span></div>
-  <div class="info-box">Select a language and paste your code. Supports <code>javascript</code>, <code>python</code>, <code>json</code>, <code>html</code>, <code>css</code>, <code>bash</code>, <code>text</code>, etc.</div>
-  <div class="fg">
-    <div class="field"><label>Language <span class="req">*</span></label>
-      <select id="addcode-lang">
-        <option value="javascript">javascript</option>
-        <option value="python">python</option>
-        <option value="json">json</option>
-        <option value="html">html</option>
-        <option value="css">css</option>
-        <option value="bash">bash</option>
-        <option value="typescript">typescript</option>
-        <option value="java">java</option>
-        <option value="php">php</option>
-        <option value="sql">sql</option>
-        <option value="text">text</option>
-      </select>
-    </div>
-    <div class="field" style="display:flex;flex-direction:column;justify-content:flex-end">
-      <span class="field-hint" style="font-size:11px;color:var(--muted)">Language used for syntax highlight</span>
+  <!-- META -->
+  <div class="meta-bar">
+    <div class="meta-bar-head">⚙️ COMMAND META</div>
+    <div class="meta-grid">
+      <div class="field"><label>Title</label><input id="meta-title" placeholder="🚀 NIXCODE"><span class="field-hint">Field 1 — optional</span></div>
+      <div class="field"><label>Footer / Copyright</label><input id="meta-footer" placeholder="© Fiora Sylvie"><span class="field-hint">Field 2 — optional</span></div>
     </div>
   </div>
-  <div class="field fg full"><label>Code Content <span class="req">*</span></label><textarea id="addcode-content" placeholder="class Bot {&#10;    static hello() {&#10;        return 'Hello World';&#10;    &#10;    }&#10;}" style="min-height:140px;font-family:'Space Mono',monospace;font-size:11px"></textarea></div>
-</div>
 
-<!-- ════════════════════════════════
-     ADDTABLE
-════════════════════════════════ -->
-<div class="form-section" id="form-addtable">
-  <div class="sec-head"><span class="sec-icon">📊</span><span class="sec-name">addtable</span><span class="sec-sub">Data table with headers &amp; rows</span></div>
-  <div class="info-box">First row = headers. Add rows below. Each cell = one input. Columns defined by header count.</div>
-  <div class="fg full"><div class="field"><label>Columns (comma-separated headers) <span class="req">*</span></label><input id="table-cols" placeholder="Nama,Role,Status" oninput="refreshTableRows()"><span class="field-hint">These become the table headers. Separate with comma.</span></div></div>
-  <div class="builder">
-    <div class="bl-head"><span class="bl-title">📋 Data Rows</span><button class="bl-add" onclick="addTableRow()">+ Add Row</button></div>
-    <div id="table-rows"></div>
+  <!-- DYNAMIC BLOCKS CONTAINER -->
+  <div id="blocksContainer">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🧩</div>
+      <div class="empty-title">No blocks added yet</div>
+      <div class="empty-sub">Click the <span style="color:var(--green)">+ Add Block</span> button below<br>to start building your command</div>
+    </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════
-     ADDSOURCE
-════════════════════════════════ -->
-<div class="form-section" id="form-addsource">
-  <div class="sec-head"><span class="sec-icon">🔗</span><span class="sec-name">addsource</span><span class="sec-sub">Reference / source links with icon</span></div>
-  <div class="info-box">Each source = Image Icon URL + Page URL + Label. Multiple sources are shown as a horizontal list.</div>
-  <div class="builder">
-    <div class="bl-head"><span class="bl-title">🔗 Sources</span><button class="bl-add" onclick="addSource()">+ Add Source</button></div>
-    <div id="source-items"></div>
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <button class="btn-prev" onclick="showPreview()">👁 Preview</button>
+    <button class="btn-gen" onclick="generate()">⚡ Generate Command</button>
+    <button class="btn-reset" onclick="resetAll()">🗑 Reset</button>
   </div>
-</div>
 
-<!-- ════════════════════════════════
-     ADDPRODUCT (single)
-════════════════════════════════ -->
-<div class="form-section" id="form-addproduct">
-  <div class="sec-head"><span class="sec-icon">🛍️</span><span class="sec-name">addproduct</span><span class="sec-sub">Single product card</span></div>
-  <div class="info-box">Single product display card with title, brand, price, image, and link.</div>
-  <div class="fg">
-    <div class="field"><label>Product Title <span class="req">*</span></label><input id="p1-title" placeholder="NIXCODE Bot"></div>
-    <div class="field"><label>Brand</label><input id="p1-brand" placeholder="Nixel"></div>
+  <!-- OUTPUT -->
+  <div class="output-wrap" id="outputWrap">
+    <div class="out-head">
+      <span class="out-label">📋 Generated Command</span>
+      <button class="out-copy-btn" id="outCopyBtn" onclick="copyOut()">Copy</button>
+    </div>
+    <div class="out-box" id="outBox"></div>
+    <div class="out-note">Paste directly in WhatsApp. <span id="outNote"></span></div>
   </div>
-  <div class="fg">
-    <div class="field"><label>Price</label><input id="p1-price" placeholder="Rp 1000"></div>
-    <div class="field"><label>Sale Price (optional)</label><input id="p1-sale_price" placeholder="Rp 0"></div>
-  </div>
-  <div class="fg full"><div class="field"><label>Product URL</label><input id="p1-product_url" placeholder="https://wa.me/62xxx"></div></div>
-  <div class="fg">
-    <div class="field"><label>Image URL</label><input id="p1-image_url" placeholder="https://cdn.ornzora.eu.cc/xxx.jpg"></div>
-    <div class="field"><label>Icon URL</label><input id="p1-icon_url" placeholder="https://static.nike.com/..."></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDPRODUCTS (hscroll array)
-════════════════════════════════ -->
-<div class="form-section" id="form-addproducts">
-  <div class="sec-head"><span class="sec-icon">🛒</span><span class="sec-name">addproducts</span><span class="sec-sub">Horizontal scroll product catalog</span></div>
-  <div class="info-box">Multiple products in a horizontal scroll list. Add as many items as needed.</div>
-  <div class="builder">
-    <div class="bl-head"><span class="bl-title">🛒 Products</span><button class="bl-add" onclick="addProductItem()">+ Add Product</button></div>
-    <div id="products-items"></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDREELS
-════════════════════════════════ -->
-<div class="form-section" id="form-addreels">
-  <div class="sec-head"><span class="sec-icon">🎥</span><span class="sec-name">addreels</span><span class="sec-sub">Instagram-style reel cards (HScroll)</span></div>
-  <div class="info-box">Each reel = one card. Multiple reels shown in horizontal scroll.</div>
-  <div class="builder">
-    <div class="bl-head"><span class="bl-title">🎥 Reels</span><button class="bl-add" onclick="addReelItem()">+ Add Reel</button></div>
-    <div id="reels-items"></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════
-     ADDPOST
-════════════════════════════════ -->
-<div class="form-section" id="form-addpost">
-  <div class="sec-head"><span class="sec-icon">📸</span><span class="sec-name">addpost</span><span class="sec-sub">Social media post card (HScroll)</span></div>
-  <div class="info-box">Full post card with user info, caption, engagement stats, and media.</div>
-  <div class="builder">
-    <div class="bl-head"><span class="bl-title">📸 Posts</span><button class="bl-add" onclick="addPostItem()">+ Add Post</button></div>
-    <div id="post-items"></div>
-  </div>
-</div>
-
-<!-- ACTION BAR -->
-<div class="action-bar">
-  <button class="btn-prev" onclick="showPreview()">👁 Preview Command</button>
-  <button class="btn-gen" onclick="generate()">⚡ Generate Command</button>
-  <button class="btn-reset" onclick="resetAll()">🗑 Reset All</button>
-</div>
-
-<!-- OUTPUT -->
-<div class="output-wrap" id="outputWrap">
-  <div class="out-head">
-    <span class="out-label">📋 Generated Command</span>
-    <button class="out-copy-btn" id="outCopyBtn" onclick="copyOut()">Copy</button>
-  </div>
-  <div class="out-box" id="outBox"></div>
-  <div class="out-note">Paste this directly in WhatsApp and send. <span id="outNote"></span></div>
-</div>
 
 </div><!-- /main -->
 </div><!-- /layout -->
+
+<!-- FLOATING ADD BUTTON -->
+<div class="fab-wrap">
+  <button class="fab" id="fab" onclick="togglePicker()" title="Add Block">+ ADDBLOCK</button>
+</div>
+
+<!-- BLOCK PICKER SHEET -->
+<div class="picker-overlay" id="pickerOverlay" onclick="if(event.target===this)closePicker()">
+  <div class="picker-sheet">
+    <div class="picker-head">
+      <div class="picker-title">Choose Block Type</div>
+      <button class="picker-close" onclick="closePicker()">✕ CLOSE</button>
+    </div>
+    <div class="picker-grid">
+      <button class="picker-btn" onclick="addBlock('addtip')"><span class="pi">💡</span><span class="pn">addtip</span><span class="pd">Metadata tip bar</span></button>
+      <button class="picker-btn" onclick="addBlock('addsuggest')"><span class="pi">💬</span><span class="pn">addsuggest</span><span class="pd">Quick reply pills</span></button>
+      <button class="picker-btn" onclick="addBlock('addtext')"><span class="pi">📝</span><span class="pn">addtext</span><span class="pd">Markdown text</span></button>
+      <button class="picker-btn" onclick="addBlock('addimage')"><span class="pi">🖼️</span><span class="pn">addimage</span><span class="pd">Image via URL</span></button>
+      <button class="picker-btn" onclick="addBlock('addvideo')"><span class="pi">🎬</span><span class="pn">addvideo</span><span class="pd">Video + duration</span></button>
+      <button class="picker-btn" onclick="addBlock('addcode')"><span class="pi">💻</span><span class="pn">addcode</span><span class="pd">Code block</span></button>
+      <button class="picker-btn" onclick="addBlock('addtable')"><span class="pi">📊</span><span class="pn">addtable</span><span class="pd">Data table</span></button>
+      <button class="picker-btn" onclick="addBlock('addsource')"><span class="pi">🔗</span><span class="pn">addsource</span><span class="pd">Source links</span></button>
+      <button class="picker-btn" onclick="addBlock('addproduct')"><span class="pi">🛍️</span><span class="pn">addproduct</span><span class="pd">Single product</span></button>
+      <button class="picker-btn" onclick="addBlock('addproducts')"><span class="pi">🛒</span><span class="pn">addproducts</span><span class="pd">Product catalog</span></button>
+      <button class="picker-btn" onclick="addBlock('addreels')"><span class="pi">🎥</span><span class="pn">addreels</span><span class="pd">Reels HScroll</span></button>
+      <button class="picker-btn" onclick="addBlock('addpost')"><span class="pi">📸</span><span class="pn">addpost</span><span class="pd">Post card</span></button>
+    </div>
+  </div>
+</div>
 
 <!-- PREVIEW MODAL -->
 <div class="modal-overlay" id="previewModal" onclick="if(event.target===this)closeModal()">
@@ -438,378 +315,609 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear
 <div class="toast" id="toast"></div>
 
 <script>
-let activeSection = 'addtext';
-let pillCount=0, sourceCount=0, tableRowCount=0, productItemCount=0, reelItemCount=0, postItemCount=0;
+// ═══════════════════════════════════════════════
+//  BLOCK REGISTRY — meta for each type
+// ═══════════════════════════════════════════════
+const BLOCK_META = {
+  addtip:      { icon:'💡', label:'addtip',      sub:'Metadata tip bar' },
+  addsuggest:  { icon:'💬', label:'addsuggest',  sub:'Quick reply pills' },
+  addtext:     { icon:'📝', label:'addtext',     sub:'Markdown text' },
+  addimage:    { icon:'🖼️', label:'addimage',    sub:'Image URL' },
+  addvideo:    { icon:'🎬', label:'addvideo',    sub:'Video + duration' },
+  addcode:     { icon:'💻', label:'addcode',     sub:'Code block' },
+  addtable:    { icon:'📊', label:'addtable',    sub:'Data table' },
+  addsource:   { icon:'🔗', label:'addsource',   sub:'Source links' },
+  addproduct:  { icon:'🛍️', label:'addproduct',  sub:'Single product' },
+  addproducts: { icon:'🛒', label:'addproducts', sub:'Product catalog' },
+  addreels:    { icon:'🎥', label:'addreels',    sub:'Reels HScroll' },
+  addpost:     { icon:'📸', label:'addpost',     sub:'Post card' },
+};
 
-// ── INIT ──
-addPill(); addPill();
-addSource();
-addTableRow();
-addProductItem();
-addReelItem();
-addPostItem();
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let blockSeq = 0;           // global counter for unique IDs
+let blocks = [];            // [{uid, type}]
+let subCounts = {};         // uid -> sub-item counter
 
-// ── SWITCH SECTION ──
-function switchSection(sec, el) {
-  activeSection = sec;
-  document.querySelectorAll('.form-section').forEach(f=>f.classList.remove('active'));
-  document.getElementById('form-'+sec).classList.add('active');
-  document.querySelectorAll('.sb-link,.tool-tab').forEach(e=>e.classList.remove('active'));
-  if(el) el.classList.add('active');
+// ═══════════════════════════════════════════════
+//  PICKER
+// ═══════════════════════════════════════════════
+function openPicker()  { document.getElementById('pickerOverlay').classList.add('open');  document.getElementById('fab').classList.add('open'); document.getElementById('fab').textContent='✕ CLOSE'; }
+function closePicker() { document.getElementById('pickerOverlay').classList.remove('open'); document.getElementById('fab').classList.remove('open'); document.getElementById('fab').textContent='+ ADDBLOCK'; }
+function togglePicker(){ document.getElementById('pickerOverlay').classList.contains('open') ? closePicker() : openPicker(); }
+
+// ═══════════════════════════════════════════════
+//  ADD BLOCK
+// ═══════════════════════════════════════════════
+function addBlock(type) {
+  closePicker();
+  blockSeq++;
+  const uid = 'blk_' + blockSeq;
+  const meta = BLOCK_META[type];
+  const typeCount = blocks.filter(b=>b.type===type).length + 1;
+  blocks.push({ uid, type });
+  subCounts[uid] = 0;
+
+  // remove empty state
+  document.getElementById('emptyState')?.remove();
+
+  // build card HTML
+  const card = document.createElement('div');
+  card.className = 'dyn-block';
+  card.id = uid;
+  card.innerHTML = `
+    <div class="dyn-head">
+      <span class="dyn-icon">${meta.icon}</span>
+      <span class="dyn-name">${meta.label}</span>
+      <span class="dyn-idx">#${typeCount}</span>
+      <button class="dyn-collapse" onclick="toggleCollapse('${uid}')">▾ collapse</button>
+      <button class="dyn-del" onclick="removeBlock('${uid}')">✕ remove</button>
+    </div>
+    <div class="dyn-body">${buildBodyHTML(type, uid)}</div>
+  `;
+  document.getElementById('blocksContainer').appendChild(card);
+
+  // init default sub-rows
+  initDefaults(type, uid);
+  updateSidebar();
+  updateCount();
+  card.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  toast('✅ ' + meta.label + ' #' + typeCount + ' added!', 'success');
 }
 
-// ── SUGGEST PILLS ──
-function addPill() {
-  pillCount++;
-  const id = 'pill-'+pillCount;
+// ═══════════════════════════════════════════════
+//  BODY HTML per type
+// ═══════════════════════════════════════════════
+function buildBodyHTML(type, uid) {
+  switch(type) {
+
+    case 'addtip': return `
+      <div class="fg full"><div class="field">
+        <label>Tip Text <span class="req">*</span></label>
+        <input id="${uid}_tip" placeholder="Selamat datang di NIXCODE!">
+      </div></div>`;
+
+    case 'addsuggest': return `
+      <div class="info-box">Each pill = tappable quick reply. Separate with <code>;</code></div>
+      <div class="builder">
+        <div class="bl-head"><span class="bl-title">💬 Pills</span><button class="bl-add" onclick="addPill('${uid}')">+ Add Pill</button></div>
+        <div id="${uid}_pills"></div>
+      </div>`;
+
+    case 'addtext': return `
+      <div class="info-box">
+        <code># Heading</code> <code>**bold**</code> <code>_italic_</code>
+        <code>=={{ Highlight }}==</code> <code>[Label](url)</code>
+      </div>
+      <div class="fg full"><div class="field">
+        <label>Text Content <span class="req">*</span></label>
+        <textarea id="${uid}_text" placeholder="# Halo Dunia&#10;&#10;Teks **bold** dan _italic_&#10;&#10;=={{ Highlight }}==&#10;&#10;[Google](https://google.com)" style="min-height:110px"></textarea>
+        <span class="field-hint">Newlines auto-converted to \\n</span>
+      </div></div>`;
+
+    case 'addimage': return `
+      <div class="fg full"><div class="field">
+        <label>Image URL <span class="req">*</span></label>
+        <input id="${uid}_imgurl" placeholder="https://cdn.ornzora.eu.cc/xxx.jpg" oninput="previewImg('${uid}',this.value)">
+      </div></div>
+      <div id="${uid}_imgprev" style="display:none;margin-top:8px">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:4px">PREVIEW</div>
+        <img id="${uid}_imgel" src="" style="max-width:100%;max-height:160px;border:1px solid var(--border);object-fit:contain;display:block" alt="preview">
+      </div>`;
+
+    case 'addvideo': return `
+      <div class="fg">
+        <div class="field"><label>Video URL <span class="req">*</span></label><input id="${uid}_vidurl" placeholder="https://cdn.ornzora.eu.cc/xxx.mp4"></div>
+        <div class="field"><label>Duration (seconds)</label><input id="${uid}_viddur" type="number" min="0" value="10" placeholder="10"><span class="field-hint">Set 0 to skip</span></div>
+      </div>`;
+
+    case 'addcode': return `
+      <div class="fg">
+        <div class="field"><label>Language</label>
+          <select id="${uid}_lang">
+            <option value="javascript">javascript</option><option value="python">python</option>
+            <option value="json">json</option><option value="html">html</option>
+            <option value="css">css</option><option value="bash">bash</option>
+            <option value="typescript">typescript</option><option value="java">java</option>
+            <option value="php">php</option><option value="sql">sql</option><option value="text">text</option>
+          </select>
+        </div>
+        <div class="field" style="justify-content:flex-end"><span class="field-hint" style="font-size:10px">Syntax highlight language</span></div>
+      </div>
+      <div class="fg full"><div class="field">
+        <label>Code <span class="req">*</span></label>
+        <textarea id="${uid}_code" placeholder="console.log('Hello NIXCODE!')" style="min-height:120px;font-family:'Space Mono',monospace;font-size:11px"></textarea>
+      </div></div>`;
+
+    case 'addtable': return `
+      <div class="fg full"><div class="field">
+        <label>Column Headers <span class="req">*</span></label>
+        <input id="${uid}_cols" placeholder="Nama,Role,Status" oninput="refreshTableRows('${uid}')">
+        <span class="field-hint">Comma-separated. These become the column headers.</span>
+      </div></div>
+      <div class="builder">
+        <div class="bl-head"><span class="bl-title">📋 Rows</span><button class="bl-add" onclick="addTableRow('${uid}')">+ Add Row</button></div>
+        <div id="${uid}_rows"></div>
+      </div>`;
+
+    case 'addsource': return `
+      <div class="info-box">Each source = Icon Image + Page URL + Label</div>
+      <div class="builder">
+        <div class="bl-head"><span class="bl-title">🔗 Sources</span><button class="bl-add" onclick="addSource('${uid}')">+ Add Source</button></div>
+        <div id="${uid}_srcs"></div>
+      </div>`;
+
+    case 'addproduct': return `
+      <div class="fg">
+        <div class="field"><label>Title <span class="req">*</span></label><input id="${uid}_title" placeholder="NIXCODE Bot"></div>
+        <div class="field"><label>Brand</label><input id="${uid}_brand" placeholder="Nixel"></div>
+        <div class="field"><label>Price</label><input id="${uid}_price" placeholder="Rp 1000"></div>
+        <div class="field"><label>Sale Price</label><input id="${uid}_saleprice" placeholder="Rp 0"></div>
+      </div>
+      <div class="fg full"><div class="field"><label>Product URL</label><input id="${uid}_purl" placeholder="https://wa.me/62xxx"></div></div>
+      <div class="fg">
+        <div class="field"><label>Image URL</label><input id="${uid}_imgurl2" placeholder="https://cdn.ornzora.eu.cc/xxx.jpg"></div>
+        <div class="field"><label>Icon URL</label><input id="${uid}_iconurl" placeholder="https://static.nike.com/..."></div>
+      </div>`;
+
+    case 'addproducts': return `
+      <div class="builder">
+        <div class="bl-head"><span class="bl-title">🛒 Products</span><button class="bl-add" onclick="addProductItem('${uid}')">+ Add Product</button></div>
+        <div id="${uid}_prods"></div>
+      </div>`;
+
+    case 'addreels': return `
+      <div class="builder">
+        <div class="bl-head"><span class="bl-title">🎥 Reels</span><button class="bl-add" onclick="addReelItem('${uid}')">+ Add Reel</button></div>
+        <div id="${uid}_reels"></div>
+      </div>`;
+
+    case 'addpost': return `
+      <div class="builder">
+        <div class="bl-head"><span class="bl-title">📸 Posts</span><button class="bl-add" onclick="addPostItem('${uid}')">+ Add Post</button></div>
+        <div id="${uid}_posts"></div>
+      </div>`;
+
+    default: return '<div style="color:var(--muted);font-size:12px">Unknown block type.</div>';
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  INIT DEFAULTS (pre-fill sub-items)
+// ═══════════════════════════════════════════════
+function initDefaults(type, uid) {
+  if (type === 'addsuggest')  { addPill(uid); addPill(uid); }
+  if (type === 'addtable')    { addTableRow(uid); }
+  if (type === 'addsource')   { addSource(uid); }
+  if (type === 'addproducts') { addProductItem(uid); }
+  if (type === 'addreels')    { addReelItem(uid); }
+  if (type === 'addpost')     { addPostItem(uid); }
+}
+
+// ═══════════════════════════════════════════════
+//  SUB-ITEM BUILDERS
+// ═══════════════════════════════════════════════
+function addPill(uid) {
+  subCounts[uid] = (subCounts[uid]||0)+1;
+  const sid = uid+'_p'+subCounts[uid];
   const div = document.createElement('div');
-  div.className='item-row'; div.id=id;
-  div.innerHTML=`<input placeholder="Halo" /><button class="rm-btn" onclick="rmEl('${id}')">✕</button>`;
-  document.getElementById('suggest-pills').appendChild(div);
+  div.className='item-row'; div.id=sid;
+  div.innerHTML=`<input placeholder="Pill text" /><button class="rm-btn" onclick="rmEl('${sid}')">✕</button>`;
+  document.getElementById(uid+'_pills').appendChild(div);
 }
 
-// ── SOURCE ITEMS ──
-function addSource() {
-  sourceCount++;
-  const id = 'src-'+sourceCount;
+function addTableRow(uid) {
+  subCounts[uid] = (subCounts[uid]||0)+1;
+  const sid = uid+'_r'+subCounts[uid];
   const div = document.createElement('div');
-  div.className='card-item'; div.id=id;
-  div.innerHTML=`
-    <div class="card-num">SOURCE ${sourceCount} <button class="card-rm" onclick="rmEl('${id}')">✕ Remove</button></div>
-    <div class="card-grid tri">
-      <div class="cfield"><label>Icon Image URL</label><input placeholder="https://cdn.ornzora.eu.cc/xxx.jpg"></div>
-      <div class="cfield"><label>Page URL <span style="color:var(--red)">*</span></label><input placeholder="https://github.com/ValdazGT/"></div>
-      <div class="cfield"><label>Label <span style="color:var(--red)">*</span></label><input placeholder="GitHub"></div>
-    </div>`;
-  document.getElementById('source-items').appendChild(div);
-}
-function getSourceData() {
-  const items=[];
-  document.querySelectorAll('#source-items .card-item').forEach(card=>{
-    const inputs=card.querySelectorAll('input');
-    const imgUrl=(inputs[0]?.value||'').trim();
-    const pageUrl=(inputs[1]?.value||'').trim();
-    const label=(inputs[2]?.value||'').trim();
-    if(pageUrl) items.push([imgUrl,pageUrl,label].filter(Boolean).join(','));
-  });
-  return items;
+  div.className='item-row'; div.id=sid;
+  const cols = (document.getElementById(uid+'_cols')?.value||'').split(',').map(c=>c.trim()).filter(Boolean);
+  const num = cols.length||1;
+  let inp='';
+  for(let i=0;i<num;i++) inp+=`<input placeholder="${cols[i]||'value'}" />`;
+  div.innerHTML=inp+`<button class="rm-btn" onclick="rmEl('${sid}')">✕</button>`;
+  document.getElementById(uid+'_rows').appendChild(div);
 }
 
-// ── TABLE ROWS ──
-function refreshTableRows(){
-  const cols=g('table-cols').split(',').map(c=>c.trim()).filter(Boolean);
-  document.querySelectorAll('#table-rows .item-row').forEach(row=>{
-    const inputs=row.querySelectorAll('input:not(.rm-input)');
+function refreshTableRows(uid) {
+  const cols=(document.getElementById(uid+'_cols')?.value||'').split(',').map(c=>c.trim()).filter(Boolean);
+  document.querySelectorAll('#'+uid+'_rows .item-row').forEach(row=>{
+    const inputs=row.querySelectorAll('input');
     const needed=cols.length||1;
     while(inputs.length<needed){
-      const inp=document.createElement('input');
-      inp.placeholder='value';
-      row.insertBefore(inp, row.querySelector('.rm-btn'));
+      const inp=document.createElement('input'); inp.placeholder='value';
+      row.insertBefore(inp,row.querySelector('.rm-btn'));
     }
+    row.querySelectorAll('input').forEach((inp,i)=>{ inp.placeholder=cols[i]||'value'; });
   });
-}
-function addTableRow() {
-  tableRowCount++;
-  const id='trow-'+tableRowCount;
-  const div=document.createElement('div');
-  div.className='item-row'; div.id=id;
-  const cols=g('table-cols').split(',').map(c=>c.trim()).filter(Boolean);
-  const num=cols.length||1;
-  let inputs='';
-  for(let i=0;i<num;i++) inputs+=`<input placeholder="${cols[i]||'value'+i}" />`;
-  div.innerHTML=inputs+`<button class="rm-btn" onclick="rmEl('${id}')">✕</button>`;
-  document.getElementById('table-rows').appendChild(div);
-}
-function getTableData(){
-  const cols=g('table-cols').split(',').map(c=>c.trim()).filter(Boolean);
-  if(!cols.length) return null;
-  const rows=[cols];
-  document.querySelectorAll('#table-rows .item-row').forEach(row=>{
-    const vals=Array.from(row.querySelectorAll('input')).map(i=>i.value.trim());
-    if(vals.some(v=>v)) rows.push(vals);
-  });
-  return rows.map(r=>r.join(',')).join(';');
 }
 
-// ── PRODUCT SINGLE ──
-function getProductSingle(){
-  const fields=['title','brand','price','sale_price','product_url','image_url','icon_url'];
-  const parts=[];
-  fields.forEach(f=>{
-    const v=(document.getElementById('p1-'+f)?.value||'').trim();
-    if(v) parts.push(`${f}:${v}`);
-  });
-  return parts.join(',');
-}
-
-// ── PRODUCTS ARRAY ──
-function addProductItem(){
-  productItemCount++;
-  const id='prod-'+productItemCount;
+function addSource(uid) {
+  subCounts[uid] = (subCounts[uid]||0)+1;
+  const sid=uid+'_s'+subCounts[uid];
+  const n=subCounts[uid];
   const div=document.createElement('div');
-  div.className='card-item'; div.id=id;
+  div.className='card-item'; div.id=sid;
   div.innerHTML=`
-    <div class="card-num">PRODUCT ${productItemCount} <button class="card-rm" onclick="rmEl('${id}')">✕ Remove</button></div>
-    <div class="card-grid">
-      <div class="cfield"><label>Title <span style="color:var(--red)">*</span></label><input placeholder="Bot Basic"></div>
-      <div class="cfield"><label>Brand</label><input placeholder="Nixel"></div>
-      <div class="cfield"><label>Price</label><input placeholder="Rp 500"></div>
-      <div class="cfield"><label>Sale Price</label><input placeholder="Rp 0"></div>
-    </div>
-    <div class="card-grid">
-      <div class="cfield"><label>Product URL</label><input placeholder="https://wa.me/62xxx"></div>
-      <div class="cfield"><label>Image URL</label><input placeholder="https://cdn.ornzora.eu.cc/xxx.jpg"></div>
+    <div class="card-num">SOURCE ${n} <button class="card-rm" onclick="rmEl('${sid}')">✕ Remove</button></div>
+    <div class="card-grid tri">
+      <div class="cfield"><label>Icon Image URL</label><input data-role="img" placeholder="https://cdn.../icon.jpg"></div>
+      <div class="cfield"><label>Page URL *</label><input data-role="url" placeholder="https://github.com/ValdazGT/"></div>
+      <div class="cfield"><label>Label *</label><input data-role="lbl" placeholder="GitHub"></div>
     </div>`;
-  document.getElementById('products-items').appendChild(div);
-}
-function getProductsArray(){
-  const items=[];
-  document.querySelectorAll('#products-items .card-item').forEach(card=>{
-    const inputs=card.querySelectorAll('input');
-    const keys=['title','brand','price','sale_price','product_url','image_url'];
-    const parts=[];
-    keys.forEach((k,i)=>{
-      const v=(inputs[i]?.value||'').trim();
-      if(v) parts.push(`${k}:${v}`);
-    });
-    if(parts.length) items.push(parts.join(','));
-  });
-  return items.join(';');
+  document.getElementById(uid+'_srcs').appendChild(div);
 }
 
-// ── REELS ──
-function addReelItem(){
-  reelItemCount++;
-  const id='reel-'+reelItemCount;
+function addProductItem(uid) {
+  subCounts[uid] = (subCounts[uid]||0)+1;
+  const sid=uid+'_pi'+subCounts[uid];
+  const n=subCounts[uid];
   const div=document.createElement('div');
-  div.className='card-item'; div.id=id;
+  div.className='card-item'; div.id=sid;
   div.innerHTML=`
-    <div class="card-num">REEL ${reelItemCount} <button class="card-rm" onclick="rmEl('${id}')">✕ Remove</button></div>
+    <div class="card-num">PRODUCT ${n} <button class="card-rm" onclick="rmEl('${sid}')">✕ Remove</button></div>
     <div class="card-grid">
-      <div class="cfield"><label>Username <span style="color:var(--red)">*</span></label><input data-key="username" placeholder="Nixel"></div>
+      <div class="cfield"><label>Title *</label><input data-key="title" placeholder="Bot Basic"></div>
+      <div class="cfield"><label>Brand</label><input data-key="brand" placeholder="Nixel"></div>
+      <div class="cfield"><label>Price</label><input data-key="price" placeholder="Rp 500"></div>
+      <div class="cfield"><label>Sale Price</label><input data-key="sale_price" placeholder="Rp 0"></div>
+      <div class="cfield"><label>Product URL</label><input data-key="product_url" placeholder="https://wa.me/62xxx"></div>
+      <div class="cfield"><label>Image URL</label><input data-key="image_url" placeholder="https://cdn.../img.jpg"></div>
+    </div>`;
+  document.getElementById(uid+'_prods').appendChild(div);
+}
+
+function addReelItem(uid) {
+  subCounts[uid] = (subCounts[uid]||0)+1;
+  const sid=uid+'_ri'+subCounts[uid];
+  const n=subCounts[uid];
+  const div=document.createElement('div');
+  div.className='card-item'; div.id=sid;
+  div.innerHTML=`
+    <div class="card-num">REEL ${n} <button class="card-rm" onclick="rmEl('${sid}')">✕ Remove</button></div>
+    <div class="card-grid">
+      <div class="cfield"><label>Username *</label><input data-key="username" placeholder="Nixel"></div>
       <div class="cfield"><label>Title</label><input data-key="title" placeholder="Demo Reel"></div>
       <div class="cfield"><label>Likes</label><input data-key="like" type="number" placeholder="12000"></div>
       <div class="cfield"><label>Views</label><input data-key="view" type="number" placeholder="999999"></div>
       <div class="cfield"><label>Shares</label><input data-key="share" type="number" placeholder="500"></div>
       <div class="cfield"><label>Source</label><input data-key="source" placeholder="IG"></div>
-    </div>
-    <div class="card-grid">
-      <div class="cfield"><label>Verified</label><select data-key="verified"><option value="false">false</option><option value="true">true</option></select></div>
+      <div class="cfield"><label>Verified</label><select data-key="verified" onchange="this.dataset.touched='1'"><option value="false">false</option><option value="true">true</option></select></div>
+      <div class="cfield"><label>Post URL</label><input data-key="url" placeholder="https://fiora.nixel.my.id/"></div>
       <div class="cfield"><label>Profile URL</label><input data-key="profile_url" placeholder="https://cdn.../profile.jpg"></div>
       <div class="cfield"><label>Thumbnail URL</label><input data-key="thumbnail" placeholder="https://cdn.../thumb.jpg"></div>
-      <div class="cfield"><label>Post URL</label><input data-key="url" placeholder="https://fiora.nixel.my.id/"></div>
     </div>`;
-  document.getElementById('reels-items').appendChild(div);
-}
-function getReelsData(){
-  const items=[];
-  document.querySelectorAll('#reels-items .card-item').forEach(card=>{
-    const parts=[];
-    card.querySelectorAll('[data-key]').forEach(el=>{
-      const v=(el.value||'').trim();
-      if(v) parts.push(`${el.dataset.key}:${v}`);
-    });
-    if(parts.length) items.push(parts.join(','));
-  });
-  return items.join(';');
+  document.getElementById(uid+'_reels').appendChild(div);
 }
 
-// ── POSTS ──
-function addPostItem(){
-  postItemCount++;
-  const id='post-'+postItemCount;
+function addPostItem(uid) {
+  subCounts[uid] = (subCounts[uid]||0)+1;
+  const sid=uid+'_posti'+subCounts[uid];
+  const n=subCounts[uid];
   const div=document.createElement('div');
-  div.className='card-item'; div.id=id;
+  div.className='card-item'; div.id=sid;
   div.innerHTML=`
-    <div class="card-num">POST ${postItemCount} <button class="card-rm" onclick="rmEl('${id}')">✕ Remove</button></div>
+    <div class="card-num">POST ${n} <button class="card-rm" onclick="rmEl('${sid}')">✕ Remove</button></div>
     <div class="card-grid">
-      <div class="cfield"><label>Username <span style="color:var(--red)">*</span></label><input data-key="username" placeholder="Nixel"></div>
+      <div class="cfield"><label>Username *</label><input data-key="username" placeholder="Nixel"></div>
       <div class="cfield"><label>Title</label><input data-key="title" placeholder="Demo Post"></div>
       <div class="cfield"><label>Caption</label><input data-key="caption" placeholder="hii~ im fiora sylvie"></div>
       <div class="cfield"><label>Subtitle</label><input data-key="subtitle" placeholder="NIXCODE"></div>
-    </div>
-    <div class="card-grid">
-      <div class="cfield"><label>Verified</label><select data-key="verified"><option value="false">false</option><option value="true">true</option></select></div>
-      <div class="cfield"><label>Source</label><select data-key="source"><option value="INSTAGRAM">INSTAGRAM</option><option value="FACEBOOK">FACEBOOK</option><option value="TWITTER">TWITTER</option><option value="TIKTOK">TIKTOK</option></select></div>
-      <div class="cfield"><label>Orientation</label><select data-key="orientation"><option value="LANDSCAPE">LANDSCAPE</option><option value="PORTRAIT">PORTRAIT</option><option value="SQUARE">SQUARE</option></select></div>
-      <div class="cfield"><label>Post Type</label><select data-key="post_type"><option value="PHOTO">PHOTO</option><option value="VIDEO">VIDEO</option><option value="REEL">REEL</option></select></div>
-    </div>
-    <div class="card-grid">
+      <div class="cfield"><label>Verified</label><select data-key="verified" onchange="this.dataset.touched='1'"><option value="false">false</option><option value="true">true</option></select></div>
+      <div class="cfield"><label>Source</label><select data-key="source" onchange="this.dataset.touched='1'"><option value="INSTAGRAM">INSTAGRAM</option><option value="FACEBOOK">FACEBOOK</option><option value="TWITTER">TWITTER</option><option value="TIKTOK">TIKTOK</option></select></div>
+      <div class="cfield"><label>Orientation</label><select data-key="orientation" onchange="this.dataset.touched='1'"><option value="LANDSCAPE">LANDSCAPE</option><option value="PORTRAIT">PORTRAIT</option><option value="SQUARE">SQUARE</option></select></div>
+      <div class="cfield"><label>Post Type</label><select data-key="post_type" onchange="this.dataset.touched='1'"><option value="PHOTO">PHOTO</option><option value="VIDEO">VIDEO</option><option value="REEL">REEL</option></select></div>
       <div class="cfield"><label>Likes</label><input data-key="like" type="number" placeholder="999"></div>
       <div class="cfield"><label>Comments</label><input data-key="comment" type="number" placeholder="10"></div>
       <div class="cfield"><label>Shares</label><input data-key="share" type="number" placeholder="5"></div>
       <div class="cfield"><label>Footer</label><input data-key="footer" placeholder="Fiora Sylvie"></div>
-    </div>
-    <div class="card-grid">
       <div class="cfield"><label>Thumbnail URL</label><input data-key="thumbnail" placeholder="https://cdn.../thumb.jpg"></div>
       <div class="cfield"><label>Icon URL</label><input data-key="icon" placeholder="https://cdn.../icon.jpg"></div>
       <div class="cfield"><label>Post URL</label><input data-key="url" placeholder="https://fiora.nixel.my.id/"></div>
       <div class="cfield"><label>Deeplink URL</label><input data-key="deeplink" placeholder="https://fiora.nixel.my.id/"></div>
     </div>`;
-  document.getElementById('post-items').appendChild(div);
+  document.getElementById(uid+'_posts').appendChild(div);
 }
-function getPostData(){
-  const items=[];
-  document.querySelectorAll('#post-items .card-item').forEach(card=>{
-    const parts=[];
-    card.querySelectorAll('[data-key]').forEach(el=>{
-      const v=(el.value||'').trim();
-      if(v) parts.push(`${el.dataset.key}:${v}`);
-    });
-    if(parts.length) items.push(parts.join(','));
+
+// ═══════════════════════════════════════════════
+//  COLLAPSE / REMOVE BLOCK
+// ═══════════════════════════════════════════════
+function toggleCollapse(uid) {
+  const card=document.getElementById(uid);
+  const collapsed=card.classList.toggle('collapsed');
+  card.querySelector('.dyn-collapse').textContent = collapsed ? '▸ expand' : '▾ collapse';
+}
+
+function removeBlock(uid) {
+  document.getElementById(uid)?.remove();
+  blocks = blocks.filter(b=>b.uid!==uid);
+  delete subCounts[uid];
+  if(blocks.length===0) {
+    const es=document.createElement('div');
+    es.className='empty-state'; es.id='emptyState';
+    es.innerHTML=`<div class="empty-icon">🧩</div><div class="empty-title">No blocks added yet</div><div class="empty-sub">Click the <span style="color:var(--green)">+ Add Block</span> button below<br>to start building your command</div>`;
+    document.getElementById('blocksContainer').appendChild(es);
+  }
+  updateSidebar(); updateCount();
+  toast('🗑 Block removed','success');
+}
+
+// ═══════════════════════════════════════════════
+//  SIDEBAR UPDATE
+// ═══════════════════════════════════════════════
+function updateSidebar() {
+  const sb=document.getElementById('sbBlocks');
+  if(blocks.length===0){
+    sb.innerHTML='<div style="padding:12px;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--muted);line-height:1.8">No blocks yet.<br>Click + Add Block</div>';
+    return;
+  }
+  // count per type for numbering
+  const typeIdx={};
+  sb.innerHTML='';
+  blocks.forEach(b=>{
+    const meta=BLOCK_META[b.type];
+    typeIdx[b.type]=(typeIdx[b.type]||0)+1;
+    const item=document.createElement('div');
+    item.className='sb-item';
+    item.innerHTML=`<span>${meta.icon}</span><span style="flex:1">${meta.label}</span><span class="sb-num">#${typeIdx[b.type]}</span><span class="sb-x" onclick="removeBlock('${b.uid}')">✕</span>`;
+    item.onclick=(e)=>{ if(!e.target.classList.contains('sb-x')) document.getElementById(b.uid)?.scrollIntoView({behavior:'smooth',block:'start'}); };
+    sb.appendChild(item);
   });
-  return items.join(';');
 }
 
-// ── IMAGE PREVIEW ──
-document.getElementById('addimage-url').addEventListener('input', function(){
-  const url=this.value.trim();
-  const pw=document.getElementById('img-preview-wrap');
-  const pi=document.getElementById('img-preview');
-  if(url){pw.style.display='block';pi.src=url;}
-  else{pw.style.display='none';}
-});
+function updateCount() {
+  document.getElementById('hdrCount').textContent = blocks.length + ' block' + (blocks.length===1?'':'s');
+}
 
-// ── GENERATE ──
-function generate(){
+// ═══════════════════════════════════════════════
+//  IMAGE PREVIEW
+// ═══════════════════════════════════════════════
+function previewImg(uid,url) {
+  const pw=document.getElementById(uid+'_imgprev');
+  const pi=document.getElementById(uid+'_imgel');
+  if(url.trim()){pw.style.display='block';pi.src=url.trim();}
+  else{pw.style.display='none';}
+}
+
+// ═══════════════════════════════════════════════
+//  COLLECT DATA per block
+// ═══════════════════════════════════════════════
+function collectBlock(b) {
+  const uid=b.uid, type=b.type;
+  switch(type) {
+
+    case 'addtip': {
+      const v=(document.getElementById(uid+'_tip')?.value||'').trim();
+      if(!v) return {err:'addtip is empty!'};
+      return {out:`"addtip","${v}"`};
+    }
+
+    case 'addsuggest': {
+      const pills=[];
+      document.querySelectorAll('#'+uid+'_pills .item-row input').forEach(inp=>{ const v=inp.value.trim(); if(v) pills.push(v); });
+      if(!pills.length) return {err:'addsuggest has no pills!'};
+      return {out:`"addsuggest","${pills.join(';')}"`};
+    }
+
+    case 'addtext': {
+      const v=(document.getElementById(uid+'_text')?.value||'').trim();
+      if(!v) return {err:'addtext is empty!'};
+      return {out:`"addtext","${v.replace(/\n/g,'\\n')}"`};
+    }
+
+    case 'addimage': {
+      const v=(document.getElementById(uid+'_imgurl')?.value||'').trim();
+      if(!v) return {err:'addimage URL is empty!'};
+      return {out:`"addimage","${v}"`};
+    }
+
+    case 'addvideo': {
+      const url=(document.getElementById(uid+'_vidurl')?.value||'').trim();
+      if(!url) return {err:'addvideo URL is empty!'};
+      const dur=parseInt(document.getElementById(uid+'_viddur')?.value||'0')||0;
+      const param=dur>0?`${url};${dur}`:url;
+      return {out:`"addvideo","${param}"`};
+    }
+
+    case 'addcode': {
+      const lang=document.getElementById(uid+'_lang')?.value||'text';
+      const code=(document.getElementById(uid+'_code')?.value||'').trim();
+      if(!code) return {err:'addcode has no code!'};
+      return {out:`"addcode","${lang};${code.replace(/\n/g,'\\n')}"`};
+    }
+
+    case 'addtable': {
+      const cols=(document.getElementById(uid+'_cols')?.value||'').split(',').map(c=>c.trim()).filter(Boolean);
+      if(!cols.length) return {err:'addtable has no headers!'};
+      const rows=[cols];
+      document.querySelectorAll('#'+uid+'_rows .item-row').forEach(row=>{
+        const vals=Array.from(row.querySelectorAll('input')).map(i=>i.value.trim());
+        if(vals.some(v=>v)) rows.push(vals);
+      });
+      return {out:`"addtable","${rows.map(r=>r.join(',')).join(';')}"`};
+    }
+
+    case 'addsource': {
+      const items=[];
+      document.querySelectorAll('#'+uid+'_srcs .card-item').forEach(card=>{
+        const img=(card.querySelector('[data-role=img]')?.value||'').trim();
+        const url=(card.querySelector('[data-role=url]')?.value||'').trim();
+        const lbl=(card.querySelector('[data-role=lbl]')?.value||'').trim();
+        if(url) items.push([img,url,lbl].filter(Boolean).join(','));
+      });
+      if(!items.length) return {err:'addsource has no sources!'};
+      return {out:`"addsource","${items.join(';')}"`};
+    }
+
+    case 'addproduct': {
+      const pairs=[
+        ['title', document.getElementById(uid+'_title')?.value],
+        ['brand', document.getElementById(uid+'_brand')?.value],
+        ['price', document.getElementById(uid+'_price')?.value],
+        ['sale_price', document.getElementById(uid+'_saleprice')?.value],
+        ['product_url', document.getElementById(uid+'_purl')?.value],
+        ['image_url', document.getElementById(uid+'_imgurl2')?.value],
+        ['icon_url', document.getElementById(uid+'_iconurl')?.value],
+      ];
+      const parts=pairs.map(([k,v])=>v?.trim()?`${k}:${v.trim()}`:null).filter(Boolean);
+      if(!parts.length) return {err:'addproduct has no data!'};
+      return {out:`"addproduct","${parts.join(',')}"`};
+    }
+
+    case 'addproducts': {
+      const items=[];
+      document.querySelectorAll('#'+uid+'_prods .card-item').forEach(card=>{
+        const parts=[];
+        card.querySelectorAll('[data-key]').forEach(el=>{ const v=(el.value||'').trim(); if(v) parts.push(`${el.dataset.key}:${v}`); });
+        if(parts.length) items.push(parts.join(','));
+      });
+      if(!items.length) return {err:'addproducts has no products!'};
+      return {out:`"addproducts","${items.join(';')}"`};
+    }
+
+    case 'addreels': {
+      const items=[];
+      document.querySelectorAll('#'+uid+'_reels .card-item').forEach(card=>{
+        const parts=[];
+        // inputs: only if filled
+        card.querySelectorAll('input[data-key]').forEach(el=>{ const v=(el.value||'').trim(); if(v) parts.push(`${el.dataset.key}:${v}`); });
+        // selects: only if user changed from default (data-touched)
+        card.querySelectorAll('select[data-key]').forEach(el=>{ if(el.dataset.touched) parts.push(`${el.dataset.key}:${el.value}`); });
+        if(parts.length) items.push(parts.join(','));
+      });
+      if(!items.length) return {err:'addreels: fill at least one reel!'};
+      return {out:`"addreels","${items.join(';')}"`};
+    }
+
+    case 'addpost': {
+      const items=[];
+      document.querySelectorAll('#'+uid+'_posts .card-item').forEach(card=>{
+        const parts=[];
+        // inputs: only if filled
+        card.querySelectorAll('input[data-key]').forEach(el=>{ const v=(el.value||'').trim(); if(v) parts.push(`${el.dataset.key}:${v}`); });
+        // selects: only if user changed from default (data-touched)
+        card.querySelectorAll('select[data-key]').forEach(el=>{ if(el.dataset.touched) parts.push(`${el.dataset.key}:${el.value}`); });
+        if(parts.length) items.push(parts.join(','));
+      });
+      if(!items.length) return {err:'addpost: fill at least one post!'};
+      return {out:`"addpost","${items.join(';')}"`};
+    }
+
+    default: return {err:'Unknown block type: '+type};
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  GENERATE
+// ═══════════════════════════════════════════════
+function generate() {
   const title=(document.getElementById('meta-title')?.value||'').trim();
   const footer=(document.getElementById('meta-footer')?.value||'').trim();
-  const blocks=[];
-  const activeForms=[];
 
-  // Collect ALL sections that have data
-  // addtip
-  const tipVal=g('addtip-content');
-  if(tipVal) blocks.push(`"addtip","${tipVal}"`);
+  if(!blocks.length && !title && !footer) return toast('❌ Add at least one block!','error');
 
-  // addsuggest
-  const pills=[];
-  document.querySelectorAll('#suggest-pills .item-row input').forEach(inp=>{
-    const v=inp.value.trim();
-    if(v) pills.push(v);
-  });
-  if(pills.length) blocks.push(`"addsuggest","${pills.join(';')}"`);
-
-  // addtext
-  const textVal=(document.getElementById('addtext-content')?.value||'').trim();
-  if(textVal) blocks.push(`"addtext","${textVal.replace(/\n/g,'\\n')}"`);
-
-  // addimage
-  const imgUrl=g('addimage-url');
-  if(imgUrl) blocks.push(`"addimage","${imgUrl}"`);
-
-  // addvideo
-  const vidUrl=g('addvideo-url');
-  if(vidUrl){
-    const dur=(document.getElementById('addvideo-dur')?.value||'0').trim();
-    const vidParam=parseInt(dur)>0?`${vidUrl};${dur}`:vidUrl;
-    blocks.push(`"addvideo","${vidParam}"`);
+  const parts=[title, footer];
+  for(const b of blocks) {
+    const result=collectBlock(b);
+    if(result.err) return toast('❌ '+result.err,'error');
+    parts.push(result.out);
   }
 
-  // addcode
-  const codeLang=(document.getElementById('addcode-lang')?.value||'text');
-  const codeContent=(document.getElementById('addcode-content')?.value||'').trim();
-  if(codeContent) blocks.push(`"addcode","${codeLang};${codeContent.replace(/\n/g,'\\n')}"`);
-
-  // addtable
-  const tableData=getTableData();
-  if(tableData) blocks.push(`"addtable","${tableData}"`);
-
-  // addsource
-  const srcData=getSourceData();
-  if(srcData.length) blocks.push(`"addsource","${srcData.join(';')}"`);
-
-  // addproduct (single)
-  const p1=getProductSingle();
-  if(p1) blocks.push(`"addproduct","${p1}"`);
-
-  // addproducts (array)
-  const pArr=getProductsArray();
-  if(pArr) blocks.push(`"addproducts","${pArr}"`);
-
-  // addreels
-  const reelsData=getReelsData();
-  if(reelsData) blocks.push(`"addreels","${reelsData}"`);
-
-  // addpost
-  const postData=getPostData();
-  if(postData) blocks.push(`"addpost","${postData}"`);
-
-  if(!blocks.length && !title && !footer){
-    return toast('❌ Fill at least one field!','error');
-  }
-
-  const parts=[title, footer, ...blocks];
   const cmd=`.createairich ${parts.join('|')}`;
-
   document.getElementById('outBox').textContent=cmd;
-  document.getElementById('outNote').textContent=`${blocks.length} block(s) | Paste in WhatsApp`;
+  document.getElementById('outNote').textContent=`${blocks.length} block(s) generated`;
   document.getElementById('outputWrap').classList.add('show');
-  toast('✅ Command generated!','success');
+  toast(`✅ ${blocks.length} block(s) generated!`,'success');
   document.getElementById('outputWrap').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// ── PREVIEW MODAL ──
-function showPreview(){
-  const cmd=document.getElementById('outBox').textContent;
-  const blockList=['addtip','addsuggest','addtext','addimage','addvideo','addcode','addtable','addsource','addproduct','addproducts','addreels','addpost']
-    .filter(b=>cmd.includes(`"${b}"`));
+// ═══════════════════════════════════════════════
+//  COPY
+// ═══════════════════════════════════════════════
+function copyOut() {
+  const text=document.getElementById('outBox').textContent;
+  if(!text) return toast('❌ Generate command first!','error');
+  const done=()=>{
+    const btn=document.getElementById('outCopyBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('copied');
+    toast('✅ Copied!','success');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  };
+  navigator.clipboard?.writeText(text).then(done).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    done();
+  });
+}
 
+// ═══════════════════════════════════════════════
+//  PREVIEW
+// ═══════════════════════════════════════════════
+function showPreview() {
+  const cmd=document.getElementById('outBox').textContent;
+  const typeCount={};
+  blocks.forEach(b=>{ typeCount[b.type]=(typeCount[b.type]||0)+1; });
+  const chips=Object.entries(typeCount).map(([t,n])=>`<span class="func-chip">${BLOCK_META[t]?.icon} ${t} ×${n}</span>`).join('') || '<span style="color:var(--muted);font-size:12px">No blocks added</span>';
   document.getElementById('modalBody').innerHTML=`
     <div style="font-family:'Syne',sans-serif;font-size:16px;color:var(--green);font-weight:800;margin-bottom:6px">.createairich</div>
-    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:14px">Title: <span style="color:var(--text)">${g('meta-title')||'—'}</span> &nbsp;|&nbsp; Footer: <span style="color:var(--text)">${g('meta-footer')||'—'}</span></div>
-    <div class="pv-sec">Active Blocks</div>
-    <div class="func-list">${blockList.length?blockList.map(b=>`<span class="func-chip">${b}</span>`).join(''):'<span style="color:var(--muted);font-size:12px">None — fill some fields first</span>'}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:10px">
+      Title: <span style="color:var(--text)">${escHtml(document.getElementById('meta-title')?.value||'—')}</span> &nbsp;|&nbsp;
+      Footer: <span style="color:var(--text)">${escHtml(document.getElementById('meta-footer')?.value||'—')}</span>
+    </div>
+    <div class="pv-sec">Blocks (${blocks.length})</div>
+    <div style="margin-bottom:6px">${chips}</div>
     <div class="pv-sec">Generated Command</div>
-    ${cmd?`<div class="pv-box">${escHtml(cmd)}</div>`:'<div style="color:var(--red);margin-top:8px;font-size:12px">Generate command first.</div>'}
+    ${cmd?`<div class="pv-box">${escHtml(cmd)}</div>`:'<div style="color:var(--red);margin-top:8px;font-size:12px">Generate first to see command here.</div>'}
   `;
   document.getElementById('previewModal').classList.add('open');
 }
 function closeModal(){document.getElementById('previewModal').classList.remove('open')}
-function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-// ── COPY ──
-function copyOut(){
-  const text=document.getElementById('outBox').textContent;
-  if(!text) return toast('❌ Generate command first!','error');
-  navigator.clipboard.writeText(text).then(()=>{
-    const btn=document.getElementById('outCopyBtn');
-    btn.textContent='✓ Copied!'; btn.classList.add('copied');
-    toast('✅ Copied to clipboard!','success');
-    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
-  }).catch(()=>{
-    // fallback
-    const ta=document.createElement('textarea');
-    ta.value=text; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta);
-    toast('✅ Copied!','success');
-  });
-}
-
-// ── RESET ──
-function resetAll(){
-  if(!confirm('Reset all fields? This cannot be undone.')) return;
-  document.querySelectorAll('input,textarea').forEach(el=>{ if(el.type!=='number') el.value=''; else el.value=el.defaultValue||''; });
-  document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
-  document.getElementById('suggest-pills').innerHTML='';
-  document.getElementById('source-items').innerHTML='';
-  document.getElementById('table-rows').innerHTML='';
-  document.getElementById('products-items').innerHTML='';
-  document.getElementById('reels-items').innerHTML='';
-  document.getElementById('post-items').innerHTML='';
-  pillCount=0; sourceCount=0; tableRowCount=0; productItemCount=0; reelItemCount=0; postItemCount=0;
-  addPill(); addPill(); addSource(); addTableRow(); addProductItem(); addReelItem(); addPostItem();
+// ═══════════════════════════════════════════════
+//  RESET
+// ═══════════════════════════════════════════════
+function resetAll() {
+  if(!confirm('Reset everything? All blocks will be removed.')) return;
+  blocks=[]; subCounts={};
+  const c=document.getElementById('blocksContainer');
+  c.innerHTML='';
+  const es=document.createElement('div');
+  es.className='empty-state'; es.id='emptyState';
+  es.innerHTML=`<div class="empty-icon">🧩</div><div class="empty-title">No blocks added yet</div><div class="empty-sub">Click the <span style="color:var(--green)">+ Add Block</span> button below<br>to start building your command</div>`;
+  c.appendChild(es);
+  document.getElementById('meta-title').value='';
+  document.getElementById('meta-footer').value='';
   document.getElementById('outputWrap').classList.remove('show');
-  document.getElementById('img-preview-wrap').style.display='none';
-  toast('🗑 All fields reset!','success');
+  updateSidebar(); updateCount();
+  toast('🗑 All reset!','success');
 }
 
-// ── HELPERS ──
-function g(id){return (document.getElementById(id)?.value||'').trim()}
-function rmEl(id){const el=document.getElementById(id); if(el) el.remove();}
-
-// ── TOAST ──
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+function rmEl(id){document.getElementById(id)?.remove()}
 function toast(msg,type='success'){
   const t=document.getElementById('toast');
   t.textContent=msg; t.className=`toast ${type} show`;
@@ -818,4 +926,3 @@ function toast(msg,type='success'){
 </script>
 </body>
 </html>
-
