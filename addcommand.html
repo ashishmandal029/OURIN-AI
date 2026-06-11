@@ -220,6 +220,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear
   .modal{max-width:100%;margin:0}
 }
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -563,7 +567,7 @@ function updateBtnFields(sel, id) {
   item.querySelector('.btn-value').placeholder = ph[sel.value] || 'value';
 }
 
-// ── TABLE ROW BUILDER ──
+// ���─ TABLE ROW BUILDER ──
 function addTableRow() {
   rowCount++;
   const id = 'row_' + rowCount;
