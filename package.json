@@ -1,0 +1,20 @@
+{
+  "name": "ourin-ai",
+  "version": "1.0.0",
+  "description": "OURIN - Next-Gen WhatsApp Bot",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static HTML site - no build step required'",
+    "lint": "echo 'No linter configured'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "ourin"
+  ],
+  "author": "ashishmandal029",
+  "license": "MIT"
+}
