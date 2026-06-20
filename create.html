@@ -196,6 +196,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear
   .fab-wrap{right:16px;bottom:20px}
 }
 </style>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -347,7 +351,7 @@ function openPicker()  { document.getElementById('pickerOverlay').classList.add(
 function closePicker() { document.getElementById('pickerOverlay').classList.remove('open'); document.getElementById('fab').classList.remove('open'); document.getElementById('fab').textContent='+ ADDBLOCK'; }
 function togglePicker(){ document.getElementById('pickerOverlay').classList.contains('open') ? closePicker() : openPicker(); }
 
-// ═══════════════════════════════════════════════
+// ═══════════��═══════════════════════════════════
 //  ADD BLOCK
 // ═══════════════════════════════════════════════
 function addBlock(type) {
